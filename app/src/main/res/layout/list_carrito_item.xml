@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:weightSum="3"
+    android:background="@drawable/panelcostos"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="50dp"
+        android:layout_weight="0.15"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="00"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtCantidadPedido"
+            android:textStyle="bold"
+            android:layout_width="50dp"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.7"
+        android:padding="2dp">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNombreProducto"
+            android:maxLines="3"
+            android:textStyle="bold"
+            android:textSize="13dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNombreEmpresa"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:layout_width="90dp">
+
+        <TextView
+            android:text="0.00"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPrecio"
+            android:layout_weight="0.15"
+            android:textAlignment="textEnd"
+            android:textStyle="normal|bold"
+            android:paddingTop="15dp"
+            android:paddingLeft="5dp"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+</LinearLayout>

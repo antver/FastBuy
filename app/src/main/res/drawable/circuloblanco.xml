@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item >
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:endColor="@color/toolbarTransparent"
+                android:centerColor="@color/amarillo"
+                android:startColor="@color/amarillo"
+                android:centerX="0.8"/>
+            <corners android:topLeftRadius="250dp"
+                android:topRightRadius="250dp"
+                android:bottomLeftRadius="250dp"
+                android:bottomRightRadius="250dp"/>
+            <padding android:top="3dp"
+                android:bottom="3dp"
+                android:left="3dp"
+                android:right="3dp"/>
+        </shape>
+    </item>
+    <item >
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="90"
+                android:endColor="@color/toolbarTransparent"
+                android:centerColor="@color/toolbarTransparent"
+                android:startColor="@color/toolbarTransparent"
+                android:centerX="0.5"/>
+            <corners android:topLeftRadius="250dp"
+                android:topRightRadius="250dp"
+                android:bottomLeftRadius="250dp"
+                android:bottomRightRadius="250dp"/>
+            <padding android:top="3dp"
+                android:bottom="3dp"
+                android:left="3dp"
+                android:right="3dp"/>
+        </shape>
+    </item>
+    <item >
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@color/blanco" />
+            <corners android:radius="250dp"/>
+        </shape>
+    </item>
+</layer-list>

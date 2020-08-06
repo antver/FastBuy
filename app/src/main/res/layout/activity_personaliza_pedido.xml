@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/activity_personaliza_pedido"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blanco"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blanco"
+            android:theme="?attr/actionBarTheme"
+            android:minHeight="?attr/actionBarSize"
+            android:id="@+id/toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ScrollView
+                android:id="@+id/scrollGeneral"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--Start Title-->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="¿Cómo lo quieres?"
+                        android:textSize="22sp"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/negro"
+                        android:paddingBottom="10dp"/>
+                    <!--End Title-->
+
+                    <!--Start Cuadro Humo-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/cuadradopersonalizapedido"
+                        android:orientation="vertical"
+                        android:paddingBottom="20dp">
+                        <!--Start Producto-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_margin="10dp">
+                            <!--Start Descripcion producto-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="2"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/txtNameProd"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="left"
+                                    android:paddingTop="10dp"
+                                    android:text="Producto"
+                                    android:textColor="@color/humo_gris"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/txtDescripcionProd"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="descripción del producto"
+                                    android:textSize="10sp"
+                                    android:gravity="left"
+                                    android:textColor="@color/humo_gris"
+                                    android:paddingBottom="6dp"/>
+                                <TextView
+                                    android:id="@+id/txtIncluyeTaper"
+                                    android:text="Inc. Taper"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/rojo"
+                                    android:textStyle="normal|bold"
+                                    android:textSize="10sp"
+                                    android:visibility="gone"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingBottom="5dp">
+                                    <TextView
+                                        android:id="@+id/txtTimeProd"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="10 min."
+                                        android:drawableLeft="@android:drawable/ic_lock_idle_alarm" />
+                                    <TextView
+                                        android:id="@+id/txtPrecioProd"
+                                        android:text="S/ 0.00"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textStyle="normal|bold"
+                                        android:gravity="right"
+                                        android:textSize="20sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <!--End Descripcion producto-->
+                            <!--Start Imagen producto-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginTop="15dp">
+                                <ImageView
+                                    android:background="@drawable/imagenperzonalizapedido"
+                                    android:id="@+id/imgProduct"
+                                    android:scaleType="fitCenter"
+                                    android:layout_width="110dp"
+                                    android:layout_height="110dp"/>
+                            </LinearLayout>
+                            <!--End Imagen producto-->
+                        </LinearLayout>
+                        <!--End Producto-->
+
+                        <!--Start Preferencia-->
+                        <LinearLayout
+                            android:id="@+id/LinearPresentacion"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="25dp"
+                            android:layout_weight="1"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:paddingTop="20dp"
+                                android:paddingBottom="10dp"
+                                android:text="Elige el tamaño de tu preferencia"
+                                android:textColor="@color/humo_gris"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                            <GridView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:id="@+id/tablaListPresentacionProd"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                        <!--End Checkbox-->
+                        <!--End Preferencia-->
+
+                        <!--Start Personalizar Pedido-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:paddingLeft="25dp"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="5dp"
+                            android:text="Describe a tu producto"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lines="3"
+                            android:hint="Ej. Ají extra..."
+                            android:gravity="top"
+                            android:paddingHorizontal="10dp"
+                            android:inputType="textMultiLine"
+                            android:layout_marginHorizontal="25dp"
+                            android:id="@+id/txtDescribeProducto"
+                            android:background="@drawable/cajatexto"/>
+                        <!--End Personalizar Pedido-->
+
+                    </LinearLayout>
+                    <!--End Cuadro Humo-->
+
+                    <!--Start Cantidad-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp">
+                        <ImageButton
+                            android:id="@+id/btnReducirCant"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:tint="@color/blanco"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_remove_circle"/>
+                        <TextView
+                            android:id="@+id/txtCantidadProd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="01"
+                            android:textColor="@color/negro"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:textSize="26sp"
+                            android:layout_marginHorizontal="30dp"/>
+                        <ImageButton
+                            android:id="@+id/btnAumentarCant"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:tint="@color/blanco"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_add_circle"/>
+                    </LinearLayout>
+                    <!--End Cantidad-->
+
+                    <!--Start Añadir al Carrito-->
+                    <Button
+                        android:id="@+id/btnAgregarAlCarrito"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/botonverdeagregaralcarrito"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Agregar al carrito"
+                        android:textColor="@color/blanco"
+                        android:textSize="20sp"/>
+                    <!--End Añadir al Carrito-->
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <!--Start MmenuPrincipal-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:background="#999"
+            android:layout_height="50dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnHome"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:tint="@color/fastbuy"
+                app:srcCompat="@drawable/ic_shop_n" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnFavoritos"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_heart"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnCarrito"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_cart_shop"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnUsuario"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_user_circle_o"/>
+        </LinearLayout>
+        <!--End MmenuPrincipal-->
+    </LinearLayout>
+</LinearLayout>

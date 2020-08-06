@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PagoTarjetaActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blanco"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        android:paddingBottom="10dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imagenPago"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_tarjeta"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_cupon"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="14sp"
+
+                android:gravity="center"
+                android:maxLines="2"/>
+            <!--Start Cupón-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="30dp"
+                android:paddingTop="10dp">
+                <EditText
+                    android:id="@+id/txtCodigoCupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:hint="@string/placeholder_txtcupon"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/cajatextoblanca"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:textSize="14sp"
+                    android:maxLength="6"/>
+                <Button
+                    android:id="@+id/btnValidaCupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/boton_gris2"
+                    android:text="Validar"
+                    android:textColor="@color/blanco"
+                    android:textAllCaps="false"
+                    android:enabled="false"
+                    android:layout_weight="2"/>
+            </LinearLayout>
+            <!--End Cupón-->
+            <!--Start saldo a pagar-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="@string/text_saldo_pagar"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/blanco"
+                android:background="@color/rojo"
+                android:layout_marginVertical="15dp"/>
+            <!--Start Subtotal General-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingHorizontal="40dp">
+                <CheckBox
+                    android:id="@+id/ckRecogerEnTienda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textSize="17dp"
+                    android:layout_marginLeft="-7dp"
+                    android:textColor="@color/rojo"
+                    android:text="Deseo recoger en tienda" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingHorizontal="40dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Subtotal"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="left"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/txtSubTotalGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="s/0.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <!--End Subtotal General-->
+            <!--Start total Delivery General-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingHorizontal="40dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="left"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/txtDeliveryGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="s/0.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <!--End total Delivery General-->
+            <!--Start cargo General-->
+            <LinearLayout android:id="@+id/linearCargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingHorizontal="40dp"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargo Visa"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="left"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/txtCargoGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="s/0.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <!--End cargo General-->
+            <!--Start descuento General-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="40dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descuento"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="left"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/txtDescuentoGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="s/0.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <!--End descuento General-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lineaseparadora"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="2dp"/>
+            <!--Start Total General-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="40dp"
+                android:paddingBottom="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="left"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/txtTotalGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="s/0.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <!--End Total General-->
+
+            <!--End saldo a pagar-->
+            <EditText
+                android:id="@+id/etMontoPagoEfectivo"
+                android:layout_width="match_parent"
+                android:hint="S/ 0.00"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/cajatextoblanca"
+                />
+            <TextView
+                android:id="@+id/txtMensajePagoEfectivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="9dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:textColor="@color/rojo"
+                android:text="(*) Indicanos con cuanto pagarás para llevarte el cambio."/>
+            <!--Start Boton Comprar-->
+            <Button
+                android:id="@+id/btnComprar"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="@drawable/botonverde2"
+                android:text="Comprar"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/blanco"
+                android:layout_marginBottom="20dp"/>
+            <!--End Boton Comprar-->
+        </LinearLayout>
+    </ScrollView>
+
+    <!--Start MmenuPrincipal-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#999"
+        android:layout_height="50dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnHome"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_shop_n" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnFavoritos"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_heart"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnCarrito"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_cart_shop"
+            android:tint="@color/fastbuy"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnUsuario"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_user_circle_o"/>
+    </LinearLayout>
+    <!--End MmenuPrincipal-->
+</LinearLayout>

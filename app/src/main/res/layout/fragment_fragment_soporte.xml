@@ -1,0 +1,136 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/humo_suave"
+    tools:context="com.fastbuyapp.omar.fastbuy.FragmentSoporte">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ahora con FastBuy tus compras ya no te quitarán más tiempo,ingresa tu pedido y nosotros nos encargamos del resto."
+        android:textAlignment="center"
+        android:padding="10dp"
+        android:textSize="12dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp">
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:text="¿A dónde te lo llevamos?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView12"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/fastbuy"
+                android:textStyle="normal|bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:background="@drawable/textodatoblanco"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:id="@+id/txtDireccionSoporte"
+                android:textSize="15dp"
+                android:hint="Dirección"
+                android:drawableLeft="@drawable/ic_ubicacion"
+                android:padding="5dp" />
+
+            <TextView
+                android:text="¿Cómo te contactamos?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView13"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/fastbuy"
+                android:textStyle="normal|bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/txtTelefonoSoporte"
+                android:background="@drawable/textodatoblanco"
+                android:layout_margin="5dp"
+                android:hint="Teléfono o celular"
+                android:padding="5dp"
+                android:maxLength="9"
+                android:textSize="15dp"
+                android:drawableLeft="@drawable/ic_celular" />
+
+            <TextView
+                android:text="¿Dónde lo compramos o recogemos?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView14"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/fastbuy"
+                android:textStyle="normal|bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:textSize="15dp"
+                android:id="@+id/txtTiendaSoporte"
+                android:background="@drawable/textodatoblanco"
+                android:layout_margin="5dp"
+                android:hint="Nombre del lugar"
+                android:drawableLeft="@drawable/ic_shop"
+                android:padding="5dp" />
+
+            <TextView
+                android:text="¿Qué necesitas?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/textView15"
+                android:textColor="@color/fastbuy"
+                android:textStyle="normal|bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:background="@drawable/textodatoblanco"
+                android:textSize="15dp"
+                android:layout_margin="5dp"
+                android:hint="Lista de productos y/o servicios que necesitas"
+                android:ems="10"
+                android:id="@+id/txtPedidoSoporte"
+                android:padding="5dp"
+                android:drawableLeft="@drawable/ic_boxes" />
+
+            <Button
+                android:text="PEDIDO LISTO"
+                android:textColor="@color/blanco"
+                android:textSize="18dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:layout_width="200dp"
+                android:background="@drawable/botonpersonalizar"
+                android:layout_height="36dp"
+                android:id="@+id/btnListoSoporte" />
+            </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

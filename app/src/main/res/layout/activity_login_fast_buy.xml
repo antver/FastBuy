@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginFastBuyActivity"
+    android:background="@drawable/background">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="25dp">
+            <!--Start Descripción-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/phone_puro"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hola,"
+                        android:textColor="@color/gris"
+                        android:textSize="20sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_gracias"
+                        android:textColor="@color/gris"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_descrip_login"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:lines="2"
+                android:layout_marginVertical="25dp"/>
+            <!--End Descripción-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--Start Nombre y Apellidos-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="    Nombre y Apellidos"
+                    android:textColor="@color/negro"
+                    android:gravity="center_vertical"
+                    android:layout_marginVertical="10dp"
+                    android:drawableLeft="@drawable/ic_person"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:inputType="textPersonName"
+                    android:id="@+id/txtNombresApellidos_Reg"
+                    android:background="@drawable/cajatexto"
+                    android:paddingHorizontal="10dp"
+                    android:textAlignment="textStart"
+                    android:maxLines="1"/>
+                <!--End Nombre y Apellidos-->
+                <!--Start Correo Electrónico-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="    Ingrese correo electrónico"
+                    android:textColor="@color/negro"
+                    android:gravity="center_vertical"
+                    android:layout_marginVertical="10dp"
+                    android:drawableLeft="@drawable/ic_email"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:inputType="textEmailAddress"
+                    android:id="@+id/txtCorreoElectronico_Reg"
+                    android:background="@drawable/cajatexto"
+                    android:paddingHorizontal="10dp"
+                    android:textAlignment="textStart"
+                    android:maxLines="1"/>
+                <!--End Correo Electrónico-->
+                <!--Start Número de Celular-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="    Ingrese número de celular"
+                    android:textColor="@color/negro"
+                    android:gravity="center_vertical"
+                    android:layout_marginVertical="10dp"
+                    android:drawableLeft="@drawable/ic_phone_black"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:weightSum="2"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
+                    <EditText
+                        android:layout_height="45dp"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/editText2"
+                        android:background="@drawable/cajatexto"
+                        android:textAlignment="center"
+                        android:layout_marginRight="5dp"
+                        android:text=" +51"
+                        android:textColor="@color/gris"
+                        android:drawableLeft="@drawable/peru"
+                        android:layout_width="100dp"
+                        android:clickable="false"
+                        android:enabled="false"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="15dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/txtNumCelular_Reg"
+                        android:background="@drawable/cajatexto"
+                        android:layout_marginLeft="5dp"
+                        android:textAlignment="center"
+                        android:maxLength="9" />
+                </LinearLayout>
+                <!--End Número de Celular-->
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnRegistrarUsuario"
+                android:layout_width="180dp"
+                android:layout_height="45dp"
+                android:layout_marginVertical="15dp"
+                android:text="Registrate"
+                android:textColor="@color/blanco"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:background="@drawable/botonamarillo"
+                android:layout_gravity="right"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

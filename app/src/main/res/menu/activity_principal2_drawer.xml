@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/misdatos"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="Corporación FastBuy S.A.C." />
+        <item
+            android:id="@+id/mispedidos"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="www.fastbuych.com" />
+    </group>
+    <!--
+    <item android:title="Corporación Fastbuy S.A.C.">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:title="Ayuda y Soporte" />
+        </menu>
+    </item>
+    -->
+</menu>

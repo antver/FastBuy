@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".SeleccionaDireccionActivity"
+    android:layout_weight="1"
+    android:layout_gravity="center"
+    android:background="@drawable/cuadrometododepago">
+
+    <!--<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/linearSeleccionaDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <!--Start Titulo-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_marginHorizontal="30dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="1dp"
+                    android:text=" Selecciona tu dirección  "
+                    android:textColor="@color/humo_gris"
+                    android:textSize="16sp"
+                    android:typeface="normal"
+                    android:background="@drawable/fontetextometododepago"/>
+                <!--End Titulo-->
+                <!--Start Selecciona dirección-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="15dp"
+                    android:paddingTop="15dp">
+                    <TextView
+                        android:id="@+id/cmbDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:hint="Seleccione una dirección"
+                        android:drawableRight="@drawable/ic_expand_more"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="20dp"
+                        android:focusable="false"
+                        android:textSize="14sp"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:background="@drawable/cajatexto"/>
+                    <GridView
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:id="@+id/listaDeDirecciones"
+                        android:columnWidth="400dip"
+                        android:gravity="center"
+                        android:numColumns="1"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:background="@color/humo"/>
+                </LinearLayout>
+                <!--End Selecciona dirección-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearAgregaDirec"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <!--Start Titulo-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_marginHorizontal="30dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="1dp"
+                    android:text=" Nueva dirección"
+                    android:textColor="@color/humo_gris"
+                    android:textSize="16sp"
+                    android:typeface="normal"
+                    android:background="@drawable/fontetextometododepago"/>
+                <!--End Titulo-->
+                <!--Start Selecciona dirección-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/cuadro_mapa" />
+                    <ImageButton
+                        android:id="@+id/button1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignEnd="@+id/map"
+                        android:layout_marginEnd="7dp"
+                        android:layout_alignTop="@+id/map"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/boton_blanco_verde_circulo"
+                        android:src="@drawable/ic_my_location"
+                        android:onClick="ubicacionOriginal"/>
+                </RelativeLayout>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="10dp"
+                        android:paddingBottom="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text=" Etiqueta de Dirección"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:drawableLeft="@drawable/ic_local_offer_black_24dp"
+                            android:drawableTint="@color/negro"
+                            android:focusable="false"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center_vertical"/>
+                        <!--<EditText
+                            android:id="@+id/txtEtiquetaDireccion"
+                            android:hint="Ej. mi casa"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:inputType="text"
+                            android:textColor="@color/negro"
+                            android:background="@drawable/caja_texto_humo5"
+                            android:textSize="16sp"
+                            android:paddingHorizontal="15dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:maxLength="200"/>-->
+                        <TextView
+                            android:id="@+id/cmbEtiqueta"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:hint="Seleccione una Etiqueta"
+                            android:drawableRight="@drawable/ic_expand_more"
+                            android:paddingHorizontal="15dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:focusable="false"
+                            android:textSize="16sp"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:background="@drawable/cajatexto"/>
+                        <GridView
+                            android:layout_width="match_parent"
+                            android:layout_height="140dp"
+                            android:id="@+id/listaDeEtiquetas"
+                            android:columnWidth="400dip"
+                            android:gravity="center"
+                            android:numColumns="1"
+                            android:layout_marginTop="3dp"
+                            android:layout_weight="1"
+                            android:paddingHorizontal="15dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:visibility="gone"
+                            android:background="@color/humo"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text=" Dirección Exacta"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawableLeft="@drawable/ic_location_gris"
+                            android:drawableTint="@color/negro"
+                            android:focusable="false"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center_vertical"/>
+                        <EditText
+                            android:id="@+id/txtNameDireccion"
+                            android:hint="Ej. Av. Perú No. 180"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:inputType="text"
+                            android:textColor="@color/negro"
+                            android:background="@drawable/caja_texto_humo5"
+                            android:textSize="16sp"
+                            android:paddingHorizontal="15dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:maxLength="200"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text=" Piso / Oficina / Apart."
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawableLeft="@drawable/ic_location_gris"
+                            android:drawableTint="@color/negro"
+                            android:focusable="false"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center_vertical"/>
+                        <EditText
+                            android:id="@+id/txtNumPiso"
+                            android:hint="Ej. 1er piso / Ofic 101 / Dpto 401"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:inputType="text"
+                            android:textColor="@color/negro"
+                            android:background="@drawable/caja_texto_humo5"
+                            android:textSize="16sp"
+                            android:paddingHorizontal="15dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:maxLength="200"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text=" Referencia"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawableLeft="@drawable/ic_pencil_edit"
+                            android:drawableTint="@color/negro"
+                            android:focusable="false"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center_vertical"/>
+
+                        <EditText
+                            android:id="@+id/txtReferencia"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/caja_texto_humo5"
+                            android:hint="Ej. Casa de color Azul, frente al parque"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLength="800"
+                            android:maxLines="1"
+                            android:paddingHorizontal="15dp"
+                            android:textColor="@color/negro"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </ScrollView>
+                <!--End Selecciona dirección-->
+            </LinearLayout>
+
+            <!--Start Botones-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="15dp"
+                android:layout_marginVertical="15dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:gravity="center_vertical">
+                <!--Start Boton Agregar Dirección-->
+                <TextView
+                    android:id="@+id/btnAgregarDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:text="  Agregar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/negro"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_add_circle_black"/>
+                <!--End Boton Agregar Dirección-->
+                <!--Start Boton Continuar-->
+                <Button
+                    android:id="@+id/btnCancelar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Cancelar"
+                    android:textColor="@color/blanco"
+                    android:background="@drawable/botonamarillo"
+                    android:backgroundTint="@color/rojo"
+                    android:visibility="gone"/>
+                <!--End Boton Continuar-->
+                <!--Start Boton Continuar-->
+                <Button
+                    android:id="@+id/btnContinuar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:text="Continuar"
+                    android:textColor="@color/blanco"
+                    android:background="@drawable/botonamarillo"/>
+                <!--End Boton Continuar-->
+            </LinearLayout>
+            <!--Start Botones-->
+        </LinearLayout>
+    <!--</ScrollView>-->
+</LinearLayout>

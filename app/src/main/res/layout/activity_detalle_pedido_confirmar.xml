@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetallePedidoConfirmar">
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blanco"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/txtNroPedidoConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pedido Nº 000001"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/txtFechaPedidoConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2020-01-31 12:23:30"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/cuadrodetallepedido"
+            android:layout_margin="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="15dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Productos"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="17sp"
+                    android:gravity="left"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="25dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Precio"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="17sp"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:layout_marginRight="15dp"/>
+            </LinearLayout>
+
+            <GridView
+                android:id="@+id/dtgvItemsPedidoConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:numColumns="1"
+                android:paddingHorizontal="10dp"
+                android:paddingBottom="25dp"></GridView>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <!--Start Subtotal General-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Subtotal"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/txtSubTotalPedidoConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="s/0.00"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <!--End Subtotal General-->
+        <!--Start total Delivery General-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delivery"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/txtDeliveryPedidoConfi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="s/0.00"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <!--End total Delivery General-->
+        <!--Start descuento General-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dscto. Cupón"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/txtDescuentoPedidoConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="s/0.00"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <!--End descuento General-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/lineaseparadora"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginVertical="2dp"/>
+        <!--Start Total General-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40dp"
+            android:paddingBottom="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/txtTotalPedidoConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="s/0.00"
+                android:textColor="@color/negro"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <!--End Total General-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
+            <Button
+                android:id="@+id/btnCancelarConfirmacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Cancelar"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/boton_rojo"/>
+            <Button
+                android:id="@+id/btnContinuarConfirmacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/blanco"
+                android:background="@drawable/botonverdecircular"
+                android:text="Continuar"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <!--Start MmenuPrincipal-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#999"
+        android:layout_height="50dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnHome"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_shop_n" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnFavoritos"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_heart"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnCarrito"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_cart_shop"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnUsuario"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_user_circle_o"
+            android:tint="@color/fastbuy" />
+    </LinearLayout>
+    <!--End MmenuPrincipal-->
+</LinearLayout>

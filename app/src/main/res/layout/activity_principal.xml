@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_principal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.fastbuyapp.omar.fastbuy.PrincipalActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:background="@color/fastbuy"
+                        android:layout_height="160dp"
+                        android:layout_marginBottom="-160dp">
+
+                    </FrameLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="2"
+                            android:layout_height="wrap_content"
+                            android:padding="6dp"
+                            android:background="@drawable/shadow"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:elevation="1dp">
+
+                            <TextView
+                                android:text="@string/activity_principal_promociones"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/txtPromociones"
+                                android:textStyle="normal|bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/fastbuy"
+                                android:drawableLeft="@drawable/ic_local_offer_black_24dp"
+                                android:layout_weight="1.5" />
+
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:id="@+id/spinnerCiudad"
+                                android:layout_weight="0.5"
+                                android:backgroundTint="@color/fastbuy"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPromociones"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="0dp"
+                                android:scrollbars="vertical" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:text="@string/activity_principal_descripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView18"
+                        android:textSize="13sp"
+                        android:textAlignment="center"
+                        android:paddingBottom="8dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/fastbuy"
+                        android:background="@drawable/shadow"
+                        android:paddingTop="8dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shadow"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/llRestaurantes">
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="match_parent"
+                                android:layout_height="110dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/background_item_categoria" />
+
+                            <TextView
+                                android:text="@string/acticity_principal_restaurantes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView19"
+                                android:textAlignment="center"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:textColor="@color/gris2"
+                                android:textAllCaps="false"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shadow"
+                            android:id="@+id/llMarket">
+
+                            <ImageView
+                                android:id="@+id/imageView8"
+                                android:layout_width="match_parent"
+                                android:layout_height="110dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/background_item_categoria" />
+
+                            <TextView
+                                android:text="@string/acticity_principal_tiendas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView9"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:textColor="@color/gris2"
+                                android:textAlignment="center"
+                                android:textAllCaps="false"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/shadow"
+                            android:id="@+id/llEncargos">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                app:srcCompat="@drawable/encargos"
+                                android:id="@+id/imageView6"
+                                android:layout_height="110dp"
+                                android:scaleType="fitXY" />
+
+                            <TextView
+                                android:text="@string/acticity_principal_encargos"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView10"
+                                android:textAlignment="center"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:textAllCaps="false"
+                                android:textColor="@color/gris2"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/shadow"
+                            android:id="@+id/llPidelo">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="110dp"
+                                app:srcCompat="@drawable/pidelo"
+                                android:id="@+id/imageView10"
+
+                                android:scaleType="fitXY" />
+
+                            <TextView
+                                android:text="@string/acticity_principal_loquequieras"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView12"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:textAllCaps="false"
+                                android:textColor="@color/gris2"
+                                android:textAlignment="center"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/shadow"
+                            android:id="@+id/llHoteleria">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                app:srcCompat="@drawable/hotelerias"
+                                android:id="@+id/imageView9"
+                                android:layout_height="150dp"
+                                android:scaleType="fitXY" />
+
+                            <TextView
+                                android:text="TURISMO"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView11"
+                                android:textAlignment="center"
+                                android:background="@drawable/serviciohoteleria"
+                                android:textColor="@color/blanco"
+                                android:padding="2dp"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/llTransporte">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                app:srcCompat="@drawable/transportes"
+                                android:id="@+id/imageView7"
+                                android:layout_height="85dp"
+                                android:scaleType="fitXY" />
+
+                            <TextView
+                                android:text="TRANSPORTE"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView8"
+                                android:background="@drawable/serviciotransporte"
+                                android:padding="2dp"
+                                android:textColor="@color/blanco"
+                                android:textAlignment="center"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:background="#999"
+            android:layout_height="50dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnHome"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:tint="@color/fastbuy"
+                app:srcCompat="@drawable/ic_shop_n" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnFavoritos"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_heart"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnCarrito"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_cart_shop"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnUsuario"
+                android:background="#e9e9e9"
+                android:layout_weight="1"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_user_circle_o"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

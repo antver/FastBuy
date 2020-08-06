@@ -1,0 +1,151 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/humo_suave"
+    tools:context="com.fastbuyapp.omar.fastbuy.FragmentPersonalizarProducto"
+    android:weightSum="1">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="¡PERSONALIZA TU PEDIDO!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtPersDescripcion"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:id="@+id/txtPersCategoria"
+                        android:textSize="9sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:text="S/ 0.00"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtPersPrecio"
+                        android:layout_gravity="bottom" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="125dp"
+                    app:srcCompat="@drawable/rsst"
+                    android:id="@+id/imgPersImagen"
+                    android:layout_height="100dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:text="Describe la personalización de tu pedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8"
+                android:layout_margin="5dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:padding="10dp"
+                android:background="@drawable/textodato"
+                android:id="@+id/txtPersonalizacion"
+                android:layout_weight="0.19"
+                android:hint="Personaliza tu pedido"
+
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="70dp"
+                android:weightSum="3"
+                android:paddingRight="70dp"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:text="-"
+                    android:layout_width="80dp"
+                    android:background="@drawable/botonkick"
+                    android:id="@+id/btnPersMenos"
+                    android:textColor="@color/blanco"
+                    android:textSize="25dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="2dp"
+                    android:layout_height="35dp" />
+
+                <EditText
+                    android:layout_width="80dp"
+                    android:inputType="textPersonName"
+                    android:text="0"
+                    android:ems="10"
+                    android:background="@color/celesteBajo"
+                    android:id="@+id/txtPersCantidad"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:layout_height="34dp" />
+
+                <Button
+                    android:text="+"
+                    android:layout_width="80dp"
+                    android:id="@+id/btnPersMas"
+                    android:textColor="@color/blanco"
+                    android:background="@drawable/botonkick"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:layout_height="35dp" />
+            </LinearLayout>
+
+            <Button
+                android:text="LISTO"
+                android:layout_gravity="center"
+                android:background="@drawable/botonpersonalizar"
+                android:textColor="@color/blanco"
+                android:id="@+id/btnListo"
+                android:layout_marginTop="20dp"
+                android:layout_width="200dp"
+                android:layout_height="35dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

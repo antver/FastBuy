@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_principal2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.fastbuyapp.omar.fastbuy.Principal2Activity"
+    tools:showIn="@layout/app_bar_principal2">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@color/humo_suave"
+        android:id="@+id/contenedorPrincipal"
+        android:layout_width="match_parent"
+        android:paddingTop="10dp">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="4"
+        android:background="@color/humo_suave"
+        android:layout_height="50dp"
+        android:layout_marginTop="-50dp"
+        android:layout_gravity="bottom"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            app:srcCompat="@drawable/ic_tienda1"
+            android:id="@+id/btnCategoriaEmpresas"
+            android:padding="20dp"
+            android:background="@color/blanco"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_below="@+id/txtPrecio"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            app:srcCompat="@drawable/ic_carrito1"
+            android:id="@+id/btnCarritoCompras"
+            android:background="@color/blanco"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_below="@+id/txtPrecio"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            app:srcCompat="@drawable/ic_notificacion1"
+            android:id="@+id/btnPromociones"
+            android:padding="20dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:background="@color/blanco"
+            android:layout_below="@+id/txtPrecio"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            app:srcCompat="@drawable/ic_otros1"
+            android:background="@color/blanco"
+            android:id="@+id/btnSoporte"
+            android:padding="20dp"
+            android:adjustViewBounds="true"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:layout_below="@+id/txtPrecio"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".MetodoDePagoActivity"
+    android:layout_weight="1"
+    android:background="@drawable/cuadrometododepago">
+    <!--Start Titulo-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginLeft="35dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="1dp"
+        android:text="  Elige tu metodo de pago  "
+        android:textColor="@color/humo_gris"
+        android:textSize="16sp"
+        android:typeface="normal"
+        android:background="@drawable/fontetextometododepago"/>
+    <!--End Titulo-->
+    <!--Start Checkbox-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="45dp"
+            android:paddingRight="45dp"
+            android:paddingTop="15dp">
+            <CheckBox
+                android:id="@+id/chbxEfectivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Efectivo"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:checked="true"
+                android:textColor="@color/humo_gris"
+                android:button="@drawable/boton_checkbox"/>
+
+
+            <CheckBox
+                android:id="@+id/chbxTarjeta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:layout_marginVertical="10dp"
+                android:text="Tarjeta débito o crédito"
+                android:layout_weight="1"
+                android:textColor="@color/humo_gris"
+                android:shadowColor="@color/negro"
+                android:button="@drawable/boton_checkbox"/>
+
+            <CheckBox
+                android:id="@+id/chbxYape"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yape"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/humo_gris"
+                android:button="@drawable/boton_checkbox"/>
+
+            <CheckBox
+                android:id="@+id/chbxPlin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plin"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:layout_marginVertical="10dp"
+                android:textColor="@color/humo_gris"
+                android:button="@drawable/boton_checkbox"/>
+
+            <!--<CheckBox
+                android:id="@+id/chbxCodigoQR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Código QR"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/humo_gris"
+                android:button="@drawable/boton_checkbox"/>-->
+        </LinearLayout>
+    </ScrollView>
+    <!--End Checkbox-->
+    <!--Start Boton Pagar-->
+    <Button
+        android:id="@+id/btnPagarAhora"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginVertical="25dp"
+        android:layout_gravity="end"
+        android:paddingHorizontal="20dp"
+        android:layout_marginRight="40dp"
+        android:text="Pagar ahora"
+        android:textColor="@color/blanco"
+        android:background="@drawable/botonamarillo"/>
+    <!--End Boton Pagar-->
+</LinearLayout>

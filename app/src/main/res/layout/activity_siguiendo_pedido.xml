@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/blanco"
+    tools:context=".SiguiendoPedidoActivity">
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blanco"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/blanco">
+
+            <LinearLayout
+                android:id="@+id/linerAnimacionEncargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationPendiente"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="pedi_pendiente.json"
+                    app:lottie_loop="true"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="false"
+                    android:layout_margin="0dp"
+                    android:scaleType="fitCenter"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationAceptado"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="pedi_aceptado.json"
+                    app:lottie_loop="true"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="false"
+                    android:layout_margin="0dp"
+                    android:scaleType="fitCenter"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:visibility="gone"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationEnCamino"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="BICICLETA.json"
+                    app:lottie_loop="true"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="false"
+                    android:layout_margin="0dp"
+                    android:scaleType="fitCenter"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:visibility="gone"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationEntregado"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="checkaceptado.json"
+                    app:lottie_loop="true"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="false"
+                    android:layout_margin="0dp"
+                    android:scaleType="fitCenter"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:visibility="gone"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationCancelado"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="pedi_cancelado.json"
+                    app:lottie_loop="true"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="false"
+                    android:layout_margin="0dp"
+                    android:scaleType="fitCenter"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/txtNroPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="0.00"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="PEDIDO N°"
+                    android:textColor="@color/fastbuy"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtStatePedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="0.00"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Pendiente"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDescripcionStatePedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:paddingHorizontal="40dp"
+                    android:text="Hemos enviado tu orden, espera que el establecimiento lo acepte"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearNumbersState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="40dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/indicador1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="1"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/fastbuy"
+                    android:background="@drawable/boton_blanco_verde_circulo"/>
+                <TextView
+                    android:id="@+id/lineIndicador2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/linea_amarilla"
+                    android:layout_marginLeft="-4dp"
+                    android:layout_marginRight="-4dp"/>
+                <TextView
+                    android:id="@+id/indicador2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="2"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/amarillo"
+                    android:background="@drawable/boton_blanco_amarillo_circulo"/>
+                <TextView
+                    android:id="@+id/lineIndicador3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/linea_amarilla"
+                    android:layout_marginLeft="-4dp"
+                    android:layout_marginRight="-4dp"/>
+                <TextView
+                    android:id="@+id/indicador3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="3"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/amarillo"
+                    android:background="@drawable/boton_blanco_amarillo_circulo"/>
+                <TextView
+                    android:id="@+id/lineIndicador4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/linea_amarilla"
+                    android:layout_marginLeft="-4dp"
+                    android:layout_marginRight="-4dp"/>
+                <TextView
+                    android:id="@+id/indicador4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="4"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/amarillo"
+                    android:background="@drawable/boton_blanco_amarillo_circulo"/>
+            </LinearLayout>
+            <!--Start Boton Cancelar-->
+            <!--<TextView
+                android:id="@+id/btnCancelaPedido"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="  Cancelar Pedido"
+                android:textColor="@color/rojo"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:background="@color/toolbarTransparent"
+                android:drawableLeft="@drawable/ic_cancel_red"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"/>-->
+            <!--End Boton Cancelar-->
+            <!--Start Etiqueta Esperando-->
+            <LinearLayout
+                android:id="@+id/LinearEsperando"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="40dp"
+                android:background="@color/toolbarTransparent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationEsperando"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="esperando_confirmacion.json"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_loop="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@color/toolbarTransparent"
+                    android:gravity="left"
+                    android:text="Esperando confirmación"
+                    android:textColor="@color/azul"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <!--End Etiqueta Esperando-->
+            <!--Start Boton iniciar Chat-->
+            <TextView
+                android:id="@+id/btnIniciarChat"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="  Iniciar Chat"
+                android:textColor="@color/fastbuy"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:background="@color/toolbarTransparent"
+                android:drawableLeft="@drawable/ic_chat_fastbuy"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"/>
+            <!--End Boton iniciar Chat-->
+            <!--Start Boton confirma Entrega-->
+            <Button
+                android:id="@+id/btnConfirmaEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Confirmar Entrega"
+                android:textAllCaps="false"
+                android:textColor="@color/blanco"
+                android:textSize="16sp"
+                android:background="@drawable/botonverdeagregaralcarrito"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="75dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+            <!--End Boton confirma Entrega-->
+            <!--Start Boton productos Agotados-->
+            <TextView
+                android:id="@+id/btnConfirmarCambio"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="  ¡Hay Productos Agotados!"
+                android:textColor="@color/rojo"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:background="@color/toolbarTransparent"
+                android:drawableLeft="@drawable/ic_eye_yellow"
+                android:drawableTint="@color/rojo"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"/>
+            <!--End Boton productos Agotados-->
+
+        </LinearLayout>
+    </ScrollView>
+    <!--Star Menu General-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#999"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_shop_n" />
+
+        <ImageButton
+            android:id="@+id/btnFavoritos"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_heart" />
+
+        <ImageButton
+            android:id="@+id/btnCarrito"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_cart_shop" />
+
+        <ImageButton
+            android:id="@+id/btnUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            android:tint="@color/fastbuy"
+            app:srcCompat="@drawable/ic_user_circle_o" />
+    </LinearLayout>
+    <!--End Menu General-->
+</LinearLayout>

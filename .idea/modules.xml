@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FastBuy.iml" filepath="$PROJECT_DIR$/FastBuy.iml" group="FastBuy" />
+      <module fileurl="file://$PROJECT_DIR$/TrustDefender-5.0-96/TrustDefender-5.0-96.iml" filepath="$PROJECT_DIR$/TrustDefender-5.0-96/TrustDefender-5.0-96.iml" group="FastBuy/TrustDefender-5.0-96" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="FastBuy/app" />
+      <module fileurl="file://$PROJECT_DIR$/visanet-lib-release/visanet-lib-release.iml" filepath="$PROJECT_DIR$/visanet-lib-release/visanet-lib-release.iml" group="FastBuy/visanet-lib-release" />
+    </modules>
+  </component>
+</project>

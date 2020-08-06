@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FastBuy</string>
+    <string name="eslogan">Valoramos tu tiempo!</string>
+    <string name="bienvanida">Bienvenido a FastBuy</string>
+    <string name="facebook_app_id">2313906971982288</string>
+
+    <string name="activity_ciudad_descripcion">Hola, Escoge una ciudad en la que FastBuy brinda servicio</string>
+    <string name="activity_principal_descripcion">Selecciona uno de nuestros servicios</string>
+    <string name="acticity_principal_restaurantes">Restaurantes</string>
+    <string name="acticity_principal_tiendas">Tiendas</string>
+    <string name="acticity_principal_encargos">Encargos</string>
+    <string name="acticity_principal_loquequieras">Pide lo que quieras</string>
+    <string name="activity_principal_promociones">Promociones</string>
+
+    <string name="title_activity_maps">Direccion</string>
+    <string name="text_etiqueta_personalizada">Ej. Mi casa de playa</string>
+    <string name="text_respuesta_personalizada2">Ej. recomendación...</string>
+    <string name="fcm_message">FastBuy Delivery</string>
+
+    <string name="text_gracias">Gracias por usar FastBuy</string>
+    <string name="text_terminosycondiciones">Para un mejor experiencia del usuario al momento de usar nuestros servicios, recopilamos datos que el usuario otorga expresamente al momento de registrarse según lo establecido en:</string>
+    <string name="text_condiciones"> - Términos y condiciones de uso</string>
+    <string name="text_politicas"> - Políticas de privacidad</string>
+    <string name="text_aceptar_politicas">Al presionar Continuar usted acepta los Términos de uso y la política de privacidad de FastBuy S.A.C</string>
+    <string name="siguiente">Continuar</string>
+    <string name="login_facebook">INGRESA CON FACEBOOK</string>
+    <string name="login_google">INGRESA CON GOOGLE</string>
+    <string name="login">INICIAR SESIÓN</string>
+    <string name="agradecimiento">gracias por usar FastBuy</string>
+    <string name="ingresa_numero">Ingresa tu móvil</string>
+    <string name="ingresa_numero_descripcion">Lo usamos para asegurarnos de que las entregas lleguen a usted y los servicios funcionen sin problemas</string>
+    <string name="recibir_codigo">Recibir Código</string>
+    <string name="hola">Hola</string>
+    <string name="numero_celular">Número de Móvil</string>
+
+
+</resources>

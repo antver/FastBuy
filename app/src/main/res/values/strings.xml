@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">FastBuy</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_principal2">Principal2Activity</string>-->
+
+    <string name="facebook_app_id">2313906971982288</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fb_login_protocol_scheme">fb2313906971982288</string>
+
+    <string name="nav_header_title">LA CARTA</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="title_activity_personaliza_pedido"></string>
+    <string name="text_cupon">Si tienes un código de cupón de descuento ingresalo antes de pagar tu pedido</string>
+    <string name="placeholder_txtcupon">ingrese código de cupón</string>
+    <string name="text_saldo_pagar">SALDO A CANCELAR</string>
+    <string name="text_gracias">Thank you for using FastBuy</string>
+    <string name="text_descrip_login">Llene nuestro formulario de registro para poder acceder a nuestros servicios</string>
+    <string name="text_encargos">Ahora ya contamos con la sección de encargos pídenos y nosotros te lo llevamos</string>
+    <string name="text_descrip_encargos">¡Que esperas, estamos listos para atender cualquier encargo pendiente!</string>
+    <string name="text_pideloquequieras">Con FastBuy tus compras ya no te quitarán más tiempo, ingresa tu pedido que nosotros nos encargamos de comprarlo en tu establecimiento de preferencia</string>
+    <string name="text_descrip_pideloquequieras">¡Que esperas, Haz cualquier pedido de cualquier establecimiento!</string>
+
+    <string name="text_terminosycondiciones">For a better user experience when using our services, we collect data that the user expressly provides when registering as established in:</string>
+    <string name="text_condiciones"> - Terms and conditions of use</string>
+    <string name="text_politicas"> - Privacy policies</string>
+    <string name="siguiente">Next</string>
+    <string name="text_aceptar_politicas">By pressing Continue you accept FastBuy S.A.C. Terms of use and privacy policy</string>
+    <string name="login_facebook">LOG IN WITH FACEBOOK</string>
+    <string name="login_google">LOG IN WITH GOOGLE</string>
+    <string name="login">LOG IN</string>
+    <string name="agradecimiento">thanks for using FastBuy</string>
+    <string name="ingresa_numero">Enter your mobile</string>
+    <string name="ingresa_numero_descripcion">We use it to make sure deliveries reach you and services run smoothly</string>
+    <string name="recibir_codigo">Receive Code</string>
+    <string name="hola">Hello</string>
+    <string name="numero_celular">Cell phone number</string>
+
+    <string name="text_etiqueta_personalizada">Ex. My beach house</string>
+    <string name="text_respuesta_personalizada2">Ex. recommendation...</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <!-- [START fcm_default_icon_string] -->
+    <string name="default_notification_channel_name" translatable="true">Weather</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
+
+    <string name="eslogan">We value your time!</string>
+    <string name="bienvanida">Welcome to FastBuy</string>
+    <string name="activity_ciudad_descripcion">Hello, Choose a city where FastBuy provides service</string>
+    <string name="activity_principal_descripcion">Select one of our services</string>
+    <string name="acticity_principal_restaurantes">Restaurants</string>
+    <string name="acticity_principal_tiendas">Shops</string>
+    <string name="acticity_principal_encargos">Orders</string>
+    <string name="acticity_principal_loquequieras">What you whant</string>
+    <string name="activity_principal_promociones">Exclusive</string>
+
+    <string name="title_activity_maps">Address</string>
+
+    <string name="fcm_message">FastBuy Delivery</string>
+</resources>

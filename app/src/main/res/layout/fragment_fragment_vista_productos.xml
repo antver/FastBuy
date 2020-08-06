@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/humo_suave"
+    tools:context="com.fastbuyapp.omar.fastbuy.FragmentVistaProductos">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:id="@+id/PanelProductosLista"
+        android:layout_marginBottom="40dp"
+        android:layout_width="match_parent">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:background="@color/fastbuy"
+        android:layout_marginTop="-40dp"
+        android:id="@+id/PanelCategoriasGeneral"
+        android:layout_height="40dp">
+
+    </LinearLayout>
+
+</LinearLayout>

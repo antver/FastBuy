@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "290794718048",
+    "firebase_url": "https://fastbuy-93755.firebaseio.com",
+    "project_id": "fastbuy-93755",
+    "storage_bucket": "fastbuy-93755.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290794718048:android:c690bdca212a8250eb1405",
+        "android_client_info": {
+          "package_name": "com.fastbuyapp.omar.fastbuy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290794718048-nnva3f8mp5l799hk19c5p2vvet19kpbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIO8-QPK8kuDjMn0fcQqnSkj5sV4r8ItA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290794718048-nnva3f8mp5l799hk19c5p2vvet19kpbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

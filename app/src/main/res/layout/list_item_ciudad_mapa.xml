@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layoutItem"
+        android:layout_width="250dp"
+        android:layout_height="305dp"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="@drawable/sombra_item_ciudad">
+
+        <ImageView
+            android:id="@+id/imagenciudad"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/trujillo" />
+
+        <TextView
+            android:id="@+id/nombreciudad"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:paddingTop="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/fastbuy"
+            android:text="Trujillo" />
+
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnCiudadMapa"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:background="@drawable/sombracirculo"
+        app:srcCompat="@drawable/ic_check_existe"
+        android:layout_marginTop="-35dp"
+        android:tint="@color/blanco"/>
+
+
+
+
+</LinearLayout>

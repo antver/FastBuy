@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="144dp"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="104dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            app:srcCompat="@drawable/rsst"
+            android:id="@+id/ivimagensub"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/txtNombreSub"
+            android:background="@color/fastbuy"
+            android:paddingTop="4dp"
+            android:textColor="@color/blanco"
+            android:textAlignment="center"
+            android:textSize="13dp" />
+    </LinearLayout>
+
+</LinearLayout>

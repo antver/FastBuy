@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CartaActivity"
+    android:background="@color/blanco">
+    <include
+        layout="@layout/nav_header_carta"
+        android:layout_width="match_parent"
+        android:layout_height="130dp" />
+    <GridView
+        android:background="@color/blanco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tablaListaCatego"
+        android:columnWidth="400dip"
+        android:gravity="center"
+        android:numColumns="1"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="75dp"
+        android:paddingBottom="20dp"
+        android:layout_marginEnd="35dp">
+    </GridView>
+    <Button
+        android:id="@+id/btnVerTodo"
+        android:background="@drawable/botonamarillocarta"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Ver todo"
+        android:textColor="@color/blanco"
+        android:layout_gravity="right"
+        android:paddingHorizontal="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="-75dp"/>
+</LinearLayout>

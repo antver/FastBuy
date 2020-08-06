@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_opcion_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    tools:context="com.fastbuyapp.omar.fastbuy.OpcionLoginActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="97dp"
+            android:layout_height="112dp"
+            app:srcCompat="@drawable/logo_fastbuy_2"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/imageView2" />
+
+        <TextView
+            android:text="FastBuy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNameEmpresa"
+            android:textStyle="normal|bold"
+            android:textSize="50sp"
+            android:textColor="@color/fastbuy"
+            android:textAlignment="center" />
+
+        <TextView
+            android:text="@string/eslogan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textAlignment="center"
+            android:textColor="@color/fastbuy"
+            android:textStyle="normal|italic"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/btnIniciarFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/botonverde"
+            android:drawableLeft="@drawable/ic_icon_facebook"
+            android:fontFamily="sans-serif-medium"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/login_facebook"
+            android:textAlignment="center"
+            android:textColor="@color/blanco"
+            android:textSize="14dp"
+            android:typeface="normal" />
+
+        <Button
+            android:id="@+id/btnIniciarGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/botonverde"
+            android:drawableLeft="@drawable/ic_icon_googlepng"
+            android:paddingLeft="20dp"
+            android:paddingRight="35dp"
+            android:text="@string/login_google"
+            android:textColor="@color/blanco"
+            android:textSize="14dp"
+            android:typeface="normal" />
+
+        <Button
+            android:id="@+id/btnIniciar"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/botonbordeado"
+            android:text="@string/login"
+            android:textColor="@color/fastbuy"
+            android:typeface="normal" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/loginButonFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/botonverde"
+            android:text="INGRESA CON FACEBOOK"
+            android:textColor="@color/blanco"
+            android:visibility="gone" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/loginButonGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:text="Al inscribirse usted acepta los Términos de uso y la política de privacidad de FastBuy S.A.C"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblTerminos"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textSize="12sp" />
+    </LinearLayout>-->
+</LinearLayout>

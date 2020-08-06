@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="celeste">#0489B1</color>
+    <color name="celeste2">#079FF2</color>
+    <color name="celesteBajo">#CEF6F5</color>
+    <color name="verdeagua">#00695C</color>
+
+    <color name="colorpendiente">#000000</color>
+    <color name="coloratendido">#00C42A</color>
+    <color name="colorcancelado">#E31E24</color>
+    <color name="colorencamino">#EFBD00</color>
+    <color name="colorAceptado">#3F51B5</color>
+    <color name="colorEsperando">#01C4CC</color>
+
+    <color name="fondotextochat">#F0F0F0</color>
+
+    <color name="fondotextoVisa">#FAFAFA</color>
+
+    <color name="amarillo">#EFBD14</color>
+    <color name="amarillo2">#EFBD00</color>
+    <color name="gris">#424242</color>
+    <color name="gris2">#707070</color>
+    <color name="blanco">#ffffff</color>
+    <color name="naranja">#FF872B</color>
+    <color name="naranjaFuerte">#FF8000</color>
+    <color name="negro">#000</color>
+    <color name="azul">#093697</color>
+    <color name="humo">#e6e6e6</color>
+    <color name="humo2">#EEEEEE</color>
+    <color name="humo3">#F5F5F5</color>
+    <color name="humo4">#C1C1C1</color>
+    <color name="humo5">#EBEBEB</color>
+    <color name="humo6">#9C9C9C</color>
+    <color name="humo7">#E3E3E3</color>
+    <color name="humo8">#e9e9e9</color>
+    <color name="humo9">#F8F8F8</color>
+    <color name="alert">#FA5858</color>
+    <color name="rojo">#E31E24</color>
+    <color name="exito">#01c4a4</color>
+    <color name="amarillo_patito">#FFFF00</color>
+    <color name="humo_gris">#727271</color>
+    <color name="verde_transparente">#5501c4a4</color>
+    <color name="fastbuy_transparente">#3501c3a4</color>
+    <color name="blanco_transparente">#99FFFFFF</color>
+    <color name="fastbuy">#01c4a4</color>
+    <color name="etiqueta">#2201c4a4</color>
+    <color name="etiquetaRoja">#22FA5858</color>
+    <color name="verde_limon">#00C42A</color>
+    <color name="humo_suave">#F7F7F7</color>
+    <color name="verde_fosforescente">#00C4A3</color>
+    <color name="verde_fosforescente2">#00C42A</color>
+    <color name="morado">#5533BB</color>
+</resources>

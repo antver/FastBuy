@@ -1,0 +1,145 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@color/humo_suave"
+    android:layout_height="match_parent"
+    tools:context="com.fastbuyapp.omar.fastbuy.FragmentDatosPedido"
+    android:layout_marginTop="15dp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_weight="0.9"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <Button
+                    android:text="    Mi ubicación actual"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+
+                    android:textAlignment="textStart"
+                    android:textColor="@color/blanco"
+                    android:background="@drawable/botonpersonalizar"
+                    android:id="@+id/btnMiUbicacion"
+                    android:drawableLeft="@android:drawable/ic_menu_mylocation"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:layout_height="38dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:background="@drawable/textodato"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="25dp"
+                    android:paddingLeft="25dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:inputType="textMultiLine"
+                    android:id="@+id/txtDireccionCliente"
+                    android:hint="Dirección"
+                    android:drawableLeft="@drawable/ic_ubicacion"
+                    android:enabled="false"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:background="@drawable/textodato"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="25dp"
+                    android:paddingLeft="25dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:inputType="textMultiLine"
+                    android:id="@+id/txtDireccionCliente2"
+                    android:hint="Dirección"
+                    android:drawableLeft="@drawable/ic_home"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:text="Resumen"
+                    android:textSize="25dp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/blanco"
+                    android:background="@drawable/botoncontrol"
+                    android:layout_height="50dp"
+                    android:id="@+id/btnResumen"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0.9" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:src="@drawable/ic_monedas"
+                        android:visibility="invisible" />
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="25dp"
+                        android:paddingLeft="70dp"
+                        android:background="@drawable/textodato"
+                        android:id="@+id/cboFormaPago"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

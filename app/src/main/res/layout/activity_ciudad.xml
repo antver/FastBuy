@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fastbuyapp.omar.fastbuy.CiudadActivity">
+    <!--android:background="@drawable/mapaciudad"-->
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/personaje" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#DD01c4a4">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/activity_ciudad_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtMensaje"
+                android:textSize="18dp"
+                android:paddingTop="30dp"
+                android:paddingRight="18dp"
+                android:paddingLeft="18dp"
+                android:paddingBottom="18dp"
+                android:textColor="@color/blanco"
+                android:textAlignment="center" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpagerTop"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:clipToPadding="false"
+                android:paddingLeft="50dp"
+                android:paddingTop="10dp"
+                android:paddingRight="50dp"
+                android:paddingBottom="10dp" />
+
+        </LinearLayout>
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="-10dp"
+            android:background="@drawable/mapaciudad">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="50dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="50dp">
+
+                <GridView
+                    android:id="@+id/gvCiudadesMapa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>-->
+    </FrameLayout>
+</FrameLayout>

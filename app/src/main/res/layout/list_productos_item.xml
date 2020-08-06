@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1"
+    android:padding="7dp"
+    android:background="@drawable/shadow"
+    android:layout_marginBottom="5dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.57"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/imgProductos"
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/loader_img" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDescripcion"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/imgProductos"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textAllCaps="true"
+                android:textColor="@color/common_google_signin_btn_text_light_focused"
+                android:textStyle="normal|bold"
+                android:textSize="14sp"
+                android:maxLines="2" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDescripcion"
+                android:layout_toRightOf="@+id/imgProductos"
+                android:layout_toEndOf="@+id/imgProductos"
+                android:textSize="10dp"
+                android:layout_marginTop="0dp"
+                android:id="@+id/txtCategoria"
+                android:minLines="1"
+                android:maxLines="1" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtTimePreparacion"
+                    android:text="10 min."
+                    android:drawableLeft="@android:drawable/ic_lock_idle_alarm" />
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtPrecio"
+                    android:layout_below="@+id/txtCategoria"
+                    android:layout_toRightOf="@+id/imgProductos"
+                    android:layout_toEndOf="@+id/imgProductos"
+                    android:textStyle="normal|bold"
+                    android:gravity="bottom"
+                    android:layout_gravity="bottom"
+                    android:textAlignment="textEnd"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/txtNombreImagen"
+        android:visibility="invisible" />
+
+</LinearLayout>

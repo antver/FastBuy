@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".EncuestaFastBuyActivity"
+    android:layout_gravity="center"
+    android:background="@drawable/cuadroencuesta"
+    android:padding="10dp">
+    <!--Start Title-->
+    <TextView
+        android:id="@+id/txtPreguntaEncuesta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cuentanos, ¿Cómo conociste a FastBuy?"
+        android:textSize="17sp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/gris"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+    <!--End Title-->
+
+    <!--Start Respuesta-->
+    <TextView
+        android:id="@+id/txtComentarioEncuesta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingBottom="10dp"
+        android:text="Elige el tamaño de tu preferencia"
+        android:textColor="@color/gris"
+        android:textSize="12sp"
+        android:paddingHorizontal="20dp"
+        android:textStyle="bold" />
+    <!--<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="20dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="70dp">
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listRespuestasEncuentas"/>
+    </LinearLayout>-->
+    <GridView
+        android:id="@+id/listRespuestasEncuentas"
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="25dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/txtOtro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginHorizontal="35dp"
+        android:layout_marginVertical="10dp"
+        android:text="Otro: "
+        android:textColor="@color/gris"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+    <!--End Respuesta-->
+
+    <!--Start Botones-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp">
+        <Button
+            android:id="@+id/btnOmitirEncuesta"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/botonrojobordeado"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:text="Omitir"
+            android:textColor="@color/blanco"
+            android:textSize="16sp"/>
+        <Button
+            android:id="@+id/btnEnviarRespuestaEncuesta"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/botonfastbuybordeado"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:text="Enviar"
+            android:textColor="@color/blanco"
+            android:textSize="16sp"/>
+    </LinearLayout>
+    <!--End Botones-->
+</LinearLayout>

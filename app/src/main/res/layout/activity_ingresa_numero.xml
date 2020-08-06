@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ingresa_numero"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:layout_height="match_parent"
+    tools:context="com.fastbuyapp.omar.fastbuy.IngresaNumeroActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_height="61dp"
+            android:id="@+id/imageView3"
+            android:paddingLeft="10dp"
+            android:layout_width="70dp"
+            app:srcCompat="@drawable/phone_puro" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="Hola, Usuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lblSaludo"
+                android:maxLines="1"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp" />
+
+            <TextView
+                android:text="@string/agradecimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lblAgradecimiento"
+                android:paddingBottom="5dp"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/ingresa_numero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblIngresa"
+        android:textStyle="normal|bold"
+        android:textSize="35sp"
+        android:textAlignment="textStart"
+        android:paddingLeft="30dp"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:text="n°."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblnumero"
+        android:textStyle="normal|bold"
+        android:textSize="35sp"
+        android:textAlignment="textStart"
+        android:paddingLeft="30dp" />
+
+    <TextView
+        android:text="@string/ingresa_numero_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblDescripcion"
+        android:textAlignment="center"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:textSize="12sp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp" />
+
+    <TextView
+        android:text="@string/numero_celular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView12"
+        android:elevation="3dp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:layout_margin="5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:layout_height="wrap_content"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:layout_height="45dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText2"
+            android:background="@drawable/cajatexto"
+            android:textAlignment="center"
+            android:layout_marginRight="5dp"
+            android:text="+51"
+            android:drawableLeft="@drawable/peru"
+            android:layout_width="100dp"
+            android:clickable="false"
+            android:enabled="false"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/txtCelularIngresar"
+            android:background="@drawable/cajatexto"
+            android:layout_marginLeft="5dp"
+            android:textAlignment="center"
+            android:maxLength="9" />
+    </LinearLayout>
+
+    <Button
+        android:text="@string/recibir_codigo"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:background="@drawable/botongris"
+        android:textColor="@color/blanco"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btnRecibir"
+        android:textSize="17sp"
+        android:layout_marginTop="30dp"
+        android:enabled="false"
+        android:textAllCaps="false" />
+</LinearLayout>

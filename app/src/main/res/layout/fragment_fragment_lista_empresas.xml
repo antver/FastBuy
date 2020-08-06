@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/humo_suave"
+    tools:context="com.fastbuyapp.omar.fastbuy.FragmentListaEmpresas">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:hint="Buscar"
+        android:layout_margin="5dp"
+        android:padding="2dp"
+        android:background="@color/blanco"
+        android:textAlignment="textStart"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:layout_height="36dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/textView2"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" />
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tablaListaEmpresas"
+        android:columnWidth="400dip"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1"
+        android:padding="0dp"
+        >
+
+    </GridView>
+
+</LinearLayout>

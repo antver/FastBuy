@@ -1,0 +1,1 @@
+include ':app', ':visanet-lib-release', ':TrustDefender-5.0-96'

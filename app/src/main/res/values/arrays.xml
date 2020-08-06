@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Array con los valores de la cabecera de la tabla-->
+    <string-array name="cabecera_tabla">
+        <item>N°</item>
+        <item>Descripción</item>
+        <item>Tienda</item>
+        <item>Cant.</item>
+        <item>Precio</item>
+    </string-array>
+</resources>

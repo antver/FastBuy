@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="7dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtEtiquetaCiudad"
+        android:text="Ciudad 1"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        android:paddingLeft="10dp"
+        android:maxLines="1"
+        android:textColor="@color/humo_gris"
+        android:layout_weight="1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCodEtiquetaCiudad"
+        android:text="Ciudad 1"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        android:paddingLeft="10dp"
+        android:maxLines="1"
+        android:textColor="@color/humo_gris"
+        android:layout_weight="1"
+        android:visibility="gone"/>
+</LinearLayout>

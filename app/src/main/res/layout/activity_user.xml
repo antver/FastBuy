@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.fastbuyapp.omar.fastbuy.UserActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="50dp"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@drawable/botonverde"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:layout_margin="20dp">
+                <!---->
+                <ImageView
+                    android:layout_height="100dp"
+                    android:id="@+id/imgFotoUser"
+                    app:srcCompat="@drawable/user_image"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_marginBottom="6dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="Fast Buy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNameUser"
+                        android:textAlignment="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="20sp"
+                        android:textColor="@color/blanco"
+                        android:textStyle="normal|bold" />
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/btnEditaNombre"
+                        android:layout_marginRight="20dp"
+                        app:srcCompat="@drawable/ic_pencil_edit"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+                <TextView
+                    android:text="953957038"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNumberUser"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/blanco"
+                    android:drawableLeft="@drawable/ic_stay_primary_portrait_black_24dp"
+                    android:drawableTint="@color/blanco"
+                    android:textSize="16sp" />
+                <TextView
+                    android:text="fast@fastbuych.com"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtEmailUser"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:textColor="@color/blanco"
+                    android:drawableTint="@color/blanco"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="20dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="bottom|right">
+
+                    <TextView
+                        android:text="  Califícanos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnCalificaAplicacion"
+                        android:drawableLeft="@drawable/ic_star"
+                        android:textColor="@color/blanco"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:text="  Invitar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnCompartirAmigo"
+                        android:drawableLeft="@drawable/ic_share"
+                        android:textColor="@color/blanco"
+                        android:textSize="15sp"
+                        android:gravity="end|bottom"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btnDireccionesPrincipales"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_home"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/botonamarillo"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/blanco"
+                    android:paddingTop="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="60dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btnHistorialPedidos"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_lista"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/botoncancelar"
+                    android:scaleType="fitCenter"
+                    android:paddingTop="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:tint="@color/blanco"
+                    android:layout_height="60dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btnSaldos"
+                    android:layout_weight="1"
+                    android:background="@drawable/botonverde"
+                    android:tint="@color/blanco"
+                    app:srcCompat="@drawable/ic_dollar"
+                    android:layout_marginLeft="25dp"
+                    android:scaleType="fitCenter"
+                    android:paddingTop="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="60dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btnContactanos"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_support"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/botoncancelar"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/blanco"
+                    android:paddingTop="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="60dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btnHistorialEncargos"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_delivery"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/botoncancelar"
+                    android:scaleType="fitCenter"
+                    android:paddingTop="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:tint="@color/blanco"
+                    android:layout_height="60dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btnCloseSession"
+                    android:layout_weight="1"
+                    android:background="@drawable/botonamarillo"
+                    android:tint="@color/blanco"
+                    app:srcCompat="@drawable/ic_close"
+                    android:layout_marginLeft="25dp"
+                    android:scaleType="fitCenter"
+                    android:paddingTop="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="60dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="#999"
+        android:layout_height="50dp"
+        android:layout_marginTop="-50dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnHome"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_shop_n" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnFavoritos"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_heart"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnCarrito"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_cart_shop"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnUsuario"
+            android:background="#e9e9e9"
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_user_circle_o"
+            android:tint="@color/fastbuy" />
+    </LinearLayout>
+</LinearLayout>

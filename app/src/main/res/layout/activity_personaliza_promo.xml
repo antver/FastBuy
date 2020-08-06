@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_personaliza_promo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPromoActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginBottom="-30dp"
+            android:elevation="1dp">
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:lottie_imageAssetsFolder="assets"
+                app:lottie_fileName="star_promo.json"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/circuloblanco"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/cuadropromocion">
+            <!--Start Title-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Cuantos quieres?"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/blanco"
+                android:textStyle="bold"
+                android:paddingBottom="10dp"/>
+            <!--End Title-->
+
+            <!--Start Imagen producto-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:id="@+id/imgPromo"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/logo_fastbuy_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"/>
+            </LinearLayout>
+            <!--End Imagen producto-->
+
+            <!--Start Cantidad-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:id="@+id/btnReducirCant"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/blanco"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_remove_circle_outline_yellow"/>
+                <TextView
+                    android:id="@+id/txtCantidadProd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="01"
+                    android:textColor="@color/negro"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textSize="26sp"
+                    android:layout_marginHorizontal="30dp"/>
+                <ImageButton
+                    android:id="@+id/btnAumentarCant"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/blanco"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_add_circle_outline_yellow"/>
+            </LinearLayout>
+            <!--End Cantidad-->
+
+            <!--Start Añadir al Carrito-->
+            <Button
+                android:id="@+id/btnAgregarAlCarrito"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/botonamarillobordeado"
+                android:layout_marginHorizontal="70dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="Agregar"
+                android:textColor="@color/blanco"
+                android:textSize="20sp"/>
+            <!--End Añadir al Carrito-->
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

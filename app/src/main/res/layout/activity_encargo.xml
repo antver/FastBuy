@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_encargo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EncargoActivity"
+    android:background="@color/blanco">
+
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blanco"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar" />
+
+    <!--<LinearLayout
+        android:background="@color/blanco"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView17"
+            android:layout_weight="2" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnLista"
+            android:tint="@color/humo"
+            android:layout_weight="0.15"
+            android:background="@color/blanco"
+            app:srcCompat="@drawable/ic_format_list_bulleted_black_24dp"
+            android:padding="3dp" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnBuscar"
+            android:tint="@color/humo"
+            android:background="@color/blanco"
+            android:layout_weight="0.15"
+            app:srcCompat="@drawable/ic_search_black_24dp"
+            android:padding="3dp" />
+    </LinearLayout>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_encargos"
+        android:textColor="@color/blanco"
+        android:gravity="center"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="12dp"
+        android:background="@color/verde_fosforescente"/>
+
+    <ScrollView
+        android:id="@+id/scrollGeneralEncargo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/toolbarTransparent"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:id="@+id/linerAnimacionEncargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="30dp"
+                android:visibility="visible">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="empty_encargo.json"
+                    app:lottie_loop="false"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="true"
+                    android:layout_margin="0dp"
+                    android:scaleType="fitCenter"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"/>
+
+                <TextView
+                    android:text="Encargos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_weight="0.00"
+                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp" />
+
+                <TextView
+                    android:text="@string/text_descrip_encargos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:paddingHorizontal="40dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearFlotanteEncargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="0dp"
+                android:paddingBottom="30dp"
+                android:elevation="1dp">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/btnCajaAnimation"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_fileName="button_box_encargo.json"
+                    app:lottie_loop="true"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="true"
+                    android:scaleType="fitXY"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/circulo_amarillo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearGeneraEncargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <!--Start Cuadro Encargo-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="340dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/cuadro_encargo"
+                    android:layout_marginHorizontal="20dp"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="45dp"
+                    android:paddingBottom="10dp">
+                    <ScrollView
+                        android:id="@+id/scrollEncargo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/toolbarTransparent">
+                            <!--Start Selecciona Ciudad-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/cmbCiudadEncargo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:hint="Seleccionar ciudad"
+                                    android:drawableRight="@drawable/ic_expand_more"
+                                    android:paddingRight="10dp"
+                                    android:paddingLeft="15dp"
+                                    android:focusable="false"
+                                    android:textSize="14sp"
+                                    android:gravity="center_vertical"
+                                    android:maxLines="1"
+                                    android:background="@drawable/caja_texto_humo5"/>
+                                <!--60dp -> 140dp-->
+                                <GridView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:id="@+id/listaDeCiudadesEncargo"
+                                    android:columnWidth="400dip"
+                                    android:gravity="center"
+                                    android:numColumns="1"
+                                    android:scrollbars="vertical"
+                                    android:layout_weight="1"
+                                    android:visibility="gone"
+                                    android:background="@drawable/caja_texto_humo5"/>
+                            </LinearLayout>
+                            <!--End Selecciona Ciudad-->
+
+                            <!--Start de donde lo recogemos-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lines="1"
+                                android:text="De donde lo recogemos"
+                                android:paddingTop="10dp"
+                                android:textSize="18sp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="5dp">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_location_gris"/>
+                                <EditText
+                                    android:id="@+id/txtLugarRecogerEncargo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:hint="Ej. Av. Perú No. 180"
+                                    android:paddingRight="15dp"
+                                    android:paddingLeft="15dp"
+                                    android:textSize="14sp"
+                                    android:gravity="center_vertical"
+                                    android:maxLines="1"
+                                    android:background="@drawable/caja_texto_humo5"/>
+                            </LinearLayout>
+                            <!--End de donde lo recogemos-->
+
+                            <!--Start de donde lo recogemos-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lines="1"
+                                android:text="Que contiene tu encargo"
+                                android:paddingTop="10dp"
+                                android:textSize="18sp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="5dp">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_box_gris"/>
+
+                                <EditText
+                                    android:id="@+id/txtDetallesEncargo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/caja_texto_humo5"
+                                    android:gravity="center_vertical"
+                                    android:hint="Ej. Paquete de Hojas..."
+                                    android:maxLines="1"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="15dp"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+                            <!--End de donde lo recogemos-->
+
+                            <!--Start de donde lo recogemos-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lines="1"
+                                android:text="Como te contactamos"
+                                android:paddingTop="10dp"
+                                android:textSize="18sp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="5dp">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_phone_gris"/>
+                                <EditText
+                                    android:id="@+id/txtNumeroContactoEncargo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:hint="Ej. 999999999"
+                                    android:paddingRight="15dp"
+                                    android:paddingLeft="15dp"
+                                    android:textSize="14sp"
+                                    android:inputType="number"
+                                    android:gravity="center_vertical"
+                                    android:layout_marginBottom="5dp"
+                                    android:maxLines="1"
+                                    android:maxLength="9"
+                                    android:background="@drawable/caja_texto_humo5"/>
+                            </LinearLayout>
+                            <!--End de donde lo recogemos-->
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+                <!--End Cuadro Encargo-->
+                <!--Start Boton confirmar-->
+                <Button
+                    android:id="@+id/btnConfirmarEncargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/boton_rojo"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginVertical="15dp"
+                    android:text="Generar"
+                    android:textColor="@color/blanco"
+                    android:textSize="20sp"/>
+                <!--End Boton confirmar-->
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#999"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            android:tint="@color/fastbuy"
+            app:srcCompat="@drawable/ic_shop_n" />
+
+        <ImageButton
+            android:id="@+id/btnFavoritos"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_heart" />
+
+        <ImageButton
+            android:id="@+id/btnCarrito"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_cart_shop" />
+
+        <ImageButton
+            android:id="@+id/btnUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_user_circle_o" />
+    </LinearLayout>
+
+</LinearLayout>
