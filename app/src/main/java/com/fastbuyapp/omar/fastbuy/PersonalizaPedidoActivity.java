@@ -1,19 +1,23 @@
 package com.fastbuyapp.omar.fastbuy;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.config.GlideApp;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.config.Servidor;
+import com.fastbuyapp.omar.fastbuy.entidades.Empresa;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 import com.fastbuyapp.omar.fastbuy.entidades.Producto;
 import com.fastbuyapp.omar.fastbuy.entidades.ProductoPresentacion;
@@ -29,14 +33,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,19 +53,21 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
     GridView gridView;
     private int canti = 1;
     int x;
-    String presentacion = "1";
+    SharedPreferences myPreferences;
+    String presentacion = "1", taper_empresa, latitud_empresa, longitud_empresa;
     ArrayList<ProductoPresentacion> list;
     ProgressDialog progDailog = null;
     PresentacionProdListAdapter adapter = null;
-
+    SharedPreferences.Editor myEditor;
     int pos; //para controlar la posicion del item
-
+    int numero_empresas_encarrito, empresa_encarrito;
     ImageButton btnCarrito;
 
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -88,11 +91,14 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
         final LinearLayout linearPresentacion = (LinearLayout) findViewById(R.id.LinearPresentacion);
         TextView txtIncluyeTaper = findViewById(R.id.txtIncluyeTaper);
         gridView = (GridView) findViewById(R.id.tablaListPresentacionProd);
-        SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        myEditor = myPreferences.edit();
         String tokencito = myPreferences.getString("tokencito", "");
+        taper_empresa = myPreferences.getString("taper_empresa", "NO");
+        longitud_empresa = myPreferences.getString("longitud_empresa", "0");
+        latitud_empresa = myPreferences.getString("latitud_empresa", "0");
         final String ubicacion = myPreferences.getString("ubicacion", "");
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarPresentacionesXProductoXUbicacion?auth="+tokencito+"&codigo="+String.valueOf(Globales.productoPersonalizar.getCodigo())+"&ubicacion="+String.valueOf(ubicacion);
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarPresentacionesXProductoXUbicacion?auth="+tokencito+"&codigo="+String.valueOf(Globales.getInstance().getProductoPersonalizar().getCodigo())+"&ubicacion="+String.valueOf(ubicacion);
         EnviarRecibirDatos(consulta, linearPresentacion);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,7 +111,7 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
                 }
                 list.get(position).setCheck(true);
                 presentacion = String.valueOf(list.get(position).getCodigo());
-                Globales.productoPersonalizar.setPrecio(list.get(position).getPrecio());
+                Globales.getInstance().getProductoPersonalizar().setPrecio(list.get(position).getPrecio());
                 muestraPrecio(txtPrecioProducto);
                 AñadeElementosGridView(list);
             }
@@ -113,22 +119,22 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
 
         //cargar la foto del producto seleccionado
         Servidor s = new Servidor();
-        String urlImg = "https://"+s.getServidor()+"/productos/fotos/" + Globales.productoPersonalizar.getImagen();
+        String urlImg = "https://"+s.getServidor()+"/productos/fotos/" + Globales.getInstance().getProductoPersonalizar().getImagen();
         GlideApp.with(PersonalizaPedidoActivity.this)
                 .load(urlImg)
                 .centerCrop()
                 .transform(new RoundedCornersTransformation(20,0))
                 .into(imgProducto);
 
-        txtNameProducto.setText(Globales.productoPersonalizar.getDescripcion());
-        txtDescripcionProducto.setText(Globales.productoPersonalizar.getDescripcion2());
-        if (Globales.taperEmpresaSel.equals("SI"))
+        txtNameProducto.setText(Globales.getInstance().getProductoPersonalizar().getDescripcion());
+        txtDescripcionProducto.setText(Globales.getInstance().getProductoPersonalizar().getDescripcion2());
+        if (taper_empresa.equals("SI"))
             txtIncluyeTaper.setVisibility(View.VISIBLE);
         else
             txtIncluyeTaper.setVisibility(View.GONE);
 
         muestraPrecio(txtPrecioProducto);
-        txtTiempoProducto.setText(" "+String.valueOf(Globales.productoPersonalizar.getTiempo())+" min.");
+        txtTiempoProducto.setText(" "+String.valueOf(Globales.getInstance().getProductoPersonalizar().getTiempo())+" min.");
 
         //Botones de incrementar y disminuir
         ImageButton btnAddCant = (ImageButton) findViewById(R.id.btnAumentarCant);
@@ -166,81 +172,79 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
         btnAgregaralCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean x = false; //esta variable permitira controlar el añadir el producto a la lista
-                String nameTemp;
+                boolean x = true; //true = el producto se pued agregar al carrito / false = la empresa no se encuentra en el carrito y el producto no se puede agregar
+                int codigoEmpresaTemp;
+                int ubicaciontemp;
                 //almacenamos el nombre de la empresa del producto seleccionado
-                nameTemp = Globales.productoPersonalizar.getEmpresa().getNombreComercial().toString();
-
-                if (Globales.numEstablecimientos == 0){
-                    Globales.establecimiento1 = nameTemp;
-                    Globales.numEstablecimientos = 1;
-                    Globales.codEstablecimiento1 = Globales.productoPersonalizar.getEmpresa().getCodigo();
-                   // Globales.ubicaEstablecimiento1 = Globales.ubicacion;
-                    x = true;
-                }else{
-                    if(Globales.establecimiento1.equals(nameTemp))
-                        x = true;
-                    else
-                        x = false;
+                Globales globales = new Globales();
+                ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
+                codigoEmpresaTemp = Globales.getInstance().getProductoPersonalizar().getEmpresa().getCodigo();
+                if(listapedidos.size() > 0) {
+                    for (int i = 0; i < listapedidos.size(); i++){
+                        //Toast.makeText(PersonalizaPedidoActivity.this, String.valueOf(codigoEmpresaTemp) + " - " + Globales.getInstance().getListaPedidos().get(i).getEmpresa(), Toast.LENGTH_SHORT).show();
+                        if(listapedidos.get(i).getEmpresa() != codigoEmpresaTemp){
+                            x = false;
+                        }
+                    }
                 }
-
-                if(x){
-
-                    Globales.promo = false;
-                    String nameProd = Globales.productoPersonalizar.getDescripcion();
-                    Boolean name = comparaNombreProducto(nameProd);
-                    float precio = Float.valueOf(Globales.productoPersonalizar.getPrecio());
+                if(x) {
+                    String nameProd = Globales.getInstance().getProductoPersonalizar().getDescripcion();
+                    Boolean name = comparaNombreProducto(nameProd, listapedidos);
+                    float precio = Float.valueOf(Globales.getInstance().getProductoPersonalizar().getPrecio());
                     double total = 0;
-
-                    if (name){
-                        int Cant2 = Globales.listaPedidos.get(pos).getCantidad();
+                    if (name) {
+                        int Cant2 = listapedidos.get(pos).getCantidad();
                         //canti = Cant2+Integer.valueOf(txtCanti.getText());
-                        canti = canti+Cant2;
-                        Globales.listaPedidos.get(pos).setCantidad(canti);
-                        total = canti*precio;
-                        Globales.listaPedidos.get(pos).setTotal(total);
-                    }else{
+                        canti = canti + Cant2;
+                        listapedidos.get(pos).setCantidad(canti);
+                        total = canti * precio;
+                        listapedidos.get(pos).setTotal(total);
+                        globales.setList("lista_pedidos", listapedidos);
+                    } else {
                         PedidoDetalle detallepedido = new PedidoDetalle();
-                        Globales.productoPersonalizar.setPresentacion(presentacion);
+                        Globales.getInstance().getProductoPersonalizar().setPresentacion(presentacion);
                         Producto pro = new Producto();
-                        pro = Globales.productoPersonalizar;
+                        pro = Globales.getInstance().getProductoPersonalizar();
                         detallepedido.setProducto(pro);
                         detallepedido.setTiempo(pro.getTiempo());
                         detallepedido.setCantidad(canti);
                         detallepedido.setPreciounit(precio);
-                        total = canti*precio;
+                        detallepedido.setEmpresa(pro.getEmpresa().getCodigo());
+                        total = canti * precio;
                         detallepedido.setTotal(total);
                         String personalizando = txtPersonalizaProducto.getText().toString();
 
-                        if(personalizando.isEmpty())
+                        if (personalizando.isEmpty())
                             detallepedido.setPersonalizacion("Sin Personalización");
                         else
                             detallepedido.setPersonalizacion(personalizando);
 
-                        detallepedido.setLatitud(Globales.LatitudEmpresaSeleccionada);
-                        detallepedido.setLongitud(Globales.LongitudEmpresaSeleccionada);
+                        detallepedido.setLatitud(Double.parseDouble(latitud_empresa));
+                        detallepedido.setLongitud(Double.parseDouble(longitud_empresa));
                         detallepedido.setUbicacion(Integer.parseInt(ubicacion));
-                        detallepedido.setEsPromocion(Globales.promo);
-                        Globales.listaPedidos.add(detallepedido);
+                        detallepedido.setEsPromocion(false);
+
+                        globales.addListaPedidos("lista_pedidos", detallepedido);
 
                     }
                     canti = 1;
-                    txtCanti.setText("0"+String.valueOf(canti));
+                    txtCanti.setText("0" + String.valueOf(canti));
                     //Intent intent = new Intent(PersonalizaPedidoActivity.this, CarritoActivity.class);
                     //startActivity(intent);
 
-                    Toast toast = Toast.makeText(PersonalizaPedidoActivity.this, "Se Añadió al Carrito",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(PersonalizaPedidoActivity.this, "Se Añadió al Carrito", Toast.LENGTH_SHORT);
                     View vistaToast = toast.getView();
                     vistaToast.setBackgroundResource(R.drawable.toast_success);
                     toast.show();
                     onBackPressed();
-                }else{
+                } else{
                     Toast toast = Toast.makeText(PersonalizaPedidoActivity.this, "No puede añadir productos de establecimientos diferentes",Toast.LENGTH_SHORT);
                     View vistaToast = toast.getView();
                     vistaToast.setBackgroundResource(R.drawable.toast_yellow);
                     toast.show();
                     onBackPressed();
                 }
+
             }
         });
 
@@ -314,15 +318,15 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
         return false;
     }
 
-    public boolean comparaNombreProducto(String nameProduct){
+    public boolean comparaNombreProducto(String nameProduct, ArrayList<PedidoDetalle> lista){
         boolean res = false;
-        final int size = Globales.listaPedidos.size();
+        final int size = lista.size();
         for (int i = 0; i < size; i++)
         {
-            if(Globales.listaPedidos.get(i).getProducto() != null){
-                String nameProd2 = Globales.listaPedidos.get(i).getProducto().getDescripcion();
+            if(lista.get(i).getProducto() != null){
+                String nameProd2 = lista.get(i).getProducto().getDescripcion();
                 if(nameProduct.equals(nameProd2)){
-                    String presentacion2 = Globales.listaPedidos.get(i).getProducto().getPresentacion();
+                    String presentacion2 = lista.get(i).getProducto().getPresentacion();
                     if (presentacion2.equals(presentacion)){
                         pos = i;
                         res = true;
@@ -337,11 +341,11 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
     }
 
     public void EnviarRecibirDatos(String URL,final LinearLayout linear){
-        progDailog = new ProgressDialog(PersonalizaPedidoActivity.this);
-        progDailog.setMessage("Cargando...");
-        progDailog.setIndeterminate(true);
-        progDailog.setCancelable(false);
-        progDailog.show();
+        final ProgressDialog progDailogCarga = new ProgressDialog(PersonalizaPedidoActivity.this);
+        progDailogCarga.setMessage("Cargando...");
+        progDailogCarga.setIndeterminate(true);
+        progDailogCarga.setCancelable(false);
+        progDailogCarga.show();
 
         RequestQueue queue = Volley.newRequestQueue(PersonalizaPedidoActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener < String > () {
@@ -362,7 +366,7 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
                                 prodPresentacion.setCheck(true);
                             else
                                 prodPresentacion.setCheck(false);*/
-                            if (Globales.productoPersonalizar.getPrecio().equals(objeto.getString("PU_Precioventa")))
+                            if (Globales.getInstance().getProductoPersonalizar().getPrecio().equals(objeto.getString("PU_Precioventa")))
                                 prodPresentacion.setCheck(true);
                             else
                                 prodPresentacion.setCheck(false);
@@ -390,25 +394,30 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
                             linear.setVisibility(View.VISIBLE);
                         }
                         AñadeElementosGridView(list);
-                        progDailog.dismiss();
+                        progDailogCarga.dismiss();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        progDailog.dismiss();
+                        progDailogCarga.dismiss();
                     }
                     catch (IllegalArgumentException i){
                         i.printStackTrace();
-                        progDailog.dismiss();
+                        progDailogCarga.dismiss();
                     }
                 }
             }
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progDailogCarga.dismiss();
+                Intent intent = new Intent(PersonalizaPedidoActivity.this, ActivityDesconectado.class);
+                startActivity(intent);
             }
         });
-
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -426,6 +435,6 @@ public class PersonalizaPedidoActivity extends AppCompatActivity {
     }
 
     public void muestraPrecio(TextView txtP){
-        txtP.setText("S/"+Globales.productoPersonalizar.getPrecio());
+        txtP.setText("S/"+Globales.getInstance().getProductoPersonalizar().getPrecio());
     }
 }

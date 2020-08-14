@@ -22,7 +22,7 @@ public class CarouselEffectTransformer implements ViewPager.PageTransformer {
         int leftInScreen = view.getLeft() - viewPager.getScrollX();
         int centerXInViewPager = leftInScreen + view.getMeasuredWidth() / 2;
         int offsetX = centerXInViewPager - viewPager.getMeasuredWidth() / 2;
-        float offsetRate = (float) offsetX * 0.38f / viewPager.getMeasuredWidth();
+        float offsetRate = (float) offsetX * 0.3f / viewPager.getMeasuredWidth();
         float scaleFactor = 1 - Math.abs(offsetRate);
 
         if (scaleFactor > 0) {

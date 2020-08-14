@@ -2,40 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="5dp"
     android:layout_width="match_parent"
-    android:layout_height="144dp"
-    android:layout_margin="5dp">
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.cardview.widget.CardView
+        android:layout_weight="1"
+        android:background="@drawable/shadow"
         android:layout_width="match_parent"
-        android:layout_height="104dp">
+        app:cardCornerRadius="15dp"
+        android:layout_height="wrap_content">
 
-        <ImageView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="104dp"
-            app:srcCompat="@drawable/rsst"
-            android:id="@+id/ivimagensub"
-            android:scaleType="fitXY" />
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    app:srcCompat="@drawable/rsst"
+                    android:id="@+id/ivimagensub"
+                    android:scaleType="centerCrop" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/txtNombreSub"
-            android:background="@color/fastbuy"
-            android:paddingTop="4dp"
-            android:textColor="@color/blanco"
-            android:textAlignment="center"
-            android:textSize="13dp" />
-    </LinearLayout>
-
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNombreSub"
+                    android:background="@color/fastbuy"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/blanco"
+                    android:textAlignment="center"
+                    android:textSize="13dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

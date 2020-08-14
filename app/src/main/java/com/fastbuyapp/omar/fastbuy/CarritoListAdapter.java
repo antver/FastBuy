@@ -95,11 +95,9 @@ public class CarritoListAdapter extends ArrayAdapter<PedidoDetalle> {
         final String nameProdOrProm;
         if(pedidoDetalle.isEsPromocion() == true){
             nameProdOrProm = pedidoDetalle.getPromocion().getDescripcion();
-            Log.v("codigo de promoción: ",String.valueOf(pedidoDetalle.getPromocion().getCodigo()));
         }
         else{
             nameProdOrProm = pedidoDetalle.getProducto().getDescripcion();
-            Log.v("codigo del producto: ",String.valueOf(pedidoDetalle.getProducto().getCodigo()));
         }
         holder.txtNombreProdPedido.setText(nameProdOrProm);
         holder.txtSubtotalProdPedido.setText("S/ " + String.format("%.2f",pedidoDetalle.getTotal()).toString().replace(",","."));
@@ -120,17 +118,15 @@ public class CarritoListAdapter extends ArrayAdapter<PedidoDetalle> {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         pedidoList.remove(pos);
-                        calcula.muestraTotal(txtTotal);
-
-                        if (pedidoList.size()==0){
-                            //Globales.establecimiento1 = "";
-                            //Globales.codEstablecimiento1 = -1;
-                            //Globales.ubicaEstablecimiento1 = -1;
-                            //Globales.numEstablecimientos = 0;
+                        double total = 0;
+                        for (int ix = 0; ix < pedidoList.size(); ix++){
+                            total += pedidoList.get(ix).getTotal();
                         }
-
+                        txtTotal.setText(String.format("%.2f", total));
                         //Actualiza el Adapter
                         notifyDataSetChanged();
+                        Globales globales =  new Globales();
+                        globales.setList("lista_pedidos", pedidoList);
                     }
 
                 });

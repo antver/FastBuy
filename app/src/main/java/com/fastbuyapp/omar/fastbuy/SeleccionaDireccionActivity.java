@@ -1,6 +1,5 @@
 package com.fastbuyapp.omar.fastbuy;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -30,13 +29,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,12 +47,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Pago_Delivery;
+import com.fastbuyapp.omar.fastbuy.adaptadores.DireccionListAdapter;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
-import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.Operaciones;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 import com.fastbuyapp.omar.fastbuy.entidades.Ubicaciones;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -62,9 +61,6 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.threatmetrix.TrustDefender.internal.A;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,12 +70,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorCompletionService;
 
 public class SeleccionaDireccionActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
@@ -100,19 +94,18 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
     LatLng ubiOrigin, ubiCiudadMapa;
     SharedPreferences myPreferences;
     Circle circulo;
-
+    SharedPreferences.Editor myEditor;
     ProgressDialog progDailog = null;
 
     int codi=0;
-
+    CheckBox ckRecogerEnTienda;
     LocationManager mLocManager;
     Localizacion Local;
     String radioCiudadMapa;
-    String sLongitud;
-
-    public ArrayList<PedidoDetalle> listaPedidos;
+    String sLongitud, categoria;
+    boolean recoger_entienda;
     public ArrayList<Double> listaDistancias = new ArrayList<Double>();
-
+    String latitudCiudadMapa, longitudCiudadMapa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,13 +122,14 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //End Diseño de popup
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
-        //name = myPreferences.getString("Name_Cliente", "");
-        //formaPago = myPreferences.getString("formaPago", "");
+        myEditor = myPreferences.edit();
         number = myPreferences.getString("Number_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
-        String latitudCiudadMapa = myPreferences.getString("latitudCiudadMapa", "");
-        String longitudCiudadMapa = myPreferences.getString("longitudCiudadMapa", "");
+        latitudCiudadMapa = myPreferences.getString("latitudCiudadMapa", "");
+        longitudCiudadMapa = myPreferences.getString("longitudCiudadMapa", "");
         radioCiudadMapa = myPreferences.getString("radioCiudadMapa", "");
+        recoger_entienda  = myPreferences.getBoolean("recoger_entienda", false);
+        categoria = myPreferences.getString("categoria", "");
         //ubicacion de la ciudad seleccionada
         ubiCiudadMapa = new LatLng(Double.parseDouble(latitudCiudadMapa), Double.parseDouble(longitudCiudadMapa));
 
@@ -175,30 +169,28 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
         txtNewDirec = (EditText) findViewById(R.id.txtNameDireccion);
         txtNumPiso = (EditText) findViewById(R.id.txtNumPiso);
         txtReferencia = (EditText) findViewById(R.id.txtReferencia);
-
+        ckRecogerEnTienda = (CheckBox) findViewById(R.id.ckRecogerEnTienda);
+        if(categoria.equals("1") || categoria.equals("2")){
+            ckRecogerEnTienda.setVisibility(View.VISIBLE);
+            ckRecogerEnTienda.setChecked(recoger_entienda);
+        }
+        if(categoria.equals("3") || categoria.equals("4")){
+            ckRecogerEnTienda.setVisibility(View.GONE);
+            ckRecogerEnTienda.setChecked(false);
+        }
         Activa();
-
         listarEtiquetas();
-
-          //Start obteniendo coordenadas actuales
-        //obtenerCoordenadas();
-        //fin obteniendo coordenadas actuales
 
         String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarDirecciones_Cliente_XTelefono?auth="+tokencito+"&telefono="+number;
         EnviarRecibirDatos(consulta);
-        if(!newDirec){
-            if (Globales.isEncargo){
-                Etiqueta = Globales.EtiquetaSeleccionada_Encargo;
-            }else if(Globales.isExtra){
-                //Etiqueta = Globales.EtiquetaSeleccionada_Extra;
-            }else {
-                Etiqueta = Globales.EtiquetaSeleccionada;
-            }
-        }else{
-            Etiqueta = "";
+        Etiqueta = myPreferences.getString("etiqueta_direccion", "");
+        DireccionSel = myPreferences.getString("direccion_seleccionada", "");
+        if(DireccionSel.equals("")){
+            cmbDireccion.setText("");
         }
-        cmbDireccion.setText(Etiqueta);
-
+        else{
+            cmbDireccion.setText(Etiqueta + " ("+ DireccionSel + ")");
+        }
         listaDirecciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -209,32 +201,15 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                 LongitudSel = list.get(position).getLongitud();
                 CiudadDirecSel = list.get(position).getCiudad();
                 DireccionSel = list.get(position).getDireccion();
-/*
-                if (Globales.isEncargo){
-                    Globales.CodigoDireccionSeleccionada_Encargo = codigo;
-                    Globales.EtiquetaSeleccionada_Encargo = Etiqueta;
-                    Globales.LatitudSeleccionada_Encargo = LatitudSel;
-                    Globales.LongitudSeleccionada_Encargo = LongitudSel;
-                    Globales.CiudadDireccionSeleccionada_Encargo = CiudadDirecSel;
-                    Globales.DireccionSeleccionada_Encargo = DireccionSel;
-                }else if(Globales.isExtra){
-                    Globales.CodigoDireccionSeleccionada_Extra = codigo;
-                    Globales.EtiquetaSeleccionada_Extra = Etiqueta;
-                    Globales.LatitudSeleccionada_Extra = LatitudSel;
-                    Globales.LongitudSeleccionada_Extra = LongitudSel;
-                    Globales.CiudadDireccionSeleccionada_Extra = CiudadDirecSel;
-                    Globales.DireccionSeleccionada_Extra = DireccionSel;
-                }else {
-                    Globales.CodigoDireccionSeleccionada = codigo;
-                    Globales.EtiquetaSeleccionada = Etiqueta;
-                    Globales.LatitudSeleccionada = LatitudSel;
-                    Globales.LongitudSeleccionada = LongitudSel;
-                    Globales.CiudadDireccionSeleccionada = CiudadDirecSel;
-                    Globales.DireccionSeleccionada = DireccionSel;
-                }*/
-
+                myEditor.putString("etiqueta_direccion", Etiqueta);
+                myEditor.putString("direccion_seleccionada", DireccionSel);
+                myEditor.putString("ciudad_seleccionada", CiudadDirecSel);
+                myEditor.putString("latitud_seleccionada", LatitudSel);
+                myEditor.putString("longitud_seleccionada", LongitudSel);
+                myEditor.commit();
+                calculaDelivery();
                 //motrando seleccion
-                cmbDireccion.setText(Etiqueta);
+                cmbDireccion.setText(Etiqueta + " ("+ DireccionSel + ")");
                 //ocultando lista
                 listaDirecciones.setVisibility(View.GONE);
             }
@@ -285,10 +260,26 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
             }
         });
 
+        ckRecogerEnTienda.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(ckRecogerEnTienda.isChecked()){
+                    cmbDireccion.setEnabled(false);
+                    myEditor.putBoolean("recoger_entienda", true);
+                    myEditor.commit();
+                }else{
+                    cmbDireccion.setEnabled(true);
+                    myEditor.putBoolean("recoger_entienda", false);
+                    myEditor.commit();
+                }
+            }
+        });
+
         //Boton Continuar
         btnContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (newDirec){
                     float[] disResultado = new float[2];
 
@@ -307,25 +298,6 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                                 DireccionSel = txtNewDirec.getText().toString();
                                 Piso = txtNumPiso.getText().toString();
                                 Refer = txtReferencia.getText().toString();
-
-                                if (Globales.isEncargo){
-                                    //Globales.CodigoDireccionSeleccionada_Encargo = codigo;
-                                    Globales.EtiquetaSeleccionada_Encargo = Etiqueta;
-                                    Globales.LatitudSeleccionada_Encargo = LatitudSel;
-                                    Globales.LongitudSeleccionada_Encargo = LongitudSel;
-                                    //Globales.CiudadDireccionSeleccionada_Encargo = CiudadDirecSel;
-                                    //Globales.DireccionSeleccionada_Encargo = DireccionSel+" - "+ Piso+" - "+Refer;
-                                }else if(Globales.isExtra){
-                                    /*Globales.EtiquetaSeleccionada_Extra = Etiqueta;
-                                    Globales.LatitudSeleccionada_Extra = LatitudSel;
-                                    Globales.LongitudSeleccionada_Extra = LongitudSel;
-                                    Globales.DireccionSeleccionada_Extra = DireccionSel+" - "+ Piso+" - "+Refer;*/
-                                }else{
-                                    Globales.EtiquetaSeleccionada = Etiqueta;
-                                    Globales.LatitudSeleccionada = LatitudSel;
-                                    Globales.LongitudSeleccionada = LongitudSel;
-                                   // Globales.DireccionSeleccionada = DireccionSel+" - "+ Piso+" - "+Refer;
-                                }
 
                                 registrarDireccion(Etiqueta,DireccionSel,LatitudSel,LongitudSel,Piso, Refer);
                             }else {
@@ -364,9 +336,6 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                 //Etiqueta limpiamos
                 Etiqueta = "";
                 cmbEtiqueta.setText(Etiqueta);
-                Globales.EtiquetaSeleccionada_Encargo = "";
-               //Globales.EtiquetaSeleccionada_Extra = "";
-                Globales.EtiquetaSeleccionada = "";
                 Desactiva();
             }
         });
@@ -379,12 +348,6 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                 Etiqueta = "";
                 cmbDireccion.setText(Etiqueta);
                 cmbEtiqueta.setText(Etiqueta);
-                Globales.montoDelivery =0;
-                Globales.montoDeliveryPidelo =0;
-                Globales.montoDeliveryEncargo =0;
-                Globales.EtiquetaSeleccionada_Encargo = "";
-               // Globales.EtiquetaSeleccionada_Extra = "";
-                Globales.EtiquetaSeleccionada = "";
                 Activa();
             }
         });
@@ -392,21 +355,18 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
     }
 
     public void calculaDelivery(){
-        if (Globales.isEncargo){
-            //Globales.montoDeliveryEncargo = 4.00;
-            //Globales.montoDeliveryEncargo = Globales.precioExtraCiudadMapa;
-        }else if(Globales.isExtra){
-            //Globales.montoDeliveryPidelo = 4.00;
-            //Globales.montoDeliveryPidelo = Globales.precioExtraCiudadMapa;
-        }else{
+
             //Start logica para calcular el costo de envio
             Operaciones operaciones = new Operaciones();
-            listaPedidos = Globales.listaPedidos;
             listaDistancias.clear();
-            for (int i = 0; i < listaPedidos.size(); i++) {
-                double latitud = listaPedidos.get(i).getLatitud();
-                double longitud = listaPedidos.get(i).getLongitud();
-                double distancia = operaciones.calcularDistancia(Double.valueOf(Globales.LatitudSeleccionada), Double.valueOf(Globales.LongitudSeleccionada), latitud, longitud);
+            Globales globales = new Globales();
+            ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
+            for (int i = 0; i < listapedidos.size(); i++) {
+                double latitud = listapedidos.get(i).getLatitud();
+                double longitud = listapedidos.get(i).getLongitud();
+                String latitud_seleccionada = myPreferences.getString("latitud_seleccionada", "0");
+                String longitud_seleccionada = myPreferences.getString("longitud_seleccionada", "0");
+                double distancia = operaciones.calcularDistancia(Double.valueOf(latitud_seleccionada), Double.valueOf(longitud_seleccionada), latitud, longitud);
                 listaDistancias.add(distancia);
             }
             double numeromayor = 0;
@@ -418,29 +378,27 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
             Pago_Delivery delivery = new Pago_Delivery();
             //double costoEnvio = Math.round(delivery.calcularCostoEnvio(numeromayor)*Math.pow(10,2))/Math.pow(10,2);
             String distanciaBase = myPreferences.getString("distanciabase", "");
-            String tarifabase = myPreferences.getString("precioBaseCiudadMapa", "");
-            double costoEnvio = new BigDecimal(delivery.calcularCostoEnvio(numeromayor, Double.parseDouble(tarifabase), Double.parseDouble(distanciaBase))).setScale(1, RoundingMode.HALF_UP).doubleValue();
-            Globales.montoDelivery = costoEnvio;
-            Globales.deliveryTemporal = costoEnvio;
-
-            if(Globales.recoger_en_tienda == true){
-                Globales.montoDelivery = 0;
+            String tarifabase = myPreferences.getString("precioBaseCiudadMapa", "3");
+            String tarifabaseencargo = myPreferences.getString("precioExtraCiudadMapa", "20");
+            double tarifa = 0;
+            if(categoria.equals("1") || categoria.equals("2")){
+                tarifa = Double.parseDouble(tarifabase);
             }
-            else{
-                Globales.montoDelivery = Globales.deliveryTemporal;
-                //costoEnvio = Globales.deliveryTemporal;
+            if(categoria.equals("3") || categoria.equals("4")){
+                tarifa = Double.parseDouble(tarifabaseencargo);
             }
-            Log.v("costoEnvio", String.format("%.2f",costoEnvio));
+            double costoEnvio = new BigDecimal(delivery.calcularCostoEnvio(numeromayor, tarifa, Double.parseDouble(distanciaBase))).setScale(1, RoundingMode.HALF_UP).doubleValue();
+            myEditor.putFloat( "monto_delivery", Float.parseFloat(String.valueOf(costoEnvio)));
+            myEditor.commit();
             //End logica para calcular el costo de envio
-        }
     }
 
     public void registrarDireccion(String a, String b, String c, String d, String e, String f) throws UnsupportedEncodingException {
         try {
-            String etiqueta = URLEncoder.encode(a, "UTF-8");
-            String direccion = URLEncoder.encode(b, "UTF-8");
-            String latitud = URLEncoder.encode(c, "UTF-8");
-            String longitud = URLEncoder.encode(d, "UTF-8");
+            final String etiqueta = URLEncoder.encode(a, "UTF-8");
+            final String direccion = URLEncoder.encode(b, "UTF-8");
+            final String latitud = URLEncoder.encode(c, "UTF-8");
+            final String longitud = URLEncoder.encode(d, "UTF-8");
             String numPiso = URLEncoder.encode(e, "UTF-8");
             String referen = URLEncoder.encode(f, "UTF-8");
             String URL = "https://apifbdelivery.fastbuych.com/Delivery/GuardarDireccion2?auth="+tokencito+"&numTelefono="+number+"&etiqueta="+etiqueta+"&direccion="+direccion+"&latitud="+latitud+"&longitud="+longitud+"&piso="+numPiso+"&referencia="+referen;
@@ -452,38 +410,34 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                     btnContinuar.setEnabled(true);
                     if(response.equals("ERROR")){
                         Toast.makeText(SeleccionaDireccionActivity.this, "Error al registrar dirección", Toast.LENGTH_SHORT).show();
-                        //regDirec = false;
-                        Globales.montoDelivery = 0;
-                        Globales.montoDeliveryPidelo = 0;
-                        Globales.montoDeliveryEncargo = 0;
-                        Globales.EtiquetaSeleccionada_Encargo = "";
-                        //Globales.EtiquetaSeleccionada_Extra = "";
-                        Globales.EtiquetaSeleccionada = "";
+                        myEditor.putString("etiqueta_direccion", "");
+                        myEditor.putString("direccion_seleccionada", "");
+                        myEditor.putString("ciudad_seleccionada", "");
+                        myEditor.putString("latitud_seleccionada", "0");
+                        myEditor.putString("longitud_seleccionada", "0");
+                        myEditor.commit();
                     }
                     else {
                         if (response.length()>0){
                             try {
                                 JSONObject objeto = new JSONObject(response);
-                                if (Globales.isEncargo){
-                                    Globales.CodigoDireccionSeleccionada_Encargo = objeto.getInt("Codigo_Direc");
-                                    Globales.CiudadDireccionSeleccionada_Encargo = objeto.getString("Ciudad_Direc");
-                                }else if(Globales.isExtra){
-                                    //Globales.CodigoDireccionSeleccionada_Extra = objeto.getInt("Codigo_Direc");
-                                    //Globales.CiudadDireccionSeleccionada_Extra = objeto.getString("Ciudad_Direc");
-                                }else{
-                                    Globales.CodigoDireccionSeleccionada = objeto.getInt("Codigo_Direc");
-                                    Globales.CiudadDireccionSeleccionada = objeto.getString("Ciudad_Direc");
-                                }
-                                //regDirec = true;
+                                //myEditor.putString("ciudad_seleccionada", objeto.getString("Codigo_Direc"));
+                                myEditor.putString("ciudad_seleccionada", objeto.getString("Ciudad_Direc"));
+                                myEditor.putString("etiqueta_direccion", etiqueta);
+                                myEditor.putString("direccion_seleccionada", direccion);
+                                myEditor.putString("latitud_seleccionada", latitud);
+                                myEditor.putString("longitud_seleccionada", longitud);
+                                myEditor.commit();
+                                myEditor.commit();
                                 calculaDelivery();
                                 onBackPressed();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }else{
-                            Globales.CodigoDireccionSeleccionada_Encargo = -1;
-                            //Globales.CodigoDireccionSeleccionada_Extra = -1;
-                            Globales.CodigoDireccionSeleccionada = -1;
+                            //myEditor.putString("ciudad_seleccionada", "");
+                            myEditor.putString("ciudad_seleccionada", "");
+                            myEditor.commit();
                         }
                     }
                 }
@@ -528,8 +482,35 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
 
         listaEtiquetas.setNumColumns(1);
         adapterEtiqueta = new EtiquetaListAdapter(SeleccionaDireccionActivity.this, R.layout.list_direcciones_item, listEtiquetas);
-        listaEtiquetas.setAdapter(adapterEtiqueta);
-        Log.v("etiquetas", "pasé");
+        listaEtiquetas.setAdapter(adapterEtiqueta);setGridViewHeightBasedOnChildren(listaEtiquetas, 1);
+        //Log.v("etiquetas", "pasé");
+    }
+    public void setGridViewHeightBasedOnChildren(GridView gridView, int columns) {
+        ListAdapter listAdapter = gridView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int items = listAdapter.getCount();
+        int rows = 0;
+
+        View listItem = listAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if( items > columns ){
+            x = items/columns;
+            rows = (int) (x + 1);
+            totalHeight *= rows;
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight;
+        gridView.setLayoutParams(params);
+
     }
 
     public void EnviarRecibirDatos(String URL){
@@ -773,6 +754,5 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
         circulo.setFillColor(Color.argb(35,1, 196, 164));
         circulo.setStrokeColor(Color.rgb(1, 196, 164));
         circulo.setStrokeWidth(4f);
-        Log.v("TAG", "Circulo cargado en el mapa.");
     }
 }

@@ -158,13 +158,14 @@ public class TutorialActivity extends AppCompatActivity {
         try {
             String nombreClie = URLEncoder.encode(nombre,"UTF-8");
             String consulta = "https://apifbdelivery.fastbuych.com/Delivery/RegistrarUsuario?auth="+tokencito+"&nombre="+nombreClie+"&telefono="+numero+"&email="+email;
+            Log.v("CONSULTAES", consulta);
             progDailog = new ProgressDialog(TutorialActivity.this);
             progDailog.setMessage("Cargando...");
             progDailog.setIndeterminate(true);
             progDailog.setCancelable(false);
             progDailog.show();
             RequestQueue queue = Volley.newRequestQueue(TutorialActivity.this);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, consulta, new Response.Listener < String > () {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, consulta, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     if (response.length() > 0) {

@@ -1,13 +1,13 @@
-package com.fastbuyapp.omar.fastbuy;
+package com.fastbuyapp.omar.fastbuy.adaptadores;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fastbuyapp.omar.fastbuy.R;
 import com.fastbuyapp.omar.fastbuy.entidades.Ubicaciones;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class DireccionListAdapter extends BaseAdapter {
         final Ubicaciones ubicacion = getItem(pos);
         String fuente = "fonts/Riffic.ttf";
         if (ubicacion.getEtiqueta() != "" && ubicacion.getEtiqueta() != null)
-            holder.txtEtiqueta.setText(ubicacion.getEtiqueta());
+            holder.txtEtiqueta.setText(ubicacion.getEtiqueta() + "(" + ubicacion.getDireccion() + ")");
         else
             holder.txtEtiqueta.setText(ubicacion.getDireccion());
 

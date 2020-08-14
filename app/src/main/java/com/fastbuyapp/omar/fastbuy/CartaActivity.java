@@ -11,7 +11,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.Categoria;
 import com.fastbuyapp.omar.fastbuy.entidades.Producto;
 
@@ -42,23 +41,29 @@ public class CartaActivity extends AppCompatActivity {
     GridView gridViewCatego;
     public String codigo;
     //public String nombreComercial;
-    public int codCatego;
-    public String categoria;
     ArrayList<Producto> list;
     ArrayList<Categoria> list1;
     ProductosListAdapter adapter = null;
     CategoriasCartaListAdapter adapter1 = null;
     SharedPreferences myPreferences;
+    SharedPreferences.Editor myEditor;
     DrawerLayout drawer;
+    String nombre_empresa, ubicacion, empresaSeleccionada, tokencito, categoria_empresa;
     //private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carta);
+        myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        myEditor = myPreferences.edit();
+        tokencito = myPreferences.getString("tokencito", "");
+        categoria_empresa = myPreferences.getString("categoria", "");
+        nombre_empresa = myPreferences.getString("nombre_empresa", "");
+        ubicacion = myPreferences.getString("ubicacion", "");
+        empresaSeleccionada = myPreferences.getString("codigo_empresa", "");
         displayMenu();
-        myPreferences =  PreferenceManager.getDefaultSharedPreferences(CartaActivity.this);
-        categoria = myPreferences.getString("categoria", "");
+
         //Start Diseño de popup
         DisplayMetrics medidasVentana = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(medidasVentana);
@@ -74,12 +79,12 @@ public class CartaActivity extends AppCompatActivity {
         TextView tituloCarta = (TextView) findViewById(R.id.txtTituloCarta);
 
         final TextView nomEmpresa = (TextView) findViewById(R.id.txtNomEmpresa);
-        nomEmpresa.setText(Globales.nombreEmpresaSeleccionada+" te ofrece...");
+        nomEmpresa.setText(nombre_empresa+" te ofrece...");
 
-        if (categoria.equals("1")){
+        if (categoria_empresa.equals("1")){
             tituloCarta.setText("LA CARTA");
         }
-        if (categoria.equals("2")){
+        if (categoria_empresa.equals("2")){
             tituloCarta.setText("PRODUCTOS");
         }
 
@@ -87,7 +92,8 @@ public class CartaActivity extends AppCompatActivity {
         btnAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Globales.catProductoSeleccionado=0;
+                myEditor.putInt("categoria_producto", 0);
+                myEditor.commit();
                 onBackPressed();
             }
         });
@@ -95,19 +101,15 @@ public class CartaActivity extends AppCompatActivity {
 
     public void displayMenu(){
         try {
-            String ubicacion = myPreferences.getString("ubicacion", "unknown");
-            String empresaSeleccionada = myPreferences.getString("empresaseleccionada", "unknown");
-            listarCategorias(empresaSeleccionada,ubicacion);
+            listarCategorias();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
 
-    public void listarCategorias(String empresa, String ubicacion) throws UnsupportedEncodingException {
-        SharedPreferences myPreferences;
-        myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
-        String tokencito = myPreferences.getString("tokencito", "");
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListaCategoriasProdXEmpresXUbicacion?auth="+tokencito+"&empresa="+empresa+"&ubica="+ubicacion;
+    public void listarCategorias() throws UnsupportedEncodingException {
+
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListaCategoriasProdXEmpresXUbicacion?auth="+tokencito+"&empresa="+empresaSeleccionada+"&ubica="+ubicacion;
         EnviarRecibirDatosCategorias(consulta);
     }
 
@@ -160,7 +162,9 @@ public class CartaActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     int codCatego =(list1.get(position).getCodigo());
-                    Globales.catProductoSeleccionado = codCatego;
+                    myEditor.putInt("categoria_producto", codCatego);
+                    myEditor.putBoolean("producto_recarga", true);
+                    myEditor.commit();
                     //Toast.makeText(CartaActivity.this, "Presionaste "+String.valueOf(codCatego), Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 }

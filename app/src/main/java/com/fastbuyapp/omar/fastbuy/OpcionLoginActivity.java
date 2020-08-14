@@ -113,7 +113,10 @@ public class OpcionLoginActivity extends AppCompatActivity implements GoogleApiC
         //The original Facebook button
         final LoginButton loginButtonFacebook = (LoginButton)findViewById(R.id.loginButonFacebook);
         final SignInButton loginButtonGoogle = (SignInButton)findViewById(R.id.loginButonGoogle);
-
+        if(!nombre.equals("")){
+            Intent intent = new Intent(OpcionLoginActivity.this, TutorialActivity.class);
+            startActivity(intent);
+        }
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -226,6 +229,7 @@ public class OpcionLoginActivity extends AppCompatActivity implements GoogleApiC
             myEditor.putString("Name_Cliente", nombre);
             Log.v("NombreFacebook", profile.getFirstName());
             Log.v("ApellidoFacebook", profile.getLastName());
+            myEditor.commit();
             GraphRequest request = GraphRequest.newMeRequest(
                     accessToken,
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -285,6 +289,7 @@ public class OpcionLoginActivity extends AppCompatActivity implements GoogleApiC
                     String fotoCliente = acct.getPhotoUrl().toString();
                     myEditor.putString("Photo_Cliente", fotoCliente);
                 }
+                myEditor.commit();
                // Log.v("NombreGoogle",Globales.nombreCliente.toString());
                 Intent intent = new Intent(OpcionLoginActivity.this, IngresaNumeroActivity.class);
                 //esta linea sirve para evitar que una línea no sea predecesora de otra

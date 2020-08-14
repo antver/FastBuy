@@ -27,9 +27,13 @@ import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 import com.fastbuyapp.omar.fastbuy.entidades.Promocion;
 
+import java.util.ArrayList;
+
 public class PersonalizaPromoActivity extends AppCompatActivity {
 
     private int canti = 1;
+    int numero_empresas_encarrito, empresa_encarrito;
+    SharedPreferences.Editor myEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,12 @@ public class PersonalizaPromoActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(medidasVentana);
         SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        myEditor = myPreferences.edit();
         final String ubicacion = myPreferences.getString("ubicacion", "");
+
+        numero_empresas_encarrito = myPreferences.getInt("numero_empresas_encarrito", 0);
+        empresa_encarrito = myPreferences.getInt("empresa_encarrito", 0);
+
         int ancho = medidasVentana.widthPixels;
         final int alto = medidasVentana.heightPixels;
 
@@ -109,18 +118,20 @@ public class PersonalizaPromoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean x = false; //esta variable permitira controlar el añadir el producto a la lista
-                String nameTemp;
+                int codigoEmpresaTemp;
                 //almacenamos el nombre de la empresa del producto seleccionado
-                nameTemp = Globales.PromocionPersonalizar.getEmpresa().getNombreComercial().toString();
-
-                if (Globales.numEstablecimientos == 0){
-                    Globales.establecimiento1 = nameTemp;
-                    Globales.numEstablecimientos = 1;
-                    Globales.codEstablecimiento1 = Globales.PromocionPersonalizar.getEmpresa().getCodigo();
+                Globales globales = new Globales();
+                ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
+                codigoEmpresaTemp = Globales.PromocionPersonalizar.getEmpresa().getCodigo();
+                if (numero_empresas_encarrito == 0){
+                    myEditor.putInt("empresa_encarrito", codigoEmpresaTemp);
+                    myEditor.putInt("numero_empresas_encarrito", 1);
+                    myEditor.commit();
+                    //Globales.codEstablecimiento1 = Globales.PromocionPersonalizar.getEmpresa().getCodigo();
                    // Globales.ubicaEstablecimiento1 = Globales.ubicacion;
                     x = true;
                 }else{
-                    if(Globales.establecimiento1.equals(nameTemp))
+                    if(empresa_encarrito == codigoEmpresaTemp)
                         x = true;
                     else
                         x = false;
@@ -128,24 +139,24 @@ public class PersonalizaPromoActivity extends AppCompatActivity {
 
                 if(x){
 
-                    Globales.promo = true;
                     Boolean name = false;
                     String nameProm = Globales.PromocionPersonalizar.getDescripcion();
                     float precio = Float.valueOf(Globales.PromocionPersonalizar.getPrecio());
                     double total = 0;
-                    final int size = Globales.listaPedidos.size();
+                    final int size = listapedidos.size();
                     for (int i = 0; i < size; i++)
                     {
-                        if(Globales.listaPedidos.get(i).getPromocion() != null){
-                            String nameProm2 = Globales.listaPedidos.get(i).getPromocion().getDescripcion();
+                        if(listapedidos.get(i).getPromocion() != null){
+                            String nameProm2 = listapedidos.get(i).getPromocion().getDescripcion();
                             if(nameProm == nameProm2){
-                                int Cant2 = Globales.listaPedidos.get(i).getCantidad();
+                                int Cant2 = listapedidos.get(i).getCantidad();
                                 canti = canti+Cant2;
-                                Globales.listaPedidos.get(i).setCantidad(canti);
+                                listapedidos.get(i).setCantidad(canti);
                                 total = canti*precio;
-                                Globales.listaPedidos.get(i).setTotal(total);
+                                listapedidos.get(i).setTotal(total);
                                 name = true;
                             }
+                            globales.setList("lista_pedidos", listapedidos);
                         }
                     }
                     if(!name){
@@ -162,8 +173,8 @@ public class PersonalizaPromoActivity extends AppCompatActivity {
                         detallepedido.setLatitud(Globales.PromocionPersonalizar.getEmpresa().getLatitud());
                         detallepedido.setLongitud(Globales.PromocionPersonalizar.getEmpresa().getLongitud());
                         detallepedido.setUbicacion(Integer.parseInt(ubicacion));
-                        detallepedido.setEsPromocion(Globales.promo);
-                        Globales.listaPedidos.add(detallepedido);
+                        detallepedido.setEsPromocion(true);
+                        globales.addListaPedidos("lista_pedidos", detallepedido);
                     }
                     canti = 1;
                     txtCanti.setText("0"+String.valueOf(canti));

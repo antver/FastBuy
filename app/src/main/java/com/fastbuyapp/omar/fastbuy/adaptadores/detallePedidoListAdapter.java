@@ -9,9 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fastbuyapp.omar.fastbuy.DetallesPedidoActivity;
 import com.fastbuyapp.omar.fastbuy.R;
+import com.fastbuyapp.omar.fastbuy.config.GlideApp;
+import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class detallePedidoListAdapter extends BaseAdapter {
@@ -44,7 +48,7 @@ public class detallePedidoListAdapter extends BaseAdapter {
         TextView txtCantidadProdPedido;
         TextView txtNombreProdPedido;
         TextView txtSubtotalProdPedido;
-        ImageView btnQuitar; //este de acá lo ocultaré porque acá no es necesario
+        ImageView imgproducto;
     }
 
     @Override
@@ -58,31 +62,38 @@ public class detallePedidoListAdapter extends BaseAdapter {
             holder.txtCantidadProdPedido = (TextView) row.findViewById(R.id.txtCantidadProdPedido);
             holder.txtNombreProdPedido = (TextView) row.findViewById(R.id.txtNombreProdPedido);
             holder.txtSubtotalProdPedido = (TextView) row.findViewById(R.id.txtSubtotalProdPedido);
-            holder.btnQuitar = (ImageView) row.findViewById(R.id.btnQuitarProdPedido);
+            holder.imgproducto = (ImageView) row.findViewById(R.id.imgproducto);
             row.setTag(holder);
         }
         else {
             holder = (ViewHolder) row.getTag();
         }
-
+        String nombreImagen = "";
         PedidoDetalle pedidoDetalle = _listPedidoDetalle.get(position);
         int cant = pedidoDetalle.getCantidad();
         if(cant < 10)
-            holder.txtCantidadProdPedido.setText("0"+String.valueOf(cant));
+            holder.txtCantidadProdPedido.setText("0" +String.valueOf(cant) + " (" + _listPedidoDetalle.get(position).getPresentacion()+ ")");
         else
-            holder.txtCantidadProdPedido.setText(String.valueOf(cant));
+            holder.txtCantidadProdPedido.setText(String.valueOf(cant) + " (" + _listPedidoDetalle.get(position).getPresentacion()+ ")");
 
         if(pedidoDetalle.isEsPromocion()){
             holder.txtNombreProdPedido.setText(pedidoDetalle.getPromocion().getDescripcion());
-            Log.v("codigo de promoción: ",String.valueOf(pedidoDetalle.getPromocion().getCodigo()));
+            nombreImagen = pedidoDetalle.getPromocion().getImagen();
         }
         else{
             holder.txtNombreProdPedido.setText(pedidoDetalle.getProducto().getDescripcion());
-            Log.v("codigo del producto: ",String.valueOf(pedidoDetalle.getProducto().getCodigo()));
+            nombreImagen = pedidoDetalle.getProducto().getImagen();
         }
         holder.txtSubtotalProdPedido.setText("S/ " + String.format("%.2f",pedidoDetalle.getTotal()).toString().replace(",","."));
+        Servidor s = new Servidor();
 
-        holder.btnQuitar.setVisibility(View.GONE);
+        String url = "https://"+s.getServidor()+"/productos/fotos/" + URLEncoder.encode(nombreImagen);
+        Log.v("urlimagen", url);
+        GlideApp.with(context)
+                .load(url)
+                .centerCrop()
+                .placeholder(R.drawable.restaurante)
+                .into(holder.imgproducto);
         return row;
     }
 }

@@ -115,14 +115,14 @@ public class PagoExitosoVisaActivity extends AppCompatActivity {
         else if(exito.equals("true")){
             LinearLayout panelpedido = (LinearLayout) findViewById(R.id.panelpedido);
             TextView codigopedido = (TextView) findViewById(R.id.codigopedido);
-            if(Globales.recoger_en_tienda){
+            //if(Globales.recoger_en_tienda){
                 panelpedido.setVisibility(View.VISIBLE);
                 Formatter fmt = new Formatter();
                 codigopedido.setText("PEDIDO N° " + fmt.format("%06d", Integer.parseInt(numPedido)));
-            }
-            else{
-                panelpedido.setVisibility(View.GONE);
-            }
+            //}
+            //else{
+            //    panelpedido.setVisibility(View.GONE);
+            //}
             txtEstadoPago.setText("¡PAGO EXITOSO!");
             txtEstadoPago.setTextColor(getResources().getColor(R.color.verde_fosforescente2));
             controlaAnimacion(animacion1,animacion2);
@@ -175,7 +175,7 @@ public class PagoExitosoVisaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Globales.recoger_en_tienda = false;
+        //Globales.recoger_en_tienda = false;
         Intent intent = new Intent(PagoExitosoVisaActivity.this, SiguiendoPedidoActivity.class);
         intent.putExtra("state",statePedido);
         intent.putExtra("empresa",empresaPedido);

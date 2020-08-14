@@ -15,225 +15,435 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.09">
-
-        <TextView
-            android:id="@+id/txtNroPedido"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pedido Nº 000001"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"/>
+            android:layout_marginBottom="55dp"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtFechaPedido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2020-01-31 12:23:30"
-            android:textSize="15sp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/cuadrodetallepedido"
-            android:layout_margin="10dp">
+            <!--Start MmenuPrincipal-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="15dp">
-                <TextView
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/shadow_perfil">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        app:srcCompat="@drawable/pedidos" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="Detalle del pedido"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearItemHistorialPedidos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Productos"
-                    android:textStyle="bold"
-                    android:textColor="@color/negro"
-                    android:textSize="17sp"
-                    android:gravity="left"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="25dp"/>
-                <TextView
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/shadow"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center_vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:cardCornerRadius="50dp">
+
+                            <ImageView
+                                android:id="@+id/imgLogo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/tienda" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:id="@+id/txtNroPedido"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-condensed"
+                                android:text="Orden Nº 000010"
+                                android:textAllCaps="false"
+                                android:textColor="@color/gris"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/txtEstablecimiento"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-condensed"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="D'Costumbre"
+                                android:textColor="@color/gris"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtEstado"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/botonverde"
+                                android:fontFamily="sans-serif-condensed"
+                                android:gravity="left"
+                                android:paddingHorizontal="5dp"
+                                android:paddingVertical="2dp"
+                                android:text="Se entregó "
+                                android:textAllCaps="false"
+                                android:textColor="@color/blanco"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="right"
+                            android:text="s/30.00"
+                            android:textAllCaps="false"
+                            android:textColor="@color/gris"
+                            android:visibility="invisible"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/txtFechaPedido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/botonverde"
+                            android:fontFamily="sans-serif-condensed"
+                            android:gravity="center"
+                            android:paddingHorizontal="5dp"
+                            android:paddingVertical="2dp"
+                            android:text="01/01/2020"
+                            android:textAllCaps="false"
+                            android:textColor="@color/blanco"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutRepartidor"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/shadow_perfil"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:id="@+id/imgRepartidor"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/ic_usuario" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtNombreRepartidor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:text="Nombre del repartidor"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:text="Entregó tu pedido"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="11dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Precio"
-                    android:textStyle="bold"
-                    android:textColor="@color/negro"
-                    android:textSize="17sp"
-                    android:gravity="right"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"/>
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:paddingTop="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="25dp"
+                                android:background="@drawable/botonverde"
+                                android:gravity="left"
+                                android:paddingHorizontal="20dp"
+                                android:text="Resumen del producto"
+                                android:textColor="@color/blanco"
+                                android:textSize="17sp"
+                                android:id="@+id/tituloitems"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shadow"
+                            android:paddingTop="10dp">
+
+                            <GridView
+                                android:id="@+id/dtgvItemsPedido"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:numColumns="1"
+                                android:paddingHorizontal="10dp"></GridView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/shadow"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_location_gris"
+                        android:text="Dirección de entrega"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="23dp"
+                        android:text="Dirección de entrega" />
+                </LinearLayout>
+                <!--Start Subtotal General-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Subtotal"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/txtSubTotalPedidoConfirmar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="s/0.00"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <!--End Subtotal General-->
+                    <!--Start total Delivery General-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Delivery"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/txtDeliveryPedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="s/0.00"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <!--End total Delivery General-->
+                    <!--Start cargo General-->
+                    <LinearLayout
+                        android:id="@+id/linearCargo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cargo"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/txtCargoPedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="s/0.00"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <!--End cargo General-->
+                    <!--Start descuento General-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Dscto. Cupón"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/txtDescuentoPedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="s/0.00"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <!--End descuento General-->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="2dp"
+                        android:background="@drawable/lineaseparadora" />
+                    <!--Start Total General-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:weightSum="2"
+                        android:orientation="horizontal"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtTotalPedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="s/0.00"
+                            android:textColor="@color/humo_gris"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!--End Total General-->
             </LinearLayout>
-
-            <GridView
-                android:id="@+id/dtgvItemsPedido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:numColumns="1"
-                android:paddingHorizontal="10dp"
-                android:paddingBottom="25dp"></GridView>
-        </LinearLayout>
-    </LinearLayout>
-    <!--Start Subtotal General-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Subtotal"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/txtSubTotalPedidoConfirmar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="s/0.00"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <!--End Subtotal General-->
-    <!--Start total Delivery General-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delivery"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/txtDeliveryPedido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="s/0.00"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <!--End total Delivery General-->
-    <!--Start cargo General-->
-    <LinearLayout android:id="@+id/linearCargo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="40dp"
-        android:visibility="visible">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cargo"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/txtCargoPedido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="s/0.00"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <!--End cargo General-->
-    <!--Start descuento General-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dscto. Cupón"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/txtDescuentoPedido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="s/0.00"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <!--End descuento General-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/lineaseparadora"
-        android:layout_marginHorizontal="35dp"
-        android:layout_marginVertical="2dp"/>
-    <!--Start Total General-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="40dp"
-        android:paddingBottom="10dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/txtTotalPedido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="s/0.00"
-            android:textColor="@color/negro"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <!--End Total General-->
-    <TextView
-        android:id="@+id/txtEstadoPedido"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="Pedido Entregado"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/blanco"
-        android:background="@color/verde_fosforescente2"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="50dp"/>
-
-    <!--Start MmenuPrincipal-->
+        </ScrollView>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="#999"
+        android:layout_marginTop="-55dp"
         android:layout_height="50dp">
 
         <ImageButton
@@ -274,4 +484,5 @@
             android:tint="@color/fastbuy" />
     </LinearLayout>
     <!--End MmenuPrincipal-->
+
 </LinearLayout>

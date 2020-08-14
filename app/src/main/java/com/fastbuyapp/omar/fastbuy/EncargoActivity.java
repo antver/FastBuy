@@ -51,9 +51,8 @@ public class EncargoActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
-        Globales.isEncargo = false;
-        Log.v("State_Encargo",String.valueOf(Globales.isEncargo));
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -239,14 +238,16 @@ public class EncargoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (txtLugarRecoger.getText().length() > 0 && txtContenidoEncargo.getText().length() >0){
-                    Globales.isEncargo = true;
-                    Globales.LugarRecogerEncargo = txtLugarRecoger.getText().toString();
-                    Globales.DetalleEncargo = txtContenidoEncargo.getText().toString();
-                    Globales.NumeroContactoEncargo = txtNumberContactoEncargo.getText().toString();
+                    String LugarRecogerEncargo = txtLugarRecoger.getText().toString();
+                    String DetalleEncargo = txtContenidoEncargo.getText().toString();
+                    String NumeroContactoEncargo = txtNumberContactoEncargo.getText().toString();
+                    myEditor.putString("LugarRecogerEncargo", LugarRecogerEncargo);
+                    myEditor.putString("DetalleEncargo", DetalleEncargo);
+                    myEditor.putString("NumeroContactoEncargo", NumeroContactoEncargo);
+                    myEditor.commit();
                     Intent intent = new Intent(EncargoActivity.this, PagoEncargoActivity.class);
                     startActivity(intent);
                 }else{
-                    Globales.isEncargo = false;
                     Toast toast = Toast.makeText(EncargoActivity.this, "Por favor, Complete todos los datos.", Toast.LENGTH_SHORT);
                     View vistaToast = toast.getView();
                     vistaToast.setBackgroundResource(R.drawable.toast_yellow);

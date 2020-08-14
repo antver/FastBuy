@@ -19,8 +19,10 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,6 +43,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Minutos;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.RecyclerAdapterPromociones;
 import com.fastbuyapp.omar.fastbuy.config.GlideApp;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
@@ -84,11 +87,13 @@ public class PrincipalActivity extends AppCompatActivity {
     String ubicacion; // codigo de la ciudad
     String tokencito;
     List<Ubicacion> listCiudades;
+    FrameLayout fondopromociones;
 
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -100,6 +105,7 @@ public class PrincipalActivity extends AppCompatActivity {
         ciudad = myPreferences.getString("City_Cliente", "");
         ubicacion = myPreferences.getString("ubicacion", "");
         tokencito = myPreferences.getString("tokencito", "");
+        fondopromociones = (FrameLayout) findViewById(R.id.fondopromociones);
 
         //elOrigen = getIntent().getStringExtra("origen");//para evitar que el servicio se inicie
 
@@ -124,20 +130,19 @@ public class PrincipalActivity extends AppCompatActivity {
         ciudades = (Spinner) findViewById(R.id.spinnerCiudad);
 
         //estableciendo en true el inicio de sesion
-        Globales.mySession = true;
         rvPromociones = (RecyclerView) findViewById(R.id.rvPromociones);
 
         //Asignando valores a las variables globales ciudadEncargo y codigo
        // Globales.CiudadEncargoSeleccionada = Globales.ciudadOrigen;
         //Globales.CodigoCiudadEncargoSeleccionada = Globales.ubicacion;
 
-        try {
+        //try {
             listarPromociones(Integer.parseInt(ubicacion));
             listaCiudades();
-            listarCategorias();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+            //listarCategorias();
+        //} catch (UnsupportedEncodingException e) {
+        //e.printStackTrace();
+        //}
 
         ciudades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -183,6 +188,8 @@ public class PrincipalActivity extends AppCompatActivity {
         llEncargo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myEditor.putString("categoria", "3");
+                myEditor.commit();
                 Intent intent = new Intent(PrincipalActivity.this, EncargoActivity.class);
                 startActivity(intent);
             }
@@ -210,6 +217,8 @@ public class PrincipalActivity extends AppCompatActivity {
         llPidelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myEditor.putString("categoria", "4");
+                myEditor.commit();
                 Intent intent = new Intent(PrincipalActivity.this, PideloActivity.class);
                 startActivity(intent);
             }
@@ -395,6 +404,8 @@ public class PrincipalActivity extends AppCompatActivity {
                     progDailog.dismiss();
                     txtPromociones.setVisibility(View.INVISIBLE);
                     rvPromociones.setVisibility(View.GONE);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50);
+                    fondopromociones.setLayoutParams(lp);
                 }
             }
         }, new Response.ErrorListener(){
@@ -467,6 +478,7 @@ public class PrincipalActivity extends AppCompatActivity {
         Uri uri = Uri.parse(urlImagen);
         GlideApp.with(getApplicationContext())
             .load(uri)
+                .centerCrop()
             .transform(new RoundedCornersTransformation(20,0, RoundedCornersTransformation.CornerType.TOP))
             .listener(new RequestListener<Drawable>() {
                 @Override

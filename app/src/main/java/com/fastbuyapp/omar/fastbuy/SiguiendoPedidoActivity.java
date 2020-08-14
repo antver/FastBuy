@@ -42,6 +42,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.FireBaseAnulacion;
 import com.fastbuyapp.omar.fastbuy.entidades.FireBaseCancelacion;
@@ -243,9 +244,8 @@ public class SiguiendoPedidoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        Globales.valida.validarCarritoVacio(btnCarrito);
-
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
         /*if (Integer.valueOf(statePedido)!=2 && Integer.valueOf(statePedido)!=1){
             //refrescando activity
             mHandler = new Handler();
@@ -570,10 +570,7 @@ public class SiguiendoPedidoActivity extends AppCompatActivity {
     }
 
     public void miEncuesta(){
-        if(cantidadRespuestas < 1){
-            Intent intentEncuesta = new Intent(SiguiendoPedidoActivity.this, EncuestaFastBuyActivity.class);
-            startActivity(intentEncuesta);
-        }
+
     }
 
     public void validaState(int estado){
@@ -699,7 +696,7 @@ public class SiguiendoPedidoActivity extends AppCompatActivity {
             desactivaBoton(btnConfirmaEntrega);
         }
 
-        miEncuesta();
+        //miEncuesta();
     }
 
     public void controlaAnimacion(LottieAnimationView lot1, LottieAnimationView lot2,

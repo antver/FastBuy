@@ -6,120 +6,299 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context="com.fastbuyapp.omar.fastbuy.UserActivity">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="50dp"
-        android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:background="@drawable/botonverde"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:layout_margin="20dp">
-                <!---->
-                <ImageView
-                    android:layout_height="100dp"
-                    android:id="@+id/imgFotoUser"
-                    app:srcCompat="@drawable/user_image"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="100dp"
-                    android:layout_marginBottom="6dp"/>
+                android:layout_height="100dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="30dp"
+                android:background="@drawable/shadow_perfil"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="80dp"                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="80dp"
+                    app:cardCornerRadius="80dp">
+
+                    <ImageView
+                        android:id="@+id/imgFotoUser"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/perfil" />
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtNameUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="Fast Buy"
+                            android:textColor="@color/gris2"
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:id="@+id/btnEditaNombre"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginRight="20dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_pencil_edit" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtNumberUser"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="953957038"
+                            android:textColor="@color/gris"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtEmailUser"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="fast@fastbuych.com"
+                            android:textColor="@color/gris"
+                            android:textSize="10sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+    </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:background="@drawable/shadow_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/btnSaldos"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        app:srcCompat="@drawable/cupon" />
                     <TextView
-                        android:text="Fast Buy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/txtNameUser"
-                        android:textAlignment="center"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="10dp"
-                        android:textSize="20sp"
-                        android:textColor="@color/blanco"
-                        android:textStyle="normal|bold" />
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:id="@+id/btnEditaNombre"
-                        android:layout_marginRight="20dp"
-                        app:srcCompat="@drawable/ic_pencil_edit"
-                        android:adjustViewBounds="true"
-                        android:scaleType="fitXY"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textSize="14sp"
+                        android:text="Mis cupones"/>
                 </LinearLayout>
-                <TextView
-                    android:text="953957038"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtNumberUser"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/blanco"
-                    android:drawableLeft="@drawable/ic_stay_primary_portrait_black_24dp"
-                    android:drawableTint="@color/blanco"
-                    android:textSize="16sp" />
-                <TextView
-                    android:text="fast@fastbuych.com"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtEmailUser"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:maxLines="1"
-                    android:textColor="@color/blanco"
-                    android:drawableTint="@color/blanco"
-                    android:textSize="12sp"
-                    android:layout_marginBottom="20dp" />
 
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:background="@drawable/shadow_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/btnHistorialPedidos"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        app:srcCompat="@drawable/pedidos" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="14sp"
+                        android:layout_marginRight="5dp"
+                        android:text="Mis pedidos"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:background="@drawable/shadow_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/btnContactanos"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        app:srcCompat="@drawable/soporte" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textSize="14sp"
+                        android:text="Soporte"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/shadow_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/Puntos"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        app:srcCompat="@drawable/puntos" />
+
+                    <TextView
+                        android:layout_width="84dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="FastPuntos"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginVertical="30dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/shadow"
+                android:id="@+id/btnCompartirAmigo"
+                android:orientation="vertical"
+                app:cardCornerRadius="10dp"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/invita"
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/shadow"
+                android:id="@+id/btnCalificaAplicacion"
+                app:cardCornerRadius="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/calificanos" />
+
+
+            </androidx.cardview.widget.CardView>
+
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:background="@drawable/botonverde"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="bottom|right">
+                    android:gravity="bottom|right"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:text="  Califícanos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/btnCalificaAplicacion"
-                        android:drawableLeft="@drawable/ic_star"
-                        android:textColor="@color/blanco"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:text="  Invitar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_star"
+                        android:text="  Califícanos"
+                        android:textColor="@color/blanco" />
+
+                    <TextView
                         android:id="@+id/btnCompartirAmigo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_share"
+                        android:gravity="end|bottom"
+                        android:text="  Invitar"
                         android:textColor="@color/blanco"
-                        android:textSize="15sp"
-                        android:gravity="end|bottom"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
-            </LinearLayout>
-
+            </LinearLayout>-->
+            <!--
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -174,9 +353,9 @@
                     android:paddingLeft="5dp"
                     android:paddingBottom="10dp"
                     android:layout_height="60dp" />
-            </LinearLayout>
+            </LinearLayout>-->
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -230,11 +409,10 @@
                     android:paddingLeft="5dp"
                     android:paddingBottom="10dp"
                     android:layout_height="60dp" />
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:orientation="horizontal"

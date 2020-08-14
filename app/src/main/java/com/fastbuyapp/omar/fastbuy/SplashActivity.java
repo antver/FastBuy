@@ -40,6 +40,8 @@ public class SplashActivity extends AppCompatActivity {
     SharedPreferences.Editor myEditor;
     private final int DURACION_SPLASH = 2000; // 2 segundos
     int cant = 0;
+    String celular, nombre;
+    boolean hayUsuario = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,51 +55,24 @@ public class SplashActivity extends AppCompatActivity {
         myEditor = myPreferences.edit();
         myEditor.putString("tokencito",  "Xid20200110e34CorpFastBuySAC2020comfastbuyusuario");
         myEditor.commit();
-        VerificarRegistroUsuario();
+        celular = myPreferences.getString("Number_Cliente", "");
+        nombre = myPreferences.getString("Name_Cliente", "");
 
-    }
-    void cargarSplash(){
-        new Handler().postDelayed(new Runnable(){
-            public void run(){
-                if(hayUsuario == false) {
-                    Intent intent = new Intent(SplashActivity.this, TerminosYCondicionesActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    Intent intent = new Intent(SplashActivity.this,CiudadActivity.class);
-                    startActivity(intent);
-                }
-                finish();
-            };
-        }, DURACION_SPLASH);
-    }
-
-    boolean hayUsuario = false;
-
-    void VerificarRegistroUsuario(){
-        String celular = myPreferences.getString("Number_Cliente", "unknown");
-        String nombre = myPreferences.getString("Name_Cliente", "");
-
-        if(celular.equals("unknown") && nombre.equals("unknown")) {
+        if(celular.equals("") && nombre.equals("")) {
             hayUsuario = false;
             cargarSplash();
         }
         else{
-
-            final String codigo = myPreferences.getString("Id_Cliente", "0");
             final String name = myPreferences.getString("Name_Cliente", "");
             final String number = myPreferences.getString("Number_Cliente", "");
             final String e_mail = myPreferences.getString("Email_Cliente", "");
-            final String city = myPreferences.getString("City_Cliente", "");
             final String photo = myPreferences.getString("Photo_Cliente", "");
-
             final ValidacionDatos validacion = new ValidacionDatos();
 
             if(validacion.hayConexiónRed(SplashActivity.this) == false){
                 Intent intentdes = new Intent(SplashActivity.this, ActivityDesconectado.class);
                 startActivity(intentdes);
             }
-
             String URL = "https://apifbdelivery.fastbuych.com/Delivery/VerificarRegistroUsuario?auth=Xid20200110e34CorpFastBuySAC2020comfastbuyusuario&nombre=" + URLEncoder.encode(name) + "&telefono="+URLEncoder.encode(number) +"&email=" + URLEncoder.encode(e_mail);
             RequestQueue queue = Volley.newRequestQueue(SplashActivity.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
@@ -121,7 +96,7 @@ public class SplashActivity extends AppCompatActivity {
             }, new Response.ErrorListener(){
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //Log.v("ERRORCONSULTA", String.valueOf(error));
+
                     Intent intentdes = new Intent(SplashActivity.this, ActivityDesconectado.class);
                     startActivity(intentdes);
                 }
@@ -132,8 +107,24 @@ public class SplashActivity extends AppCompatActivity {
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(stringRequest);
         }
-
     }
+    void cargarSplash(){
+        new Handler().postDelayed(new Runnable(){
+            public void run(){
+                if(hayUsuario == false) {
+                    Intent intent = new Intent(SplashActivity.this, TerminosYCondicionesActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(SplashActivity.this,CiudadActivity.class);
+                    startActivity(intent);
+                }
+                finish();
+            };
+        }, DURACION_SPLASH);
+    }
+
+
 }
 
 

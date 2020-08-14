@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.MisDireccionesAdapter;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.Ubicaciones;
@@ -51,7 +52,8 @@ public class DireccionesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
         listarDirecciones();
     }
 

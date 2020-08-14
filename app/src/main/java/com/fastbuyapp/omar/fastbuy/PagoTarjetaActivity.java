@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -30,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -60,14 +63,15 @@ import lib.visanet.com.pe.visanetlib.presentation.custom.VisaNetViewAuthorizatio
 
 public class PagoTarjetaActivity extends AppCompatActivity {
 
-
+    public static Intent intentDireccion ;
     public ArrayList<PedidoDetalle> listaPedidos;
-    public double total;
-    double costoEnvio = Globales.montoDelivery;
-    double sumaTotal = Globales.montoCompra;
+    //double costoEnvio = Globales.montoDelivery;
+    //double sumaTotal = Globales.montoCompra;
     Calcular_Minutos calcula = new Calcular_Minutos();
     String timePedido;
     SharedPreferences myPreferences;
+    SharedPreferences.Editor myEditor;
+    int numero_empresas_encarrito;
     int codigoVisa = 0;
     String codigoCupon;
 
@@ -78,16 +82,16 @@ public class PagoTarjetaActivity extends AppCompatActivity {
     int cantidadCupones,tipoCupon,estadoCupon;
     String promoCupon, codClienteCupon;
     String montoCupon;
-    double descuento = Globales.montoDescuento;
+    //double descuento = Globales.montoDescuento;
     String DireccionSeleccionada;
     Button btnGenerarCompra;
     String laempresa = "";
-
-    Pago_Visa visa = new Pago_Visa();
-    double cargo;
+    CheckBox ckRecogerEnTienda;
+    boolean recoger_entienda;
     String name, number, tokencito, formaPago, ubicacion, ciudad;
     TextView txtSubTotal, txtDeliveryTotal, txtCargoTotal, txtTotal, txtDescuentoTotal;
-
+    TextView txtDireccion;
+    TextView btnCambiarDireccion;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //esto sucedera luego de ejecutar el activity de visa
@@ -108,7 +112,11 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                         progDailog.show();
                         //registrarPedido(Globales.nombreCliente, Globales.direccion2 + ", " + Globales.ciudadOrigen, Globales.numeroTelefono, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.getInstance().getListaPedidos());
                         timePedido = calcula.ObtenHora().toString();
-                        registrarPedido(name, DireccionSeleccionada + ", " + Globales.CiudadDireccionSeleccionada, number, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), formaPago, timePedido, "0.00", "0.00", String.valueOf(Globales.montoDescuento), Globales.listaPedidos, progDailog);
+                        Globales globales = new Globales();
+                        listaPedidos = globales.getListaPedidosCache("lista_pedidos");
+                        String direccion_seleccionada = myPreferences.getString("direccion_seleccionada", "");
+                        String ciudad_seleccionada = myPreferences.getString("ciudad_seleccionada", "");
+                        registrarPedido(name, direccion_seleccionada + ", " + ciudad_seleccionada, number, txtDeliveryTotal.getText().toString(), txtCargoTotal.getText().toString(), formaPago, timePedido, "0.00", "0.00", txtDescuentoTotal.getText().toString(), listaPedidos, progDailog);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -125,7 +133,6 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             } else {
-                btnGenerarCompra.setEnabled(true);
                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Transacción Detenida...", Toast.LENGTH_LONG);
                 View vistaToast = toast1.getView();
                 vistaToast.setBackgroundResource(R.drawable.toast_yellow);
@@ -138,32 +145,51 @@ public class PagoTarjetaActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         inicializaVariablesCupon();
-        //Start Logica para el pago
-        costoEnvio = Globales.montoDelivery;
-        descuento = Globales.montoDescuento;
-        if (formaPago.equals("Tarjeta"))
-            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-        else
-            cargo = 0;
-        total = costoEnvio + sumaTotal + cargo - descuento;
-        Globales.montoCargo = cargo;
-        Globales.montoTotal = total;
+        btnCambiarDireccion.setEnabled(true);
+        CalcularMontos();
 
-        muestraTextos();
-        //End Logica para el pago
     }
 
-    public void muestraTextos(){
-        txtSubTotal.setText("S/"+ String.format("%.2f",sumaTotal).toString().replace(",","."));
-        costoEnvio = Globales.montoDelivery;
-        txtDeliveryTotal.setText("S/"+ String.format("%.2f",costoEnvio).toString().replace(",","."));
-        cargo = Globales.montoCargo;
-        txtCargoTotal.setText("S/"+ String.format("%.2f",cargo).toString().replace(",","."));
-        descuento = Globales.montoDescuento;
-        txtDescuentoTotal.setText("S/-"+ String.format("%.2f",descuento).toString().replace(",","."));
-        total = Globales.montoTotal;
-        txtTotal.setText("S/"+ String.format("%.2f",total).toString().replace(",","."));
+    void CalcularMontos(){
+        SharedPreferences myPreferences_ =  PreferenceManager.getDefaultSharedPreferences(this);
+        recoger_entienda = myPreferences_.getBoolean("recoger_entienda", false);
+        String direccion_seleccionada = myPreferences.getString("direccion_seleccionada", "");
+        String ciudad_seleccionada = myPreferences.getString("ciudad_seleccionada", "");
+        txtDireccion.setText(direccion_seleccionada);
+        ckRecogerEnTienda.setChecked(recoger_entienda);
+        double montopedido = 0;
+        double montodelivery = Double.parseDouble(String.valueOf(myPreferences_.getFloat("monto_delivery", 0)));
+        double montodescuento = Double.parseDouble(myPreferences_.getString("monto_descuento", "0"));;
+        double montocargo = 0;
+        Globales globales = new Globales();
+        listaPedidos = globales.getListaPedidosCache("lista_pedidos");
+        for (int i = 0; i < listaPedidos.size(); i++){
+            montopedido += listaPedidos.get(i).getTotal();
+        }
+        Pago_Visa validar = new Pago_Visa();
+
+        if(formaPago.equals("Tarjeta")){
+            if(recoger_entienda) {
+                montocargo = validar.calcularCargoVisa(montopedido + 0 - montodescuento);
+            }
+            else{
+                montocargo = validar.calcularCargoVisa(montopedido + montodelivery - montodescuento);
+            }
+        }
+        double total = 0;
+        txtSubTotal.setText(String.format("%.2f",montopedido).toString().replace(",","."));
+        if(recoger_entienda){
+            txtDeliveryTotal.setText("0.00");
+            total = (montopedido + 0 - montodescuento) + montocargo;
+        }else{
+            txtDeliveryTotal.setText(String.format("%.2f",montodelivery).toString().replace(",","."));
+            total = (montopedido + montodelivery - montodescuento) + montocargo;
+        }
+        txtCargoTotal.setText(String.format("%.2f",montocargo).toString().replace(",","."));
+        txtDescuentoTotal.setText(String.format("%.2f",montodescuento).toString().replace(",","."));
+        txtTotal.setText(String.format("%.2f",total).toString().replace(",","."));
     }
+
 
     private void inicializaVariablesCupon(){
         promoCupon= "";
@@ -181,14 +207,16 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pago_tarjeta);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        myEditor = myPreferences.edit();
         codigo = myPreferences.getString("Id_Cliente", "0");
         name = myPreferences.getString("Name_Cliente", "");
         formaPago = myPreferences.getString("formaPago", "");
         number = myPreferences.getString("Number_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
-
-        DireccionSeleccionada = myPreferences.getString("DireccionSeleccionada", "");
+        //Toast.makeText(PagoTarjetaActivity.this,formaPago, Toast.LENGTH_SHORT).show();
+        DireccionSeleccionada = myPreferences.getString("direccion_seleccionada", "");
         ciudad = myPreferences.getString("City_Cliente", "");
         ubicacion = myPreferences.getString("ubicacion", "");
         // Iniciando variables para Mostrar datos calculados
@@ -243,7 +271,11 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 }
             }
         });
-
+        txtDireccion  = (TextView) findViewById(R.id.txtDireccion);
+        if(DireccionSeleccionada.equals(""))
+            txtDireccion.setText("No se ha seleccionado una dirección");
+        else
+            txtDireccion.setText(DireccionSeleccionada);
         btnValidarCupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,6 +298,8 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             LinearCargo.setVisibility(View.VISIBLE);
             etMontoPagoEfectivo.setVisibility(View.GONE);
             txtMensajePagoEfectivo.setVisibility(View.GONE);
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.creditcard);
+            imgPago.setImageBitmap(bmp);
         }else if(formaPago.equals("Yape")){ // Pago con Yape
             LinearCargo.setVisibility(View.GONE);
             etMontoPagoEfectivo.setVisibility(View.GONE);
@@ -282,13 +316,16 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             LinearCargo.setVisibility(View.GONE);
             etMontoPagoEfectivo.setVisibility(View.VISIBLE);
             txtMensajePagoEfectivo.setVisibility(View.VISIBLE);
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_efectivo);
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.cash);
             imgPago.setImageBitmap(bmp);
         }
         //End Validar Tipo de pago
 
         //Start pop-up para seleccionar la direccion
-        abrirPopUp();
+        float monto = myPreferences.getFloat("monto_delivery", 0);
+        if (monto == 0){
+            abrirPopUp();
+        }
         //End pop-up para seleccionar la direccion
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -301,162 +338,125 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         btnGenerarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DireccionSeleccionada.equals("")){
+                float monto = myPreferences.getFloat("monto_delivery", 0);
+                if (monto == 0){
                     abrirPopUp();
                 }else{
-                    btnGenerarCompra.setEnabled(false);
-                    //Toast.makeText(PagoTarjetaActivity.this,"Generando Compra...",Toast.LENGTH_SHORT).show();
+                    //btnGenerarCompra.setEnabled(false);
+                    if(formaPago.equals("Tarjeta")){
+                        ProgressDialog progDailogTarjeta = null;
+                        progDailogTarjeta = new ProgressDialog(PagoTarjetaActivity.this);
+                        progDailogTarjeta.setMessage("Cargando...");
+                        progDailogTarjeta.setIndeterminate(true);
+                        progDailogTarjeta.setCancelable(false);
+                        progDailogTarjeta.show();
+                        String consultita = "https://apifbdelivery.fastbuych.com/Delivery/CorrelativoVisa?auth="+ tokencito;
+                        //CorrelativoVisa(consultita, Double.parseDouble(txtTotal.getText().toString()), progDailogTarjeta);
+                        RequestQueue queue = Volley.newRequestQueue(PagoTarjetaActivity.this);
+                        final ProgressDialog finalProgDailogTarjeta = progDailogTarjeta;
+                        StringRequest stringRequest = new StringRequest(Request.Method.GET, consultita, new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.length()>0){
+                                    try {
+                                        JSONObject jo = new JSONObject(response);
+                                        codigoVisa = jo.getInt("codigo");
+                                        DecimalFormatSymbols separador = new DecimalFormatSymbols();
+                                        separador.setDecimalSeparator('.');
+                                        String TotalGeneral = txtTotal.getText().toString();
+                                        Map<String, Object> data = new HashMap<>();
+                                        data.put(VisaNet.VISANET_CHANNEL,VisaNet.Channel.MOBILE);
+                                        data.put(VisaNet.VISANET_COUNTABLE, true);
+                                        data.put(VisaNet.VISANET_USERNAME, "diegodelucio01@gmail.com");
+                                        data.put(VisaNet.VISANET_PASSWORD, "@Am$168Z");
+                                        data.put(VisaNet.VISANET_MERCHANT, "604410301");//604410301-test-101039934
+                                        data.put(VisaNet.VISANET_PURCHASE_NUMBER, (Object) String.valueOf(codigoVisa));//codigo de compra visa
+                                        //data.put(VisaNet.VISANET_AMOUNT, (Object) String.valueOf(Globales.montoCompra).toString().replace(",","."));
+                                        data.put(VisaNet.VISANET_AMOUNT, (Object) TotalGeneral); // este es para enviar en modo produccion
+                                        //data.put(VisaNet.VISANET_AMOUNT, (Object) "0.50");//a modo de prueba
+                                        data.put(VisaNet.VISANET_END_POINT_URL, "https://apiprod.vnforapps.com/");
+                                        //Personalización (Ingreso opcional)
+                                        VisaNetViewAuthorizationCustom custom = new VisaNetViewAuthorizationCustom();
+                                        custom.setLogoTextMerchant(true);
+                                        custom.setLogoTextMerchantText("FASTBUY");
+                                        custom.setLogoTextMerchantTextColor(R.color.visanet_black);
+                                        custom.setLogoTextMerchantTextSize(20);
+                                        //Personalización 2: Configuración del color del botón pagar en el formulario de pago
+                                        custom.setButtonColorMerchant(R.color.verde_fosforescente);
+                                        custom.setInputCustom(true);
+                                        finalProgDailogTarjeta.dismiss();
+                                        VisaNet.authorization(PagoTarjetaActivity.this, data, custom);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(PagoTarjetaActivity.this,"Error de lectura de datos", Toast.LENGTH_SHORT).show();
+                                        finalProgDailogTarjeta.dismiss();
+                                    } catch (Exception e) {
+                                        Toast.makeText(PagoTarjetaActivity.this,"Error: No se pudo conectar con el servidor de visa, intentalo nuevamente", Toast.LENGTH_SHORT).show();
+                                        finalProgDailogTarjeta.dismiss();
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }, new Response.ErrorListener(){
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(PagoTarjetaActivity.this,"Error: No se pudo conectar con el servidor, intentalo nuevamente", Toast.LENGTH_SHORT).show();
+                                finalProgDailogTarjeta.dismiss();
+                            }
+                        });
+                        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                10000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        queue.add(stringRequest);
+                    }
+
                     if(formaPago.equals("Efectivo")){ // cuando es pago en efectivo
                         if(etMontoPagoEfectivo.getText().toString().trim().length() == 0){
                             Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Ingrese el monto de pago.", Toast.LENGTH_SHORT);
                             View vistaToast = toast1.getView();
                             vistaToast.setBackgroundResource(R.drawable.toast_yellow);
                             toast1.show();
-                            btnGenerarCompra.setEnabled(true);
                             return;
                         }
-                        if(Double.parseDouble(etMontoPagoEfectivo.getText().toString()) < Globales.montoTotal){
+                        if(Double.parseDouble(etMontoPagoEfectivo.getText().toString()) < Double.parseDouble(txtTotal.getText().toString())){
                             Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "El monto en efectivo no puede ser menor al total del pedido.", Toast.LENGTH_SHORT);
                             View vistaToast = toast1.getView();
                             vistaToast.setBackgroundResource(R.drawable.toast_yellow);
                             toast1.show();
-                            btnGenerarCompra.setEnabled(true);
                             return;
                         }
                         DecimalFormat df = new DecimalFormat("#.#");
-                        String _PagoEfectivo = df.format(Double.parseDouble(etMontoPagoEfectivo.getText().toString())).replace(",",".");
-                        //Globales.pagarcon = etMontoPagoEfectivo.getText().toString();
-                        Globales.pagarcon = _PagoEfectivo;
+                        final String _PagoEfectivo = df.format(Double.parseDouble(etMontoPagoEfectivo.getText().toString())).replace(",",".");
                         final String vueltito = calculaVuelto();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PagoTarjetaActivity.this);
-                        builder.setMessage("Se registrará un nueva Compra. ¿Desea continuar?");
-                        builder.setTitle("Nueva Compra");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                listaPedidos = Globales.listaPedidos;
-                                try {
-                                    btnGenerarCompra.setEnabled(false);
-                                    ProgressDialog progDailog = null;
-                                    progDailog = new ProgressDialog(PagoTarjetaActivity.this);
-                                    progDailog.setMessage("Generando pedido...");
-                                    progDailog.setIndeterminate(true);
-                                    progDailog.setCancelable(false);
-                                    progDailog.show();
-                                    //registrarPedido(Globales.nombreCliente, Globales.direccion2 + ", " + Globales.ciudadOrigen, Globales.numeroTelefono, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.getInstance().getListaPedidos());
-                                    //registrarPedido("Omar Vera", "Oficina FastBuy, " + Globales.ciudadOrigen,"953957038", String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.listaPedidos);
-                                    timePedido = calcula.ObtenHora().toString();
-                                    registrarPedido(name, DireccionSeleccionada+ ", " + Globales.CiudadDireccionSeleccionada,number, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), formaPago, timePedido, Globales.pagarcon, vueltito, String.valueOf(Globales.montoDescuento), Globales.listaPedidos, progDailog);
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                btnGenerarCompra.setEnabled(true);
-                                dialogInterface.cancel();
-                            }
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                        GenerarPedido("Efectivo", _PagoEfectivo, vueltito);
                     }
-                    else if(formaPago.equals("Tarjeta")){
-                        ProgressDialog progDailog = null;
-                        progDailog = new ProgressDialog(PagoTarjetaActivity.this);
-                        progDailog.setMessage("Cargando datos...");
-                        progDailog.setIndeterminate(true);
-                        progDailog.setCancelable(false);
-                        progDailog.show();
-                        String consultita = "https://apifbdelivery.fastbuych.com/Delivery/CorrelativoVisa?auth="+ tokencito;
-                        //CorrelativoVisa("http://fastbuych.com/app/consultasapp/app_visa_correlativo.php", total);
-                        CorrelativoVisa(consultita, total, progDailog);
+
+                    if(formaPago.equals("Yape")){ //pago con Yape
+                        GenerarPedido("Yape", "0.00", "0.00");
                     }
-                    else if(formaPago.equals("Yape")){ //pago con Yape
-                        Globales.pagarcon = "0";
-                        final String vueltito = "0";
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PagoTarjetaActivity.this);
-                        builder.setMessage("Se registrará un nueva Compra. ¿Desea continuar?");
-                        builder.setTitle("Nueva Compra");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                listaPedidos = Globales.listaPedidos;
-                                try {
-                                    btnGenerarCompra.setEnabled(false);
-                                    ProgressDialog progDailog = null;
-                                    progDailog = new ProgressDialog(PagoTarjetaActivity.this);
-                                    progDailog.setMessage("Generando pedido...");
-                                    progDailog.setIndeterminate(true);
-                                    progDailog.setCancelable(false);
-                                    progDailog.show();
-                                    //registrarPedido(Globales.nombreCliente, Globales.direccion2 + ", " + Globales.ciudadOrigen, Globales.numeroTelefono, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.getInstance().getListaPedidos());
-                                    //registrarPedido("Omar Vera", "Oficina FastBuy, " + Globales.ciudadOrigen,"953957038", String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.listaPedidos);
-                                    timePedido = calcula.ObtenHora().toString();
-                                    registrarPedido(name, DireccionSeleccionada+ ", " + Globales.CiudadDireccionSeleccionada,number, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), formaPago, timePedido, Globales.pagarcon, vueltito, String.valueOf(Globales.montoDescuento), Globales.listaPedidos, progDailog);
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    }
-                    else if(formaPago.equals("Plin")){ //pago con plin
-                        Globales.pagarcon = "0";
-                        final String vueltito = "0";
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PagoTarjetaActivity.this);
-                        builder.setMessage("Se registrará un nueva Compra. ¿Desea continuar?");
-                        builder.setTitle("Nueva Compra");
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                listaPedidos = Globales.listaPedidos;
-                                try {
-                                    btnGenerarCompra.setEnabled(false);
-                                    ProgressDialog progDailog = null;
-                                    progDailog = new ProgressDialog(PagoTarjetaActivity.this);
-                                    progDailog.setMessage("Generando pedido...");
-                                    progDailog.setIndeterminate(true);
-                                    progDailog.setCancelable(false);
-                                    progDailog.show();
-                                    //registrarPedido(Globales.nombreCliente, Globales.direccion2 + ", " + Globales.ciudadOrigen, Globales.numeroTelefono, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.getInstance().getListaPedidos());
-                                    //registrarPedido("Omar Vera", "Oficina FastBuy, " + Globales.ciudadOrigen,"953957038", String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.listaPedidos);
-                                    timePedido = calcula.ObtenHora().toString();
-                                    registrarPedido(name, DireccionSeleccionada+ ", " + Globales.CiudadDireccionSeleccionada,number, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), formaPago, timePedido, Globales.pagarcon, vueltito, String.valueOf(Globales.montoDescuento), Globales.listaPedidos, progDailog);
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                    if(formaPago.equals("Plin")) { //pago con plin
+                        GenerarPedido("Plin", "0.00", "0.00");
                     }
                 }
             }
         });
         //End Boton Comprar
+
+
+        btnCambiarDireccion = (TextView) findViewById(R.id.btnCambiarDireccion);
+        Paint p = new Paint();
+        p.setColor(Color.DKGRAY);
+        btnCambiarDireccion.setPaintFlags(p.getColor());
+        btnCambiarDireccion.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        btnCambiarDireccion.setText("Cambiar dirección  ");
+        btnCambiarDireccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnCambiarDireccion.setEnabled(false);
+                abrirPopUp();
+            }
+        });
 
         //botones del menu
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
@@ -470,6 +470,8 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -495,42 +497,81 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             }
         });
 
-        CheckBox ckRecogerEnTienda = (CheckBox) findViewById(R.id.ckRecogerEnTienda);
-        ckRecogerEnTienda.setChecked(Globales.recoger_en_tienda);
+        ckRecogerEnTienda = (CheckBox) findViewById(R.id.ckRecogerEnTienda);
+        recoger_entienda = myPreferences.getBoolean("recoger_entienda", false);
+        ckRecogerEnTienda.setChecked(recoger_entienda);
+        final LinearLayout LinearDireccion = (LinearLayout) findViewById(R.id.LinearDireccion);
+        if(recoger_entienda){
+            LinearDireccion.setVisibility(View.GONE);
+        }
+        else
+        {
+            LinearDireccion.setVisibility(View.VISIBLE);
+        }
         ckRecogerEnTienda.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if(isChecked){
-                    costoEnvio = 0;
-                    Globales.montoDelivery = 0;
-                    Globales.recoger_en_tienda = true;
+                if(ckRecogerEnTienda.isChecked()){
+                    LinearDireccion.setVisibility(View.GONE);
+                    myEditor.putBoolean("recoger_entienda", true);
+                    myEditor.commit();
+                }else{
+                    LinearDireccion.setVisibility(View.VISIBLE);
+                    myEditor.putBoolean("recoger_entienda", false);
+                    myEditor.commit();
                 }
-                else {
-                    Globales.montoDelivery = Globales.deliveryTemporal;
-                    costoEnvio = Globales.deliveryTemporal;
-                    Globales.recoger_en_tienda = false;
-                }
-                if (formaPago.equals("Tarjeta"))
-                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                else
-                    cargo = 0;
-                total = sumaTotal + cargo + costoEnvio - descuento;
-                Globales.montoCargo = cargo;
-                Globales.montoTotal = total;
-                muestraTextos();
+                CalcularMontos();
             }
         });
     }
 
     public String calculaVuelto(){
-        double elVuelto = Double.parseDouble(Globales.pagarcon) - Globales.montoTotal;
+        double elVuelto = Double.parseDouble(etMontoPagoEfectivo.getText().toString()) - Double.parseDouble(txtTotal.getText().toString());
         return String.valueOf(elVuelto);
     }
 
     public  void abrirPopUp(){
-        Intent intent = new Intent(PagoTarjetaActivity.this, SeleccionaDireccionActivity.class);
-        startActivity(intent);
+        Intent intentDireccion = new Intent(PagoTarjetaActivity.this, SeleccionaDireccionActivity.class);
+        startActivity(intentDireccion);
+    }
+
+    public void GenerarPedido(final String _formapago, final String _PagoEfectivo, final String vueltito){
+        AlertDialog.Builder builder = new AlertDialog.Builder(PagoTarjetaActivity.this);
+        builder.setMessage("Estás a punto de generar tu pedido. ¿Desea continuar?");
+        builder.setTitle("Nuevo Pedido");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Globales globales = new Globales();
+                listaPedidos = globales.getListaPedidosCache("lista_pedidos");
+                try {
+                    ProgressDialog progDailogEfectivo = null;
+                    progDailogEfectivo = new ProgressDialog(PagoTarjetaActivity.this);
+                    progDailogEfectivo.setMessage("Generando pedido...");
+                    progDailogEfectivo.setIndeterminate(true);
+                    progDailogEfectivo.setCancelable(false);
+                    progDailogEfectivo.show();
+                    timePedido = calcula.ObtenHora().toString();
+                    String direccion_seleccionada = myPreferences.getString("direccion_seleccionada", "");
+                    String ciudad_seleccionada = myPreferences.getString("ciudad_seleccionada", "");
+                    registrarPedido(name, direccion_seleccionada+ ", " + ciudad_seleccionada,number, txtDeliveryTotal.getText().toString(), txtCargoTotal.getText().toString(), _formapago, timePedido, _PagoEfectivo, vueltito, txtDescuentoTotal.getText().toString(), listaPedidos, progDailogEfectivo);
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void ConsultaCupon(String URL, final ProgressDialog progDialog){
@@ -588,45 +629,34 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
                                                                     if (tipoCupon == 1){
                                                                         //monto en soles
-                                                                        descuento = Double.valueOf(montoCupon.toString());
+                                                                        Double descuento = Double.valueOf(montoCupon.toString());
+                                                                        myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                                        myEditor.commit();
                                                                         Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento de S/"+ String.format("%.2f",descuento).toString().replace(",","."), Toast.LENGTH_SHORT);
                                                                         View vistaToast = toast1.getView();
                                                                         vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                                         toast1.show();
-                                                                        if (formaPago.equals("Tarjeta"))
-                                                                            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                                        else
-                                                                            cargo = 0;
-                                                                        total = sumaTotal + cargo + costoEnvio - descuento;
+                                                                        CalcularMontos();
                                                                     }else if (tipoCupon == 2){
                                                                         //monto en porcentaje
-                                                                        descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*sumaTotal;
+                                                                        Double descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*  Double.parseDouble(txtSubTotal.getText().toString());
+                                                                        myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                                        myEditor.commit();
                                                                         Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento del "+ montoCupon.toString()+"%", Toast.LENGTH_SHORT);
                                                                         View vistaToast = toast1.getView();
                                                                         vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                                         toast1.show();
-                                                                        if (formaPago.equals("Tarjeta"))
-                                                                            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                                        else
-                                                                            cargo = 0;
-                                                                        total = sumaTotal + cargo + costoEnvio - descuento;
+                                                                        CalcularMontos();
                                                                     }else if (tipoCupon == 3){
                                                                         //no se cobra delivery
-                                                                        descuento = costoEnvio;
+                                                                        myEditor.putString("monto_descuento", String.valueOf(txtDeliveryTotal.getText()));
+                                                                        myEditor.commit();
                                                                         Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras el delivery gratis", Toast.LENGTH_SHORT);
                                                                         View vistaToast = toast1.getView();
                                                                         vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                                         toast1.show();
-                                                                        if (formaPago.equals("Tarjeta"))
-                                                                            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                                        else
-                                                                            cargo = 0;
-                                                                        total = sumaTotal + cargo + costoEnvio - descuento;
+                                                                        CalcularMontos();
                                                                     }
-                                                                    Globales.montoDescuento = descuento;
-                                                                    Globales.montoCargo = cargo;
-                                                                    Globales.montoTotal = total;
-                                                                    muestraTextos();
                                                                     //actualizaCantidadCupon(codigoCupon,Globales.codigoCliente);
                                                                 }
                                                             });
@@ -650,6 +680,10 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
                                                 }
                                             });
+                                            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                                    10000,
+                                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                                             queue.add(stringRequest);
                                         }
                                     }
@@ -667,45 +701,34 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
                                                     if (tipoCupon == 1){
                                                         //monto en soles
-                                                        descuento = Double.valueOf(montoCupon.toString());
+                                                        Double descuento = Double.valueOf(montoCupon.toString());
+                                                        myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                        myEditor.commit();
                                                         Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento de S/"+ String.format("%.2f",descuento).toString().replace(",","."), Toast.LENGTH_SHORT);
                                                         View vistaToast = toast1.getView();
                                                         vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                         toast1.show();
-                                                        if (formaPago.equals("Tarjeta"))
-                                                            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                        else
-                                                            cargo = 0;
-                                                        total = sumaTotal + cargo + costoEnvio - descuento;
+                                                        CalcularMontos();
                                                     }else if (tipoCupon == 2){
                                                         //monto en porcentaje
-                                                        descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*sumaTotal;
+                                                        Double descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*  Double.parseDouble(txtSubTotal.getText().toString());
+                                                        myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                        myEditor.commit();
                                                         Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento del "+ montoCupon.toString()+"%", Toast.LENGTH_SHORT);
                                                         View vistaToast = toast1.getView();
                                                         vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                         toast1.show();
-                                                        if (formaPago.equals("Tarjeta"))
-                                                            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                        else
-                                                            cargo = 0;
-                                                        total = sumaTotal + cargo + costoEnvio - descuento;
+                                                        CalcularMontos();
                                                     }else if (tipoCupon == 3){
                                                         //no se cobra delivery
-                                                        descuento = costoEnvio;
+                                                        myEditor.putString("monto_descuento", String.valueOf(txtDeliveryTotal.getText()));
+                                                        myEditor.commit();
                                                         Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras el delivery gratis", Toast.LENGTH_SHORT);
                                                         View vistaToast = toast1.getView();
                                                         vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                         toast1.show();
-                                                        if (formaPago.equals("Tarjeta"))
-                                                            cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                        else
-                                                            cargo = 0;
-                                                        total = sumaTotal + cargo + costoEnvio - descuento;
+                                                        CalcularMontos();
                                                     }
-                                                    Globales.montoDescuento = descuento;
-                                                    Globales.montoCargo = cargo;
-                                                    Globales.montoTotal = total;
-                                                    muestraTextos();
                                                 }
                                             });
                                             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -754,45 +777,34 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
                                                             if (tipoCupon == 1){
                                                                 //monto en soles
-                                                                descuento = Double.valueOf(montoCupon.toString());
+                                                                Double descuento = Double.valueOf(montoCupon.toString());
+                                                                myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                                myEditor.commit();
                                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento de S/"+ String.format("%.2f",descuento).toString().replace(",","."), Toast.LENGTH_SHORT);
                                                                 View vistaToast = toast1.getView();
                                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                                 toast1.show();
-                                                                if (formaPago.equals("Tarjeta"))
-                                                                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                                else
-                                                                    cargo = 0;
-                                                                total = sumaTotal + cargo + costoEnvio - descuento;
+                                                                CalcularMontos();
                                                             }else if (tipoCupon == 2){
                                                                 //monto en porcentaje
-                                                                descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*sumaTotal;
+                                                                Double descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*  Double.parseDouble(txtSubTotal.getText().toString());
+                                                                myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                                myEditor.commit();
                                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento del "+ montoCupon.toString()+"%", Toast.LENGTH_SHORT);
                                                                 View vistaToast = toast1.getView();
                                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                                 toast1.show();
-                                                                if (formaPago.equals("Tarjeta"))
-                                                                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                                else
-                                                                    cargo = 0;
-                                                                total = sumaTotal + cargo + costoEnvio - descuento;
+                                                                CalcularMontos();
                                                             }else if (tipoCupon == 3){
                                                                 //no se cobra delivery
-                                                                descuento = costoEnvio;
+                                                                myEditor.putString("monto_descuento", String.valueOf(txtDeliveryTotal.getText()));
+                                                                myEditor.commit();
                                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras el delivery gratis", Toast.LENGTH_SHORT);
                                                                 View vistaToast = toast1.getView();
                                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                                 toast1.show();
-                                                                if (formaPago.equals("Tarjeta"))
-                                                                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                                else
-                                                                    cargo = 0;
-                                                                total = sumaTotal + cargo + costoEnvio - descuento;
+                                                                CalcularMontos();
                                                             }
-                                                            Globales.montoDescuento = descuento;
-                                                            Globales.montoCargo = cargo;
-                                                            Globales.montoTotal = total;
-                                                            muestraTextos();
                                                         }
                                                     });
                                                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -815,6 +827,10 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
                                         }
                                     });
+                                    stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                            10000,
+                                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                                     queue.add(stringRequest);
 
                                 }
@@ -831,48 +847,36 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
                                             if (tipoCupon == 1){
                                                 //monto en soles
-                                                descuento = Double.valueOf(montoCupon.toString());
+                                                Double descuento = Double.valueOf(montoCupon.toString());
                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento de S/"+ String.format("%.2f",descuento).toString().replace(",","."), Toast.LENGTH_SHORT);
                                                 View vistaToast = toast1.getView();
                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                 toast1.show();
-                                                if (formaPago.equals("Tarjeta"))
-                                                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                else
-                                                    cargo = 0;
-                                                total = sumaTotal + cargo + costoEnvio - descuento;
+                                                CalcularMontos();
                                             }
                                             else if (tipoCupon == 2){
                                                 //monto en porcentaje
-                                                descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*sumaTotal;
+                                                Double descuento = (double) ((double)Double.valueOf(montoCupon.toString())/100)*  Double.parseDouble(txtSubTotal.getText().toString());
+                                                myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                myEditor.commit();
                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento del "+ montoCupon.toString()+"%", Toast.LENGTH_SHORT);
                                                 View vistaToast = toast1.getView();
 
                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                 toast1.show();
-                                                if (formaPago.equals("Tarjeta"))
-                                                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                else
-                                                    cargo = 0;
-                                                total = sumaTotal + cargo + costoEnvio - descuento;
+                                                CalcularMontos();
                                             }
                                             else if (tipoCupon == 3){
                                                 //no se cobra delivery
-                                                descuento = costoEnvio;
+                                                myEditor.putString("monto_descuento", String.valueOf(txtDeliveryTotal.getText()));
+                                                myEditor.commit();
                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras el delivery gratis", Toast.LENGTH_SHORT);
                                                 View vistaToast = toast1.getView();
                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
                                                 toast1.show();
-                                                if (formaPago.equals("Tarjeta"))
-                                                    cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                                                else
-                                                    cargo = 0;
-                                                total = sumaTotal + cargo + costoEnvio - descuento;
+                                                CalcularMontos();
                                             }
-                                            Globales.montoDescuento = descuento;
-                                            Globales.montoCargo = cargo;
-                                            Globales.montoTotal = total;
-                                            muestraTextos();
+
                                         }
                                     });
                                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -903,21 +907,13 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                     txtCodCupon.setEnabled(true);
                     btnValidarCupon.setEnabled(true);
                     btnValidarCupon.setBackgroundResource(R.drawable.botonamarillo2);
-
-                    descuento = 0;
-                    if (formaPago.equals("Tarjeta"))
-                        cargo = visa.calcularCargoVisa(sumaTotal + costoEnvio - descuento);
-                    else
-                        cargo = 0;
-                    total = sumaTotal + cargo + costoEnvio - descuento;
+                    myEditor.putString("monto_descuento", "0");
+                    myEditor.commit();
                     Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Código de Cupón No Valido o a expirado", Toast.LENGTH_SHORT);
                     View vistaToast = toast1.getView();
                     vistaToast.setBackgroundResource(R.drawable.toast_yellow);
                     toast1.show();
-                    Globales.montoDescuento = descuento;
-                    Globales.montoCargo = cargo;
-                    Globales.montoTotal = total;
-                    muestraTextos();
+                    CalcularMontos();
                 }
 
             }
@@ -931,57 +927,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
     }
 
     public void CorrelativoVisa(final String URL, final double total, final ProgressDialog progressDialog){
-        RequestQueue queue = Volley.newRequestQueue(PagoTarjetaActivity.this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>(){
-            @Override
-            public void onResponse(String response) {
-                if (response.length()>0){
-                    try {
-                        JSONObject jo = new JSONObject(response);
-                        codigoVisa = jo.getInt("codigo");
-                        Log.i("VISA_SALIENTE", String.valueOf(codigoVisa));
-                        DecimalFormatSymbols separador = new DecimalFormatSymbols();
-                        separador.setDecimalSeparator('.');
-                        DecimalFormat df = new DecimalFormat("#.##",separador);
-                        //String nTotal = String.format("%.1f",total);
-                        String TotalGeneral = df.format(Globales.montoTotal);
-                        Map<String, Object> data = new HashMap<>();
-                        data.put(VisaNet.VISANET_CHANNEL,VisaNet.Channel.MOBILE);
-                        data.put(VisaNet.VISANET_COUNTABLE, true);
-                        data.put(VisaNet.VISANET_USERNAME, "diegodelucio01@gmail.com");
-                        data.put(VisaNet.VISANET_PASSWORD, "@Am$168Z");
-                        data.put(VisaNet.VISANET_MERCHANT, "604410301");//604410301-test-101039934
-                        Log.i("VISA", String.valueOf(codigoVisa));
-                        data.put(VisaNet.VISANET_PURCHASE_NUMBER, (Object) String.valueOf(codigoVisa));//codigo de compra visa
-                        //data.put(VisaNet.VISANET_AMOUNT, (Object) String.valueOf(Globales.montoCompra).toString().replace(",","."));
-                        data.put(VisaNet.VISANET_AMOUNT, (Object) TotalGeneral); // este es para enviar en modo produccion
-                        //data.put(VisaNet.VISANET_AMOUNT, (Object) "0.50");//a modo de prueba
-                        data.put(VisaNet.VISANET_END_POINT_URL, "https://apiprod.vnforapps.com/");
-                        //Personalización (Ingreso opcional)
-                        VisaNetViewAuthorizationCustom custom = new VisaNetViewAuthorizationCustom();
-                        custom.setLogoTextMerchant(true);
-                        custom.setLogoTextMerchantText("FASTBUY");
-                        custom.setLogoTextMerchantTextColor(R.color.visanet_black);
-                        custom.setLogoTextMerchantTextSize(20);
-                        //Personalización 2: Configuración del color del botón pagar en el formulario de pago
-                        custom.setButtonColorMerchant(R.color.verde_fosforescente);
-                        custom.setInputCustom(true);
-                        progressDialog.dismiss();
-                        VisaNet.authorization(PagoTarjetaActivity.this, data, custom);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
-        });
-        queue.add(stringRequest);
     }
 
     public int codigoRegistro = 0;
@@ -997,13 +943,15 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         String f = URLEncoder.encode(forma, "UTF-8");
         String g = URLEncoder.encode(tiempo, "UTF-8");
         String h = URLEncoder.encode(ciudad, "UTF-8");
-        String i = URLEncoder.encode(String.valueOf(Globales.LatitudSeleccionada), "UTF-8");
-        String j = URLEncoder.encode(String.valueOf(Globales.LongitudSeleccionada), "UTF-8");
+        String latitud_seleccionada =  myPreferences.getString("latitud_seleccionada", "0");
+        String longitud_seleccionada =  myPreferences.getString("longitud_seleccionada", "0");
+        String i = URLEncoder.encode(latitud_seleccionada, "UTF-8");
+        String j = URLEncoder.encode(longitud_seleccionada, "UTF-8");
         String k = URLEncoder.encode(pago, "UTF-8");
         String l = URLEncoder.encode(vuelto, "UTF-8");
         String m = URLEncoder.encode(descuento, "UTF-8");
-        String n = URLEncoder.encode(String.valueOf(Globales.montoCompra), "UTF-8");
-
+        String n = URLEncoder.encode(txtSubTotal.getText().toString(), "UTF-8");
+        int empresa = 0;
         String listaDetallada = "";
         for (int z=0; z<lista.size();z++) {
             PedidoDetalle pd = lista.get(z);
@@ -1017,6 +965,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             //String personalizado = URLEncoder.encode(pd.getPersonalizacion(), "UTF-8");
             String personalizado = pd.getPersonalizacion();
             String presentacion = "1";
+             empresa = pd.getEmpresa();
             if(pd.isEsPromocion()){
                 promo = 1;
                 codigoProducto = String.valueOf(pd.getPromocion().getCodigo());
@@ -1036,9 +985,11 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         }
 
         String o = URLEncoder.encode(listaDetallada,"UTF-8");
-        String recoger = (Globales.recoger_en_tienda) ? "1" : "0";
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/GuardarPedido2?auth="+tokencito+"&nombre="+a+"&direccion="+b+"&telefono=" + c +"&delivery=" + d +"&cargo=" + e +"&forma=" + f +"&tiempo=" + g+"&origen=" + h + "&latitud=" + i + "&longitud=" + j + "&pago=" + k + "&vuelto=" + l+ "&descuento=" + m +"&montoPedido=" + n+"&empresa=" + Globales.codEstablecimiento1+"&recoger=" + recoger +"&ubicacion=" + ubicacion+"&detalle="+o;
-        RegistrarPedidoBD(consulta,lista,String.valueOf(Globales.codEstablecimiento1), progreso);
+        String recoger = recoger_entienda == true ? "1" : "0";
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/GuardarPedido2?auth="+tokencito+"&nombre="+a+"&direccion="+b+"&telefono=" + c +"&delivery=" + d +"&cargo=" + e +"&forma=" + f +"&tiempo=" + g+"&origen=" + h + "&latitud=" + i + "&longitud=" + j + "&pago=" + k + "&vuelto=" + l+ "&descuento=" + m +"&montoPedido=" + n+"&empresa=" + String.valueOf(empresa) +"&recoger=" + recoger +"&ubicacion=" + ubicacion+"&detalle="+o;
+        Globales globales = new Globales();
+        listaPedidos = globales.getListaPedidosCache("lista_pedidos");
+        RegistrarPedidoBD(consulta,lista, String.valueOf(listaPedidos.get(0).getEmpresa()), progreso);
     }
 
     //Registrando el pedido en la Base de Datos _añadido 27_02_2020
@@ -1054,33 +1005,21 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                         codigoRegistro = jo.getInt("Codigo_Pedido");
                         final String cantidadRespuestas = jo.getString("Respuestas_Cantidad");
                         String formapagopedidotemp = formaPago;
-                        Log.v("encuesta",cantidadRespuestas);
                         //start añadido el 27-02-2020
                         laempresa = empresa;
-
                         //actualizaCantidadCupon(codigoCupon);
                         if(promoCupon != ""){
                             actualizaCantidadCupon(codigoCupon,codigo);
                         }
-
                         //reiniciamos los valores del control máximo de establecimientos
-                        Globales.establecimiento1 = "";
-                        Globales.numEstablecimientos = 0;
-
+                        myEditor.putFloat( "monto_delivery", 0);
+                        myEditor.putString( "monto_descuento", "0");
+                        myEditor.putBoolean( "recoger_entienda", false);
+                        myEditor.commit();
                         //inicializamos datos de la dirección
-                        Globales.EtiquetaSeleccionada = "";
-                        //Globales.DireccionSeleccionada = "";
-                        Globales.LatitudSeleccionada = "";
-                        Globales.LongitudSeleccionada = "";
-                        Globales.montoDelivery = 0;
-                        Globales.CiudadDireccionSeleccionada = "";
 
-                        Globales.montoDescuento = 0;
-                        //Globales.formaPago = "Efectivo";
-                        Globales.deliveryTemporal = 0;
-                        btnGenerarCompra.setEnabled(true);
-
-                        Globales.listaPedidos.clear();
+                        Globales globales = new Globales();
+                        globales.setList("lista_pedidos", new ArrayList<PedidoDetalle>());
                         progreso.dismiss();
                         if(formapagopedidotemp.equals("Tarjeta")) {
                             Intent intent = new Intent(PagoTarjetaActivity.this, PagoExitosoVisaActivity.class);
@@ -1092,7 +1031,6 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         else {
-                            Globales.recoger_en_tienda = false;
                             new PromptDialog(PagoTarjetaActivity.this)
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                     .setAnimationEnable(true)
@@ -1102,9 +1040,6 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(PromptDialog dialog) {
                                             dialog.dismiss();
-                                            Log.v("encuesta", cantidadRespuestas);
-
-
                                             Intent intent = new Intent(PagoTarjetaActivity.this, SiguiendoPedidoActivity.class);
                                             intent.putExtra("state", String.valueOf(0));
                                             intent.putExtra("empresa", laempresa);
@@ -1128,6 +1063,10 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
@@ -1319,22 +1258,26 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
             }
         });
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        formaPago = myPreferences.getString("formaPago", "");
         MenuInflater inflater = getMenuInflater();
         if (formaPago.equals("Efectivo"))
             inflater.inflate(R.menu.menupagoefectivo, menu);
-        else if (formaPago.equals("Tarjeta"))
+        if (formaPago.equals("Tarjeta"))
             inflater.inflate(R.menu.menupagotajeta, menu);
-        else if (formaPago.equals("Yape"))
+        if (formaPago.equals("Yape"))
             inflater.inflate(R.menu.menupagoyape, menu);
-        else if (formaPago.equals("Plin"))
+        if (formaPago.equals("Plin"))
             inflater.inflate(R.menu.menupagoplin, menu);
-        else//5
-            inflater.inflate(R.menu.menupagocodigoqr, menu);
         return true;
     }
 

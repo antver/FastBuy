@@ -59,15 +59,30 @@
                         android:background="@drawable/cajatexto"/>
                     <GridView
                         android:layout_width="match_parent"
-                        android:layout_height="140dp"
+                        android:layout_height="200dp"
                         android:id="@+id/listaDeDirecciones"
-                        android:columnWidth="400dip"
                         android:gravity="center"
                         android:numColumns="1"
                         android:layout_marginTop="3dp"
-                        android:layout_weight="1"
                         android:visibility="gone"
                         android:background="@color/humo"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingHorizontal="10dp">
+                    <CheckBox
+                        android:id="@+id/ckRecogerEnTienda"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17dp"
+                        android:textColor="@color/rojo"
+                        android:text="Deseo recoger en tienda" />
+
                 </LinearLayout>
                 <!--End Selecciona dirección-->
             </LinearLayout>
@@ -95,7 +110,7 @@
                 <!--Start Selecciona dirección-->
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="300dp"
                     android:orientation="vertical"
                     android:padding="15dp">
                     <fragment

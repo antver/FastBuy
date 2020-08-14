@@ -22,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".ActualizaActivity"></activity>
+        <activity android:name=".FastPuntosActivity"></activity>
+        <activity android:name=".SoporteActivity" />
+        <activity android:name=".ActualizaActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -80,9 +82,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".PagoEncargoActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".CodigoQRActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".PagoTarjetaActivity"

@@ -19,6 +19,7 @@ public class PedidoDetalle {
     private String personalizacion;
     private int tiempo;
     private int estado;
+    private String presentacion;
 
 
     public int getNumero() {
@@ -132,5 +133,13 @@ public class PedidoDetalle {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public String getPresentacion() {
+        return presentacion;
+    }
+
+    public void setPresentacion(String presentacion) {
+        this.presentacion = presentacion;
     }
 }

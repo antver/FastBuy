@@ -92,7 +92,7 @@ public class LoginFastBuyActivity extends AppCompatActivity {
                 myEditor.putString("Name_Cliente", nombreAll);
                 myEditor.putString("Number_Cliente", telefono);
                 myEditor.putString("Email_Cliente", correo);
-
+                myEditor.commit();
                 btnRegistrar.setEnabled(false);
                 progDailog = new ProgressDialog(LoginFastBuyActivity.this);
                 progDailog.setMessage("Enviando mensaje...");

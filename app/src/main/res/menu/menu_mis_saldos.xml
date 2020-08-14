@@ -5,5 +5,5 @@
         app:showAsAction="always"
         android:showAsAction="always"
         android:capitalize="none"
-        android:title="Mis Saldos"/>
+        android:title=""/>
 </menu>

@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import com.fastbuyapp.omar.fastbuy.R;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
+import com.fastbuyapp.omar.fastbuy.entidades.Pedido;
+import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by OMAR on 17/03/2019.
@@ -80,7 +85,11 @@ public class ValidacionDatos {
     }
 
     public void validarCarritoVacio(ImageButton carrito){
-        if (Globales.listaPedidos.isEmpty()) carrito.setImageResource(R.drawable.ic_cart_shop);
-        else carrito.setImageResource(R.drawable.ic_cart_shop_activo);
+        Globales globales = new Globales();
+        ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
+        if (listapedidos.isEmpty())
+            carrito.setImageResource(R.drawable.ic_cart_shop);
+        else
+            carrito.setImageResource(R.drawable.ic_cart_shop_activo);
     }
 }

@@ -36,7 +36,6 @@ public class Pago_Visa {
             int cant = (int) monto/50;
             cargo = (double) cant*2.5;
         }
-        Log.v("CARGO", String.valueOf(cargo));
         return cargo;
     }
     /*public void CorrelativoVisa(final String URL, final double total){

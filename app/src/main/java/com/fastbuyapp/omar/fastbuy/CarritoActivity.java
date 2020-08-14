@@ -42,7 +42,13 @@ public class CarritoActivity extends AppCompatActivity {
         super.onResume();
         listaDetallePedido(dtgvPedidos,txtTotal);
         //total del pedido
-        calculaTotal.muestraTotal(txtTotal);
+        Globales globales = new Globales();
+        list = globales.getListaPedidosCache("lista_pedidos");
+        double total = 0;
+        for (int i = 0; i < list.size(); i++){
+            total += list.get(i).getTotal();
+        }
+         txtTotal.setText(String.format("%.2f", total).replace(",","."));
     }
 
     @Override
@@ -68,7 +74,9 @@ public class CarritoActivity extends AppCompatActivity {
         btnCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Globales.montoCompra > 0.0){
+                Globales globales = new Globales();
+                list = globales.getListaPedidosCache("lista_pedidos");
+                if (list.size() > 0){
                     Intent intent = new Intent(CarritoActivity.this, MetodoDePagoActivity.class);
                     startActivity(intent);
                 }else{
@@ -83,8 +91,8 @@ public class CarritoActivity extends AppCompatActivity {
         //botones del menu
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
         ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        ImageButton btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
         ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
+        ImageButton btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +129,8 @@ public class CarritoActivity extends AppCompatActivity {
     public void listaDetallePedido(GridView gridViewX, TextView txtMiTotal){
         list = new ArrayList<PedidoDetalle>();
         try {
-            list = Globales.listaPedidos;
+            Globales globales = new Globales();
+            list = globales.getListaPedidosCache("lista_pedidos");
             adapter1 = new CarritoListAdapter(CarritoActivity.this, R.layout.list_producto_pedido, list, txtMiTotal);
             gridViewX.setAdapter(adapter1);
         }

@@ -2,132 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MisSaldosActivity">
-    <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blanco"
-        android:theme="?attr/actionBarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="35dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
-        android:background="@color/fastbuy">
-        <TextView
-            android:id="@+id/txtNameUserSaldos"
+
+        android:weightSum="1">
+
+        <LinearLayout
+            android:id="@+id/btnSaldos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Juan Pérez Martinez"
-            android:maxLines="1"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/blanco"/>
-        <TextView
-            android:id="@+id/txtNumberUserSaldos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_phone_white"
-            android:text="956823123"
-            android:textSize="18sp"
-            android:textColor="@color/blanco"/>
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow_perfil">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                app:srcCompat="@drawable/cupon" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="Mis cupones"
+                android:textSize="16dp" />
+        </LinearLayout>
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutNoHay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/shadow"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="No se encontraron cupones."
+            android:textSize="16dp" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Codigo Cupón"
-                android:paddingLeft="35dp"
-                android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:textColor="@color/gris"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:gravity="left"/>
-            <TextView
-                android:id="@+id/txtLugarFin"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingRight="40dp"
-                android:layout_marginTop="4dp"
-                android:maxLines="2"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Stock"
-                android:textStyle="bold"
-                android:textColor="@color/gris"
-                android:textSize="16sp"/>
-        </LinearLayout>
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <GridView
             android:id="@+id/gridMisSaldos"
-            android:paddingTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="25dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:paddingTop="15dp" />
     </LinearLayout>
 
     <!--Start MmenuPrincipal-->
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:background="#999"
-        android:layout_height="50dp">
+        android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/btnHome"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/btnHome"
-            android:background="#e9e9e9"
             android:layout_weight="1"
+            android:background="#e9e9e9"
             android:padding="12dp"
             app:srcCompat="@drawable/ic_shop_n" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:id="@+id/btnFavoritos"
-            android:background="#e9e9e9"
-            android:layout_weight="1"
-            android:padding="12dp"
-            app:srcCompat="@drawable/ic_heart"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_heart" />
+
+        <ImageButton
             android:id="@+id/btnCarrito"
-            android:background="#e9e9e9"
-            android:layout_weight="1"
-            android:padding="12dp"
-            app:srcCompat="@drawable/ic_cart_shop"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/btnUsuario"
-            android:background="#e9e9e9"
             android:layout_weight="1"
+            android:background="#e9e9e9"
             android:padding="12dp"
-            app:srcCompat="@drawable/ic_user_circle_o"
-            android:tint="@color/fastbuy" />
+            app:srcCompat="@drawable/ic_cart_shop" />
+
+        <ImageButton
+            android:id="@+id/btnUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#e9e9e9"
+            android:padding="12dp"
+            android:tint="@color/fastbuy"
+            app:srcCompat="@drawable/ic_user_circle_o" />
     </LinearLayout>
     <!--End MmenuPrincipal-->
 </LinearLayout>

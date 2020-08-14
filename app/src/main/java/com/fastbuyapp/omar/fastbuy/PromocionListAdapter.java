@@ -49,7 +49,7 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
     private Button bt_main;
     private ImageView imagen;
     private EditText campo;
-
+    SharedPreferences.Editor myEditor;
     public PromocionListAdapter(Context context, int layout, ArrayList<Promocion> _promocionesList) {
         super(context, layout, _promocionesList);
         this.context = context;
@@ -82,7 +82,7 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
         TextView txtCantidad;
     }
 
-    public void cambiarIcono(View v){
+    /*public void cambiarIcono(View v){
         Log.v("Compara", "OK");
         Globales g = Globales.getInstance();
         ImageButton btnCarritoCompras = (ImageButton) v.findViewById(R.id.btnCarritoCompras);
@@ -98,7 +98,7 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
 
         }
 
-    }
+    }*/
 
     @Override
     public View getView(int pos, View row, ViewGroup viewGroup) {
@@ -106,6 +106,7 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
         PromocionListAdapter.ViewHolder holder = null;
         SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(context);
+        myEditor = myPreferences.edit();
         final String ubicacion = myPreferences.getString("ubicacion", "");
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -148,6 +149,8 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
                 }
             });
             final View finalRow = row;
+            final String longitud_empresa = myPreferences.getString("longitud_empresa", "0");
+            final String latitud_empresa = myPreferences.getString("latitud_empresa", "0");
             holder.btnAgregar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -156,18 +159,19 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
                     int cant = Integer.parseInt(String.valueOf(txtCantidad.getText()));
                     int position = (int) v.getTag();
                     final Promocion promocion = getItem(position);
-                    Globales.LongitudEmpresaSeleccionada = promocion.getEmpresa().getLongitud();
-                    Globales.LatitudEmpresaSeleccionada =  promocion.getEmpresa().getLatitud();
-                    Log.v("codigo" , String.valueOf(promocion.getCodigo()));
+                    myEditor.putString("longitud_empresa", String.valueOf(promocion.getEmpresa().getLongitud()));
+                    myEditor.putString("latitud_empresa", String.valueOf(promocion.getEmpresa().getLatitud()));
+                    myEditor.commit();
+                    Globales globales = new Globales();
+                    ArrayList<PedidoDetalle> list = globales.getListaPedidosCache("lista_pedidos");
                     //Toast.makeText(getContext(),String.valueOf(Globales.LongitudEmpresaSeleccionada), Toast.LENGTH_SHORT).show();
                     if (cant > 0) {
                         PedidoDetalle pd = new PedidoDetalle();
-                        Globales g = Globales.getInstance();
                         boolean existe = false;
                         int ubic = 0;
                         int cont = 0;
                         int cantActual = 0;
-                        for (PedidoDetalle detalle : g.getListaPedidos()) {
+                        for (PedidoDetalle detalle : list) {
                             try {
                                 int proCodigo = detalle.getPromocion().getCodigo();
                                 int ubi = detalle.getUbicacion();
@@ -190,7 +194,8 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
                             pd.setEsPromocion(true);
                             pd.setPersonalizacion("Sin personalización");
                             pd.setTotal((float) (Float.valueOf(promocion.getPrecio()) * nc));
-                            g.getListaPedidos().set(ubic, pd);
+                            list.set(ubic, pd);
+                            globales.setList("lista_pedidos", list);
                         } else {
                             pd.setPromocion(promocion);
                             pd.setCantidad(cant);
@@ -199,9 +204,9 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
                             pd.setPreciounit((float) Float.valueOf(promocion.getPrecio()));
                             pd.setUbicacion(Integer.parseInt(ubicacion));
                             pd.setPersonalizacion("Sin personalización");
-                            pd.setLongitud(Globales.LongitudEmpresaSeleccionada);
-                            pd.setLatitud(Globales.LatitudEmpresaSeleccionada);
-                            g.agregarPedido(pd);
+                            pd.setLongitud(Double.parseDouble(longitud_empresa));
+                            pd.setLatitud(Double.parseDouble(latitud_empresa));
+                            globales.addListaPedidos("lista_pedidos", pd);
                             /*
                             Operaciones operaciones = new Operaciones();
                             Ruta ruta = operaciones.calcularDistanciaApiMaps(context, Globales.latitudOrigen, Globales.longitudOrigen,Globales.LatitudEmpresaSeleccionada,Globales.LongitudEmpresaSeleccionada);
@@ -225,7 +230,7 @@ public class PromocionListAdapter extends ArrayAdapter<Promocion> {
                         txtCantidad.setText("0");
                         Globales ga = Globales.getInstance();
                         //ImageButton btnCarrito = (ImageButton) ((Principal2Activity) context).findViewById(R.id.btnCarritoCompras);
-                        if(ga.getListaPedidos().size() == 0){
+                        if(list.size() == 0){
                             //btnCarrito.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blanco));
                             Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_carrito1);
                             //btnCarrito.setImageBitmap(bmp);

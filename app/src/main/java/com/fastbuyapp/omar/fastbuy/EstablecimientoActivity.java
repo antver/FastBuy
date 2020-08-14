@@ -9,14 +9,12 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,10 +22,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaListAdapter;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaListAdapterMosaico;
-import com.fastbuyapp.omar.fastbuy.config.Globales;
-import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.Empresa;
 
 import org.json.JSONArray;
@@ -46,10 +43,13 @@ public class EstablecimientoActivity extends AppCompatActivity {
     String tokencito, ubicacion, categoria, subcategoria;
     ImageButton btnCarrito;
     SharedPreferences.Editor myEditor;
+    boolean tiendaCerrada;
+
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -60,7 +60,6 @@ public class EstablecimientoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Inicializando estado del establecimiento a seleccionar
-        Globales.tiendaCerrada = false;
         SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
@@ -68,6 +67,7 @@ public class EstablecimientoActivity extends AppCompatActivity {
         ubicacion = myPreferences.getString("ubicacion", "");
         categoria = myPreferences.getString("categoria", "");
         subcategoria = myPreferences.getString("subcategoria", "");
+        tiendaCerrada = myPreferences.getBoolean("tiendaCerrada", true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -115,22 +115,31 @@ public class EstablecimientoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(EstablecimientoActivity.this, "Hola", Toast.LENGTH_SHORT).show();
                 int codigo =(list.get(position).getCodigo());
-                myEditor.putString("empresaseleccionada", String.valueOf(codigo));
-                String nombreComercial = list.get(position).getNombreComercial();
-                Globales.nombreEmpresaSeleccionada = nombreComercial;
+                myEditor.putString("codigo_empresa", String.valueOf(codigo));
+                myEditor.putString("nombre_empresa", list.get(position).getNombreComercial());
+                myEditor.putString("longitud_empresa", String.valueOf(list.get(position).getLongitud()));
+                myEditor.putString("latitud_empresa", String.valueOf(list.get(position).getLatitud()));
+                myEditor.putString("logo_empresa", list.get(position).getImagen());
+                myEditor.putString("portada_empresa", list.get(position).getImagenFondo());
+                myEditor.putString("taper_empresa", list.get(position).getTaper());
+                myEditor.putString("costo_taper", String.valueOf(list.get(position).getCostoTaper()));
+                myEditor.putInt("categoria_producto", 0);
+                //String nombreComercial = list.get(position).getNombreComercial();
+                /*Globales.nombreEmpresaSeleccionada = nombreComercial;
                 Globales.LongitudEmpresaSeleccionada = list.get(position).getLongitud();
                 Globales.LatitudEmpresaSeleccionada =  list.get(position).getLatitud();
                 Globales.imagenEmpresa = list.get(position).getImagen();
                 Globales.imagenFondoEmpresa = list.get(position).getImagenFondo();
                 Globales.taperEmpresaSel = list.get(position).getTaper();
-                Globales.costoTaperEmpresaSel = list.get(position).getCostoTaper();
+                Globales.costoTaperEmpresaSel = list.get(position).getCostoTaper();*/
 
                 if(list.get(position).getEstadoAbierto().equals("Abierto")){
-                    Globales.tiendaCerrada = false;
+                    myEditor.putBoolean("tiendaCerrada", false);
                 }
                 else{
-                    Globales.tiendaCerrada = true;
+                    myEditor.putBoolean("tiendaCerrada", true);
                 }
+                myEditor.commit();
                 Intent intent = new Intent(EstablecimientoActivity.this, ProductosActivity.class);
                 //Intent intent = new Intent(EstablecimientoActivity.this, CartaActivity.class);
                 startActivity(intent);
@@ -183,7 +192,6 @@ public class EstablecimientoActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if (response.length()>0){
-                    Log.v("SubCatego",String.valueOf(subcategoria));
                     try {
                         JSONArray ja = new JSONArray(response);
                         list = new ArrayList<>();

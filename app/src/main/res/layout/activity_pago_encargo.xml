@@ -72,10 +72,19 @@
                     android:gravity="left"
                     android:layout_weight="1"/>
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="S/"
+                    android:textStyle="bold"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:layout_weight="1"/>
+                <TextView
                     android:id="@+id/txtDeliveryGeneralEncargo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="s/0.00"
+                    android:text="0.00"
                     android:textStyle="bold"
                     android:textColor="@color/negro"
                     android:textSize="15sp"

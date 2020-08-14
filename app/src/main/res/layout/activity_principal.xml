@@ -28,9 +28,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
                     <FrameLayout
+                        android:id="@+id/fondopromociones"
                         android:layout_width="match_parent"
                         android:background="@color/fastbuy"
-                        android:layout_height="160dp"
+                        android:layout_height="140dp"
                         android:layout_marginBottom="-160dp">
 
                     </FrameLayout>
@@ -118,65 +119,78 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="0dp"
-                        android:layout_marginBottom="10dp">
+                        android:layout_marginBottom="20dp">
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
+                        <androidx.cardview.widget.CardView
                             android:layout_weight="1"
-                            android:layout_height="wrap_content"
                             android:background="@drawable/shadow"
+                            android:layout_width="match_parent"
                             android:layout_marginRight="10dp"
-                            android:id="@+id/llRestaurantes">
+                            app:cardCornerRadius="15dp"
+                            android:layout_height="wrap_content">
 
-                            <ImageView
-                                android:id="@+id/imageView5"
+                            <LinearLayout
+                                android:orientation="vertical"
                                 android:layout_width="match_parent"
-                                android:layout_height="110dp"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@drawable/background_item_categoria" />
+                                android:id="@+id/llRestaurantes"
+                                android:layout_height="wrap_content">
 
-                            <TextView
-                                android:text="@string/acticity_principal_restaurantes"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/textView19"
-                                android:textAlignment="center"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:textColor="@color/gris2"
-                                android:textAllCaps="false"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/imageView5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/restaurante" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
+                                <TextView
+                                    android:text="@string/acticity_principal_restaurantes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView19"
+                                    android:textAlignment="center"
+                                    android:paddingTop="8dp"
+                                    android:paddingBottom="8dp"
+                                    android:textColor="@color/gris2"
+                                    android:textAllCaps="false"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
-                            android:layout_height="wrap_content"
                             android:background="@drawable/shadow"
-                            android:id="@+id/llMarket">
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="10dp"
+                            app:cardCornerRadius="15dp"
+                            android:layout_height="wrap_content">
 
-                            <ImageView
-                                android:id="@+id/imageView8"
-                                android:layout_width="match_parent"
-                                android:layout_height="110dp"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@drawable/background_item_categoria" />
-
-                            <TextView
-                                android:text="@string/acticity_principal_tiendas"
+                            <LinearLayout
+                                android:orientation="vertical"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/textView9"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:textColor="@color/gris2"
-                                android:textAlignment="center"
-                                android:textAllCaps="false"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                                android:id="@+id/llMarket">
+
+                                <ImageView
+                                    android:id="@+id/imageView8"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:scaleType="centerCrop"
+                                    app:srcCompat="@drawable/tienda" />
+
+                                <TextView
+                                    android:text="@string/acticity_principal_tiendas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView9"
+                                    android:paddingTop="8dp"
+                                    android:paddingBottom="8dp"
+                                    android:textColor="@color/gris2"
+                                    android:textAlignment="center"
+                                    android:textAllCaps="false"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -187,66 +201,77 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="0dp"
-                        android:layout_marginBottom="10dp">
+                        android:layout_marginBottom="20dp">
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
+                        <androidx.cardview.widget.CardView
                             android:layout_weight="1"
-                            android:layout_height="wrap_content"
+                            android:background="@drawable/shadow"
+                            android:layout_width="match_parent"
                             android:layout_marginRight="10dp"
-                            android:background="@drawable/shadow"
-                            android:id="@+id/llEncargos">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                app:srcCompat="@drawable/encargos"
-                                android:id="@+id/imageView6"
-                                android:layout_height="110dp"
-                                android:scaleType="fitXY" />
-
-                            <TextView
-                                android:text="@string/acticity_principal_encargos"
+                            app:cardCornerRadius="15dp"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:orientation="vertical"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/textView10"
-                                android:textAlignment="center"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:textAllCaps="false"
-                                android:textColor="@color/gris2"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                                android:background="@drawable/shadow"
+                                android:id="@+id/llEncargos">
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    app:srcCompat="@drawable/encargo"
+                                    android:id="@+id/imageView6"
+                                    android:layout_height="100dp"
+                                    android:scaleType="centerCrop" />
+
+                                <TextView
+                                    android:text="@string/acticity_principal_encargos"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView10"
+                                    android:textAlignment="center"
+                                    android:paddingTop="8dp"
+                                    android:paddingBottom="8dp"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/gris2"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
                             android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
                             android:background="@drawable/shadow"
-                            android:id="@+id/llPidelo">
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="10dp"
+                            app:cardCornerRadius="15dp"
+                            android:layout_height="wrap_content">
 
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="110dp"
-                                app:srcCompat="@drawable/pidelo"
-                                android:id="@+id/imageView10"
-
-                                android:scaleType="fitXY" />
-
-                            <TextView
-                                android:text="@string/acticity_principal_loquequieras"
+                            <LinearLayout
+                                android:orientation="vertical"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/textView12"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:textAllCaps="false"
-                                android:textColor="@color/gris2"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                                android:background="@drawable/shadow"
+                                android:id="@+id/llPidelo">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    app:srcCompat="@drawable/celular"
+                                    android:id="@+id/imageView10"
+                                    android:scaleType="centerCrop" />
+
+                                <TextView
+                                    android:text="@string/acticity_principal_loquequieras"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView12"
+                                    android:paddingTop="8dp"
+                                    android:paddingBottom="8dp"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/gris2"
+                                    android:textAlignment="center"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
 
                     <LinearLayout

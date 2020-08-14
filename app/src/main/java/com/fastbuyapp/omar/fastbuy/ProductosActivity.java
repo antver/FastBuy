@@ -28,6 +28,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Minutos;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.config.GlideApp;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.config.Servidor;
@@ -47,27 +48,37 @@ import static android.os.Build.VERSION.SDK_INT;
 
 public class ProductosActivity extends AppCompatActivity {
     GridView gridView;
-    public String codigo;
+    public String codigo_empresa;
     public String nombreComercial;
     public String categoria;
     ArrayList<Producto> list;
     ProductosListAdapter adapter = null;
     SharedPreferences myPreferences;
+    SharedPreferences.Editor myEditor;
     ImageButton btnCarrito;
     LottieAnimationView animacion1, animacion2;
-    String name, number, tokencito, ubicacion, empresaseleccionada;
+    String name, number, tokencito, ubicacion, empresaseleccionada, portada, logo, costotaper, cobrataper;
+    int categoria_producto;
+    boolean tiendaCerrada, producto_recarga;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productos);
 
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
-         name = myPreferences.getString("Name_Cliente", "");
+        myEditor = myPreferences.edit();
+        name = myPreferences.getString("Name_Cliente", "");
         number = myPreferences.getString("Number_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
         categoria = myPreferences.getString("categoria", "");
         ubicacion = myPreferences.getString("ubicacion", "");
-        empresaseleccionada = myPreferences.getString("empresaseleccionada", "");
+        codigo_empresa = myPreferences.getString("codigo_empresa", "");
+        logo = myPreferences.getString("logo_empresa", "");
+        portada = myPreferences.getString("portada_empresa", "");
+        cobrataper = myPreferences.getString("taper_empresa", "NO");
+        costotaper = myPreferences.getString("costo_taper", "");
+        tiendaCerrada = myPreferences.getBoolean("tiendaCerrada", false);
+
         //añadiendo a favoritos
         ImageButton btnAddFav = (ImageButton) findViewById(R.id.btnAddFav);
         btnAddFav.setOnClickListener(new View.OnClickListener() {
@@ -97,15 +108,14 @@ public class ProductosActivity extends AppCompatActivity {
 
         String nombreImagenPortada;
         Servidor s = new Servidor();
-        if (Globales.imagenFondoEmpresa == "null"){
+        if (portada.equals("")){
             nombreImagenPortada = "default.jpg";
 
         }else {
-            nombreImagenPortada = Globales.imagenFondoEmpresa;
+            nombreImagenPortada = portada;
         }
         String url = "https://"+s.getServidor()+"/empresas/portadas/" + nombreImagenPortada;
-        //String url = "http://"+s.getServidor()+"/empresas/subcategorias/imagenes/" + Globales.imagenSubcategoria;
-        String url2 = "https://"+s.getServidor()+"/empresas/logos/" + Globales.imagenEmpresa;
+        String url2 = "https://"+s.getServidor()+"/empresas/logos/" + logo;
 
         GlideApp.with(ProductosActivity.this)
                 .load(url)
@@ -144,10 +154,7 @@ public class ProductosActivity extends AppCompatActivity {
                 })
                 .into(imgLogo);
 
-        //para listar todos los productos
-        Globales.catProductoSeleccionado = 0;
         listar();
-
         btnCartita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,14 +162,6 @@ public class ProductosActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /*animacion1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProductosActivity.this, CartaActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
         btnListProd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,30 +211,27 @@ public class ProductosActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
-        listar();
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
+        producto_recarga = myPreferences.getBoolean("producto_recarga", false);
+        if(producto_recarga){
+            listar();
+        }
+        //listar();
     }
 
-    /*@Override
-    public void onBackPressed (){
-        Intent intent = new Intent(ProductosActivity.this, EstablecimientoActivity.class);
-        startActivity(intent);
-    }*/
-
     public void listar(){
-        codigo = empresaseleccionada;
-        categoria = String.valueOf(Globales.catProductoSeleccionado);
         try {
-            listarProductos(codigo,"",categoria);
+            categoria_producto = myPreferences.getInt("categoria_producto", 0);
+            listarProductos(codigo_empresa,"");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
 
-    public void listarProductos(String empresa, String filtro, String categoria) throws UnsupportedEncodingException {
+    public void listarProductos(String empresa, String filtro) throws UnsupportedEncodingException {
         String c = URLEncoder.encode(filtro, "UTF-8");
-        //Log.v("empresa_categoria_ubicacion",empresa +"_"+categoria+"_"+ String.valueOf(Globales.ubicacion));
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarProductosXEmpresaXUbicaXCategoriaXFiltro?auth="+tokencito+"&empresa="+empresa+"&ubica="+ubicacion+"&catego="+categoria+"&descrip="+filtro;
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarProductosXEmpresaXUbicaXCategoriaXFiltro?auth="+tokencito+"&empresa="+empresa+"&ubica="+ubicacion+"&catego="+categoria_producto+"&descrip="+filtro;
         EnviarRecibirDatos(consulta);
     }
 
@@ -246,7 +242,6 @@ public class ProductosActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if (response.length()>0){
-                    Log.v("response_Productos",response.toString());
                     try {
                         JSONArray ja = new JSONArray(response);
                         CargarLista(ja);
@@ -281,8 +276,8 @@ public class ProductosActivity extends AppCompatActivity {
             producto.setDescripcion2(objeto.getString("Descripcion2"));
             //esto es en caso la empresa seleccionada cobre el taper
             double Precio;
-            if (Globales.taperEmpresaSel.equals("SI"))
-                 Precio = (double) objeto.getDouble("Precio")+Globales.costoTaperEmpresaSel;
+            if (cobrataper.equals("SI"))
+                Precio = (double) objeto.getDouble("Precio") + Double.parseDouble(costotaper);
             else
                 Precio = objeto.getDouble("Precio");
 
@@ -311,7 +306,7 @@ public class ProductosActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //Toast.makeText(CartaActivity.this, "Hola Producto", Toast.LENGTH_SHORT).show();
-                   if(!Globales.tiendaCerrada){
+                   if(!tiendaCerrada){
                        int codigo =(list.get(position).getCodigo());
                        Producto prod = new Producto();
                        prod.setCodigo(codigo);
@@ -332,8 +327,11 @@ public class ProductosActivity extends AppCompatActivity {
                        empresa.setLatitud(list.get(position).getEmpresa().getLatitud());
                        prod.setEmpresa(empresa);
                        prod.setTiempo(list.get(position).getTiempo());
-                       Globales.productoPersonalizar = prod;
-
+                       //myEditor.putString("codigo_producto", String.valueOf(prod));
+                       //myEditor.commit();
+                       Globales.getInstance().setProductoPersonalizar(prod);
+                       myEditor.putBoolean("producto_recarga", false);
+                       myEditor.commit();
                        Intent intent = new Intent(ProductosActivity.this, PersonalizaPedidoActivity.class);
                        startActivity(intent);
                    }else {

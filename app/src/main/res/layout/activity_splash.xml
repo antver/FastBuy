@@ -5,19 +5,19 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DD01c4a4"
     tools:context="com.fastbuyapp.omar.fastbuy.SplashActivity">
     <ImageView
         android:id="@+id/imageView11"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/personaje" />
+        app:srcCompat="@drawable/pantalla_splash" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#DD01c4a4">
+        android:orientation="vertical">
 
         <LinearLayout
             android:orientation="vertical"

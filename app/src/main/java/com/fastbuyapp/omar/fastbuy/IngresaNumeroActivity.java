@@ -47,8 +47,7 @@ public class IngresaNumeroActivity extends AppCompatActivity {
     String phoneNumber, celular;
     ProgressDialog progDailog = null;
     Button btnRecibir;
-    Typeface typefaceNexa = Typeface.createFromAsset(getAssets(), "fonts/NEXABOLD.otf");
-    Typeface typefaceGothic = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.ttf");
+
     SharedPreferences.Editor myEditor;
 
     @Override
@@ -68,7 +67,8 @@ public class IngresaNumeroActivity extends AppCompatActivity {
         TextView lblIngresa = (TextView) findViewById(R.id.lblIngresa);
         TextView lblnumero = (TextView) findViewById(R.id.lblnumero);
         TextView lblDescripcion = (TextView) findViewById(R.id.lblDescripcion);
-
+        Typeface typefaceNexa = Typeface.createFromAsset(getAssets(), "fonts/NEXABOLD.otf");
+        Typeface typefaceGothic = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.ttf");
         lblSaludo.setTypeface(typefaceNexa);
         lblAgradecimiento.setTypeface(typefaceNexa);
         lblIngresa.setTypeface(typefaceNexa);
@@ -81,9 +81,13 @@ public class IngresaNumeroActivity extends AppCompatActivity {
         }
         SharedPreferences myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
-        celular = myPreferences.getString("Number_Cliente", "unknown");
+        celular = myPreferences.getString("Number_Cliente", "");
         String nombre = myPreferences.getString("Name_Cliente", "");
         lblSaludo.setText(getString(R.string.hola) + ", " + nombre);
+        if(!celular.equals("")){
+            Intent intent = new Intent(IngresaNumeroActivity.this, TutorialActivity.class);
+            startActivity(intent);
+        }
         txtCelularIngresar = (EditText) findViewById(R.id.txtCelularIngresar);
         btnRecibir = (Button) findViewById(R.id.btnRecibir);
         btnRecibir.setTypeface(typefaceGothic);
@@ -115,10 +119,11 @@ public class IngresaNumeroActivity extends AppCompatActivity {
                     return;
                 }else{
                     celular = txtCelularIngresar.getText().toString();
-                    myEditor.putString("Number_Cliente", celular);
-                    //requestCode(v); //descomentar
-                    Intent intent = new Intent(IngresaNumeroActivity.this, TutorialActivity.class); //eliminarlas
-                    startActivity(intent);
+                    //myEditor.putString("Number_Cliente", celular);
+                    requestCode(v); //descomentar
+                    //myEditor.commit();
+                    //Intent intent = new Intent(IngresaNumeroActivity.this, TutorialActivity.class); //eliminarlas
+                    //startActivity(intent);
                 }
             }
         });
@@ -164,7 +169,9 @@ public class IngresaNumeroActivity extends AppCompatActivity {
             // User is signed in
             Log.d("SIGNED ENTRADA", "onAuthStateChanged:signed_in:" + user.getUid());
             //Intent intent = new Intent(IngresaNumeroActivity.this, CiudadActivity.class);
-//            Globales.numeroTelefono = phoneNumber.substring(3);
+            //celular         = phoneNumber.substring(3);
+            myEditor.putString("Number_Cliente", celular);
+             myEditor.commit();
             Intent intent = new Intent(IngresaNumeroActivity.this, TutorialActivity.class);
             startActivity(intent);
         } else {

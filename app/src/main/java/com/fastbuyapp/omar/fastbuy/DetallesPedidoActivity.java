@@ -3,6 +3,7 @@ package com.fastbuyapp.omar.fastbuy;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,18 +12,26 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.detallePedidoListAdapter;
+import com.fastbuyapp.omar.fastbuy.config.GlideApp;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 import com.fastbuyapp.omar.fastbuy.entidades.Producto;
@@ -32,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class DetallesPedidoActivity extends AppCompatActivity {
@@ -43,11 +53,13 @@ public class DetallesPedidoActivity extends AppCompatActivity {
     detallePedidoListAdapter adapter = null;
     String tokencito;
     ImageButton btnCarrito;
-
+    String fotoRepartidor = "";
+    String logoEmpresa = "";
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -64,40 +76,173 @@ public class DetallesPedidoActivity extends AppCompatActivity {
         SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         tokencito = myPreferences.getString("tokencito", "");
-
+        codigoPedido = getIntent().getStringExtra("pedido");
+        //listaDetallePedido(codigoPedido);
+        //cargar_datos(tokencito, codigoPedido);
         //recibiendo codigo de Pedido
-        codigoPedido = getIntent().getStringExtra("NumPedido");
-        SubTotal = getIntent().getStringExtra("SubTotalPedido");
+
+        /*SubTotal = getIntent().getStringExtra("SubTotalPedido");
         Delivery = getIntent().getStringExtra("DeliveryPedido");
         Cargo = getIntent().getStringExtra("CargoPedido");
         Descuento = getIntent().getStringExtra("DescuentoPedido");
         Total = getIntent().getStringExtra("TotalPedido");
         estado = getIntent().getStringExtra("EstadoPedido");
-        fecha = getIntent().getStringExtra("FechaPedido");
+        fecha = getIntent().getStringExtra("FechaPedido");*/
 
         //Inicializamos Componentes
-        TextView txtNumPedido = (TextView) findViewById(R.id.txtNroPedido);
-        TextView txtFecha = (TextView) findViewById(R.id.txtFechaPedido);
-        TextView txtSubTotalPedido = (TextView) findViewById(R.id.txtSubTotalPedidoConfirmar);
-        TextView txtDeliveryPedido = (TextView) findViewById(R.id.txtDeliveryPedido);
-        TextView txtCargoPedido = (TextView) findViewById(R.id.txtCargoPedido);
-        TextView txtDescuentoPedido = (TextView) findViewById(R.id.txtDescuentoPedido);
-        TextView txtTotalPedido = (TextView) findViewById(R.id.txtTotalPedido);
-        TextView txtEstado = (TextView) findViewById(R.id.txtEstadoPedido);
+        final TextView txtNroPedido = (TextView) findViewById(R.id.txtNroPedido);
+        final TextView txtEstablecimiento = (TextView) findViewById(R.id.txtEstablecimiento);
+        final TextView txtTotal = (TextView) findViewById(R.id.txtTotal);
+        final TextView txtEstado = (TextView) findViewById(R.id.txtEstado);
+
+        final TextView txtNombreRepartidor = (TextView) findViewById(R.id.txtNombreRepartidor);
+        final ImageView imgLogo = (ImageView) findViewById(R.id.imgLogo);
+        final ImageView imgRepartidor = (ImageView) findViewById(R.id.imgRepartidor);
+
+        final TextView txtFecha = (TextView) findViewById(R.id.txtFechaPedido);
+        final TextView txtSubTotalPedido = (TextView) findViewById(R.id.txtSubTotalPedidoConfirmar);
+        final TextView txtDeliveryPedido = (TextView) findViewById(R.id.txtDeliveryPedido);
+        final TextView txtCargoPedido = (TextView) findViewById(R.id.txtCargoPedido);
+        final TextView txtDescuentoPedido = (TextView) findViewById(R.id.txtDescuentoPedido);
+        final TextView txtTotalPedido = (TextView) findViewById(R.id.txtTotalPedido);
+        final TextView txtDireccion = (TextView) findViewById(R.id.txtDireccion);
+        final LinearLayout layoutRepartidor = (LinearLayout) findViewById(R.id.layoutRepartidor);
         gridView = (GridView) findViewById(R.id.dtgvItemsPedido);
 
-        txtNumPedido.setText("Pedido Nº "+codigoPedido);
-        txtFecha.setText(fecha);
-        txtSubTotalPedido.setText("s/"+SubTotal);
-        txtDeliveryPedido.setText("s/"+Delivery);
-        txtCargoPedido.setText("s/"+Cargo);
-        txtDescuentoPedido.setText("s/-"+Descuento);
-        txtTotalPedido.setText("s/"+Total);
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarDetallePedido_XCodigoNuevo?auth="+ tokencito+"&codigo="+codigoPedido;
+        progDailog = new ProgressDialog(DetallesPedidoActivity.this);
+        progDailog.setMessage("Cargando...");
+        progDailog.setIndeterminate(true);
+        progDailog.setCancelable(false);
+        progDailog.show();
 
-        Log.v("estadoPedido",estado);
-        muestraEstado(txtEstado, Integer.valueOf(estado));
+        RequestQueue queue = Volley.newRequestQueue(DetallesPedidoActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, consulta, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.length() > 0) {
+                    try {
+                        JSONArray ja = new JSONArray(response);
+                        list = new ArrayList<>();
+                        for (int i = 0; i < ja.length(); i++) {
+                            JSONObject objeto = ja.getJSONObject(i);
+                            txtNroPedido.setText("Orden Nº " + objeto.getString("PED_Codigo"));
+                            txtFecha.setText(objeto.getString("PED_FechaPedido"));
+                            txtNombreRepartidor.setText(objeto.getString("PR_Nombres") + " " + objeto.getString("PR_Apellidos"));
+                            fotoRepartidor = objeto.getString("PR_Foto");
+                            logoEmpresa = objeto.getString("Logo");
 
-        listaDetallePedido(codigoPedido);
+                            if(objeto.getString("PED_Atendido").equals("1") || objeto.getString("PED_Atendido").equals("3") || objeto.getString("PED_Atendido").equals("10")){
+                                layoutRepartidor.setVisibility(View.VISIBLE);
+                                if(objeto.getString("PR_Nombres") == null){
+                                    txtNombreRepartidor.setText("No tiene un repartidor asignado.");
+                                }
+                            }
+                            else{
+                                layoutRepartidor.setVisibility(View.GONE);
+                            }
+                            int numestado = objeto.getInt("PED_Atendido");
+                            String estado = "";
+                            if(numestado == 1) {
+                                estado = "Se entregó";
+                            }
+                            else if(numestado == 2) {
+                                estado = "Cancelado";
+                            }
+                            else {
+                                estado = "En curso";
+                            }
+                            txtEstado.setText(estado);
+                            txtEstablecimiento.setText(objeto.getString("Establecimiento"));
+                            txtTotal.setText(objeto.getString("Total"));
+                            txtDireccion.setText(objeto.getString("PED_Direccion"));
+                            txtSubTotalPedido.setText("s/" + objeto.getString("Total"));
+                            txtDeliveryPedido.setText("s/" + objeto.getString("PED_MontoDelivery"));
+                            txtCargoPedido.setText("s/" + objeto.getString("PED_MontoCargo"));
+                            txtDescuentoPedido.setText("s/-" + objeto.getString("PED_Descuento"));
+                            double st = objeto.getDouble("Total");
+                            double md = objeto.getDouble("PED_MontoDelivery");
+                            double mc = objeto.getDouble("PED_MontoCargo");
+                            double de = objeto.getDouble("PED_Descuento");
+                            double suma= (st + md + mc - de);
+
+                            txtTotalPedido.setText("s/" + String.format("%.2f",suma).toString().replace(",","."));
+
+                            PedidoDetalle detalle = new PedidoDetalle();
+                            if (objeto.getInt("PRO_Codigo") == 0) {
+                                detalle.setEsPromocion(true);
+                                Promocion prom = new Promocion();
+                                prom.setCodigo(objeto.getInt("PRO_Codigo"));
+                                prom.setDescripcion(objeto.getString("Producto"));
+                                prom.setImagen(objeto.getString("ImagenProducto"));
+                                detalle.setPromocion(prom);
+                            }else {
+                                detalle.setEsPromocion(false);
+                                Producto prod = new Producto();
+                                prod.setCodigo(objeto.getInt("PRO_Codigo"));
+                                prod.setDescripcion(objeto.getString("Producto"));
+                                prod.setImagen(objeto.getString("ImagenProducto"));
+                                detalle.setProducto(prod);
+                            }
+                            detalle.setPresentacion(objeto.getString("Presentacion"));
+                            detalle.setCantidad(objeto.getInt("PD_Cantidad"));
+                            detalle.setTotal(objeto.getDouble("PD_Total"));
+                            list.add(detalle);
+                        }
+                        String urlLogo = "https://fastbuych.com/empresas/logos/" + URLEncoder.encode(logoEmpresa);
+                        GlideApp.with(DetallesPedidoActivity.this)
+                                .load(urlLogo)
+                                .centerCrop()
+                                .placeholder(R.drawable.restaurante)
+                                .into(imgLogo);
+
+                        String urlRepartidor = "https://fastbuych.com/imagenes/agentesreparto/" + URLEncoder.encode(fotoRepartidor);
+                        GlideApp.with(DetallesPedidoActivity.this)
+                                .load(urlRepartidor)
+                                .centerCrop()
+                                .placeholder(R.drawable.user_image)
+                                .into(imgRepartidor);
+                        gridView.setNumColumns(1);
+                        adapter = new detallePedidoListAdapter(DetallesPedidoActivity.this, R.layout.item_detalle_pedido, list);
+                        gridView.setAdapter(adapter);
+                        gridView.setVerticalScrollBarEnabled(false);
+                        setGridViewHeightBasedOnChildren(gridView, 1);
+                        progDailog.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        progDailog.dismiss();
+                    }
+                    catch (IllegalArgumentException i){
+                        i.printStackTrace();
+                        progDailog.dismiss();
+                    }
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+
+        gridView.setOnTouchListener(new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    return true;
+                }
+                return false;
+            }
+
+        });
+
 
         //Menu
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
@@ -172,71 +317,34 @@ public class DetallesPedidoActivity extends AppCompatActivity {
         txt.setBackgroundResource(color);
     }
 
-    public void listaDetallePedido(String codigo)
-    {
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarDetallePedido_XCodigo?auth="+ tokencito+"&codigo="+codigo;
-        progDailog = new ProgressDialog(DetallesPedidoActivity.this);
-        progDailog.setMessage("Cargando...");
-        progDailog.setIndeterminate(true);
-        progDailog.setCancelable(false);
-        progDailog.show();
-        EnviarRecibirDatos(consulta);
+    public void setGridViewHeightBasedOnChildren(GridView gridView, int columns) {
+        ListAdapter listAdapter = gridView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int items = listAdapter.getCount();
+        int rows = 0;
+
+        View listItem = listAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if( items > columns ){
+            x = items/columns;
+            rows = (int) (x + 1);
+            totalHeight *= rows;
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight;
+        gridView.setLayoutParams(params);
+
     }
 
-    public void EnviarRecibirDatos(String URL){
-
-        RequestQueue queue = Volley.newRequestQueue(DetallesPedidoActivity.this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response.length() > 0) {
-                    try {
-                        JSONArray ja = new JSONArray(response);
-                        list = new ArrayList<>();
-                        for (int i = 0; i < ja.length(); i++) {
-                            JSONObject objeto = ja.getJSONObject(i);
-                            PedidoDetalle detalle = new PedidoDetalle();
-                            if (objeto.getInt("Codigo_PROD") == 0) {
-                                detalle.setEsPromocion(true);
-                                Promocion prom = new Promocion();
-                                prom.setCodigo(objeto.getInt("Codigo_PROM"));
-                                prom.setDescripcion(objeto.getString("Nombre_PROM"));
-                                detalle.setPromocion(prom);
-                            } else {
-                                detalle.setEsPromocion(false);
-                                Producto prod = new Producto();
-                                prod.setCodigo(objeto.getInt("Codigo_PROD"));
-                                prod.setDescripcion(objeto.getString("Nombre_PROD"));
-                                detalle.setProducto(prod);
-                            }
-                            detalle.setCantidad(objeto.getInt("Cantidad"));
-                            detalle.setTotal(objeto.getDouble("Total"));
-                            list.add(detalle);
-                        }
-
-                        gridView.setNumColumns(1);
-                        adapter = new detallePedidoListAdapter(DetallesPedidoActivity.this, R.layout.list_producto_pedido, list);
-                        gridView.setAdapter(adapter);
-                        progDailog.dismiss();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        progDailog.dismiss();
-                    }
-                    catch (IllegalArgumentException i){
-                        i.printStackTrace();
-                        progDailog.dismiss();
-                    }
-                }
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        queue.add(stringRequest);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -250,4 +358,6 @@ public class DetallesPedidoActivity extends AppCompatActivity {
         onBackPressed();
         return false;
     }
+
+
 }

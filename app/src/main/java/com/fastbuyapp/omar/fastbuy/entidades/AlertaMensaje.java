@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 
 public class AlertaMensaje extends DialogFragment {
-
+/**************
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -41,6 +41,6 @@ public class AlertaMensaje extends DialogFragment {
         });
 
         return builder.create();
-    }
+    }*****/
 
 }

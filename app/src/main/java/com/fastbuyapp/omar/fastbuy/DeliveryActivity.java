@@ -5,7 +5,6 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,10 +24,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaSubcategoriaListAdapter;
-import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.EmpresaSubcategoria;
+import com.fastbuyapp.omar.fastbuy.entidades.Pedido;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +49,8 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +133,6 @@ public class DeliveryActivity extends AppCompatActivity {
         //String URL = "https://"+s.getServidor()+"/app/consultasapp/app_empresa_subcategoria_xcategoria_xubicacion.php?categoria=1&ubicacion=1&descripcion="+"";
         //String URL = "https://"+s.getServidor()+"/app/consultasapp/app_empresa_subcategoria_xcategoria_xubicacion.php?categoria="+String.valueOf(Globales.categoria)+"&ubicacion="+String.valueOf(Globales.ubicacion)+"&descripcion="+"";
 
-        //Globales.tokencito; //este lo usare en las APIS
         String ubicacion = myPreferences.getString("ubicacion", "unknown");
         String tokencito = myPreferences.getString("tokencito", "unknown");
         String categoriaseleccionada = myPreferences.getString("categoria", "unknown");

@@ -6,54 +6,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HistorialPedidosActivity">
-    <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blanco"
-        android:theme="?attr/actionBarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="35dp"
+        android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
-        android:background="@color/fastbuy">
-        <TextView
-            android:id="@+id/txtNameUserHistorial"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@drawable/shadow_perfil"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Juan Pérez Martinez"
-            android:textSize="20sp"
-            android:maxLines="1"
-            android:textStyle="bold"
-            android:textColor="@color/blanco"/>
-        <TextView
-            android:id="@+id/txtNumberUserHistorial"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_phone_white"
-            android:text="956823123"
-            android:textSize="18sp"
-            android:textColor="@color/blanco"/>
-    </LinearLayout>
+            android:id="@+id/btnHistorialPedidos"
+            android:layout_marginVertical="10dp"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                app:srcCompat="@drawable/pedidos" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textSize="16dp"
+                android:text="Historial de pedidos"/>
+        </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="1"
-        android:background="@color/blanco"
         android:paddingTop="9dp">
+
+        <TextView
+            android:id="@+id/txtEnCurso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shadow_perfil"
+            android:drawableRight="@drawable/ic_chevron_left_black_24dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="Pedidos en curso"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <GridView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/dtgvHistorialPedidos"
             android:numColumns="1"
+            android:visibility="gone"
             android:layout_marginBottom="60dp"/>
-        <Button
+
+        <TextView
+            android:id="@+id/txtFinalizados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shadow_perfil"
+            android:drawableRight="@drawable/ic_chevron_left_black_24dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="Pedidos finalizados"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dtgvHistorialPedidosAtendidos"
+            android:numColumns="1"
+            android:visibility="gone"
+            android:layout_marginBottom="60dp"/>
+
+        <TextView
+            android:id="@+id/txtCancelados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shadow_perfil"
+            android:drawableRight="@drawable/ic_chevron_left_black_24dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="Pedidos cancelados"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dtgvHistorialPedidosCancelados"
+            android:numColumns="1"
+            android:visibility="gone"
+            android:layout_marginBottom="60dp"/>
+
+        <!--<Button
             android:id="@+id/btnCargarMas"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -64,7 +117,7 @@
             android:background="@drawable/boton_rojo"
             android:layout_marginTop="-50dp"
             android:layout_marginHorizontal="80dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"/>-->
     </LinearLayout>
 
     <!--Start MmenuPrincipal-->
@@ -110,6 +163,7 @@
             android:padding="12dp"
             app:srcCompat="@drawable/ic_user_circle_o"
             android:tint="@color/fastbuy" />
+    </LinearLayout>
     </LinearLayout>
     <!--End MmenuPrincipal-->
 </LinearLayout>

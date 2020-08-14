@@ -30,11 +30,13 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                 android:id="@+id/scrollGeneral"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <!--Start Title-->
+                    <!--
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -43,51 +45,62 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                         android:gravity="center"
                         android:paddingTop="10dp"
                         android:textColor="@color/negro"
-                        android:paddingBottom="10dp"/>
+                        android:paddingBottom="10dp"/>-->
                     <!--End Title-->
 
                     <!--Start Cuadro Humo-->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/imgProduct"
+                            android:layout_width="match_parent"
+                            android:layout_height="290dp"
+                            android:layout_gravity="center_horizontal"
+                            android:scaleType="centerCrop"
+                            tools:srcCompat="@drawable/trujillo" />
+                    </FrameLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/cuadradopersonalizapedido"
                         android:orientation="vertical"
+                        android:layout_marginTop="-50dp"
                         android:paddingBottom="20dp">
+
                         <!--Start Producto-->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_margin="10dp">
+                            android:layout_margin="15dp"
+                            android:orientation="horizontal">
+
                             <!--Start Descripcion producto-->
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:layout_weight="2"
-                                android:layout_marginRight="20dp"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginTop="10dp">
+                                android:background="@drawable/shadow"
+                                android:padding="15dp">
 
                                 <TextView
                                     android:id="@+id/txtNameProd"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="left"
-                                    android:paddingTop="10dp"
                                     android:text="Producto"
                                     android:textColor="@color/humo_gris"
-                                    android:textSize="16sp"
+                                    android:textSize="20sp"
                                     android:textStyle="bold" />
+
                                 <TextView
                                     android:id="@+id/txtDescripcionProd"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="descripción del producto"
-                                    android:textSize="10sp"
                                     android:gravity="left"
+                                    android:text="descripción del producto"
                                     android:textColor="@color/humo_gris"
-                                    android:paddingBottom="6dp"/>
+                                    android:textSize="14sp" />
+
                                 <TextView
                                     android:id="@+id/txtIncluyeTaper"
                                     android:text="Inc. Taper"
@@ -97,6 +110,7 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                                     android:textStyle="normal|bold"
                                     android:textSize="10sp"
                                     android:visibility="gone"/>
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -117,6 +131,7 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                                         android:gravity="right"
                                         android:textSize="20sp" />
                                 </LinearLayout>
+
                             </LinearLayout>
                             <!--End Descripcion producto-->
                             <!--Start Imagen producto-->
@@ -126,12 +141,7 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                                 android:orientation="vertical"
                                 android:layout_marginRight="15dp"
                                 android:layout_marginTop="15dp">
-                                <ImageView
-                                    android:background="@drawable/imagenperzonalizapedido"
-                                    android:id="@+id/imgProduct"
-                                    android:scaleType="fitCenter"
-                                    android:layout_width="110dp"
-                                    android:layout_height="110dp"/>
+
                             </LinearLayout>
                             <!--End Imagen producto-->
                         </LinearLayout>
@@ -150,11 +160,11 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
-                                android:paddingTop="20dp"
+                                android:paddingTop="10dp"
                                 android:paddingBottom="10dp"
                                 android:text="Elige el tamaño de tu preferencia"
                                 android:textColor="@color/humo_gris"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
                             <GridView
                                 android:layout_width="match_parent"
@@ -235,7 +245,7 @@ tools:context="com.fastbuyapp.omar.fastbuy.PersonalizaPedidoActivity">
                         android:background="@drawable/botonverdeagregaralcarrito"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="50dp"
                         android:text="Agregar al carrito"
                         android:textColor="@color/blanco"
                         android:textSize="20sp"/>

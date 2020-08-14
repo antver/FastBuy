@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Minutos;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaListAdapter;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaListAdapterMosaico;
 import com.fastbuyapp.omar.fastbuy.adaptadores.RecyclerAdapterPromociones;
@@ -60,14 +61,13 @@ public class FavoritosActivity extends AppCompatActivity {
     String tokencito, ubicacion, numero;
     @Override
     protected void onResume() {
-        Globales.isFavoritos = true;
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
     protected void onStop() {
-        Globales.isFavoritos = false;
         super.onStop();
     }
 
@@ -103,24 +103,24 @@ public class FavoritosActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int codigo =(list.get(position).getCodigo());
-                myEditor.putString("empresaseleccionada", String.valueOf(codigo));
-                String nombreComercial = list.get(position).getNombreComercial();
-                Globales.nombreEmpresaSeleccionada = nombreComercial;
-                Globales.LongitudEmpresaSeleccionada = list.get(position).getLongitud();
-                Globales.LatitudEmpresaSeleccionada =  list.get(position).getLatitud();
-                Globales.imagenEmpresa = list.get(position).getImagen();
-                Globales.imagenFondoEmpresa = list.get(position).getImagenFondo();
-                Globales.taperEmpresaSel = list.get(position).getTaper();
-                Globales.costoTaperEmpresaSel = list.get(position).getCostoTaper();
+                myEditor.putString("codigo_empresa", String.valueOf(codigo));
+                myEditor.putString("nombre_empresa", list.get(position).getNombreComercial());
+                myEditor.putString("longitud_empresa", String.valueOf(list.get(position).getLongitud()));
+                myEditor.putString("latitud_empresa", String.valueOf(list.get(position).getLatitud()));
+                myEditor.putString("logo_empresa", list.get(position).getImagen());
+                myEditor.putString("portada_empresa", list.get(position).getImagenFondo());
+                myEditor.putString("taper_empresa", list.get(position).getTaper());
+                myEditor.putString("costo_taper", String.valueOf(list.get(position).getCostoTaper()));
                 String categoria = String.valueOf(list.get(position).getCategoria());
                 myEditor.putString("categoria", categoria);
-                myEditor.commit();
                 if(list.get(position).getEstadoAbierto().equals("Abierto")){
-                    Globales.tiendaCerrada = false;
+                    myEditor.putBoolean("tiendaCerrada", false);
                 }
                 else{
-                    Globales.tiendaCerrada = true;
+                    myEditor.putBoolean("tiendaCerrada", true);
                 }
+                myEditor.commit();
+
                 Intent intent = new Intent(FavoritosActivity.this, ProductosActivity.class);
                 startActivity(intent);
             }

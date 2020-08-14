@@ -113,11 +113,11 @@ public class EmpresaListAdapterMosaico extends BaseAdapter {
         }
         String urlPortada = "https://"+s.getServidor()+"/empresas/portadas/" + URLEncoder.encode(nombreImagenPortada);
 
-        Log.v("portada", urlPortada);
+        //Log.v("portada", urlPortada);
         GlideApp.with(context)
                 .load(urlPortada)
                 .centerCrop()
-                .override(200, 150)
+                .override(300, 150)
                 .transform(new RoundedCornersTransformation(20,0, RoundedCornersTransformation.CornerType.TOP))
                 .into(holder.imageViewPortada);
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,10 +20,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.config.GlideApp;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -48,7 +51,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -61,14 +65,15 @@ public class UserActivity extends AppCompatActivity {
         TextView txtNumber = (TextView) findViewById(R.id.txtNumberUser);
         TextView txtEmail = (TextView) findViewById(R.id.txtEmailUser);
         final ImageView imgFoto = (ImageView) findViewById(R.id.imgFotoUser);
-        ImageButton btnCerrarSesion =(ImageButton) findViewById(R.id.btnCloseSession);
-        ImageButton btnMisPedidos =(ImageButton) findViewById(R.id.btnHistorialPedidos);
-        ImageButton btnMisDirecciones =(ImageButton) findViewById(R.id.btnDireccionesPrincipales);
-        ImageButton btnMisEncargos =(ImageButton) findViewById(R.id.btnHistorialEncargos);
-        ImageButton btnMisSaldos =(ImageButton) findViewById(R.id.btnSaldos);
-        ImageButton btnContactanos =(ImageButton) findViewById(R.id.btnContactanos);
-        TextView btnCompartir = (TextView) findViewById(R.id.btnCompartirAmigo);
-        TextView btnCalificaAplicacion = (TextView) findViewById(R.id.btnCalificaAplicacion);
+        //ImageButton btnCerrarSesion =(ImageButton) findViewById(R.id.btnCloseSession);
+        LinearLayout btnMisPedidos =(LinearLayout) findViewById(R.id.btnHistorialPedidos);
+        //ImageButton btnMisDirecciones =(ImageButton) findViewById(R.id.btnDireccionesPrincipales);
+        //ImageButton btnMisEncargos =(ImageButton) findViewById(R.id.btnHistorialEncargos);
+        LinearLayout btnMisSaldos =(LinearLayout) findViewById(R.id.btnSaldos);
+        LinearLayout btnContactanos =(LinearLayout) findViewById(R.id.btnContactanos);
+        LinearLayout Puntos =(LinearLayout) findViewById(R.id.Puntos);
+        CardView btnCompartir = (CardView) findViewById(R.id.btnCompartirAmigo);
+        CardView btnCalificaAplicacion = (CardView) findViewById(R.id.btnCalificaAplicacion);
         ImageView btnEditaNombre = findViewById(R.id.btnEditaNombre);
 
         //Obteniendo Datos de la memoria Caché
@@ -79,7 +84,7 @@ public class UserActivity extends AppCompatActivity {
         String nameUser = myPreferences.getString("Name_Cliente", "Default");
         String numberUser = myPreferences.getString("Number_Cliente", "987654321");
         String emailUser = myPreferences.getString("Email_Cliente", "Ventas@fastbuych.com");
-        String photoUser = myPreferences.getString("Photo_Cliente", "R.drawable.user_image");
+        String photoUser = myPreferences.getString("Photo_Cliente", "R.drawable.perfil");
 
         //mostrando datos guardados
         Log.v("miURlFavorito",idUser);
@@ -89,7 +94,7 @@ public class UserActivity extends AppCompatActivity {
 
         GlideApp.with(UserActivity.this)
                 .load(photoUser)
-                .error(R.drawable.user_image)
+                .error(R.drawable.perfil)
                 .fitCenter()
                 .transform(new CircleCrop())
                 .into(imgFoto);
@@ -155,13 +160,21 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        btnMisDirecciones.setOnClickListener(new View.OnClickListener() {
+        Puntos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserActivity.this, FastPuntosActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        /*btnMisDirecciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserActivity.this, DireccionesActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         btnMisPedidos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,8 +196,9 @@ public class UserActivity extends AppCompatActivity {
         btnContactanos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://www.fastbuych.com/");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+                //Uri uri = Uri.parse("https://www.fastbuych.com/");
+                Intent intent = new Intent(UserActivity.this, SoporteActivity.class);
                 startActivity(intent);
                 /*Toast toast = Toast.makeText(UserActivity.this, "En Desarrollo, Escucha música y manten la calma...",Toast.LENGTH_SHORT);
                 View vistaToast = toast.getView();
@@ -193,17 +207,17 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        btnMisEncargos.setOnClickListener(new View.OnClickListener() {
+        /*btnMisEncargos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserActivity.this, HistorialPedidosActivity.class);
                 intent.putExtra("tipo","extra");
                 startActivity(intent);
             }
-        });
+        });*/
 
         //Cerrando la sesion
-        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
+        /******btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -245,12 +259,12 @@ public class UserActivity extends AppCompatActivity {
                                     toast.show();
                                 }
                             });
-                        /*}else if (Globales.OpcionInicio == "GOOGLE"){
+                        }else if (Globales.OpcionInicio == "GOOGLE"){
                             progDailog.dismiss();
                             Toast toast = Toast.makeText(UserActivity.this, "Cierre de sesion de Facebook, en desarrollo...",Toast.LENGTH_SHORT);
                             View vistaToast = toast.getView();
                             vistaToast.setBackgroundResource(R.drawable.toast_yellow);
-                            toast.show();*/
+                            toast.show();
                         }else{
                             myEditor.clear();
                             myEditor.commit();
@@ -258,15 +272,15 @@ public class UserActivity extends AppCompatActivity {
                             retornaAlInicio();
                         }
 
-                        /*SharedPreferences.Editor editor = myPreferences.edit();
-                        editor.clear();
-                        editor.commit();*/
+                        //SharedPreferences.Editor editor = myPreferences.edit();
+                        //editor.clear();
+                        //editor.commit();
                         UserActivity.this.finishAffinity();
                         startActivity(new Intent(getBaseContext(), OpcionLoginActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
                         finish();
 
-                        /*if(mAuthListener != null){
+                        if(mAuthListener != null){
                             Toast toast = Toast.makeText(UserActivity.this, "Tiene Datos",Toast.LENGTH_SHORT);
                             View vistaToast = toast.getView();
                             vistaToast.setBackgroundResource(R.drawable.toast_yellow);
@@ -278,7 +292,7 @@ public class UserActivity extends AppCompatActivity {
                             View vistaToast = toast.getView();
                             vistaToast.setBackgroundResource(R.drawable.toast_yellow);
                             toast.show();
-                        }*/
+                        }
                     }
 
                 });
@@ -292,7 +306,7 @@ public class UserActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-        });
+        });******/
 
         //Menu
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);

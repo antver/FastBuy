@@ -48,9 +48,8 @@ public class PideloActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
-        Globales.isExtra = false;
-        Log.v("State_Pidelo",String.valueOf(Globales.isExtra));
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
@@ -239,15 +238,17 @@ public class PideloActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (txtLugarComprar.getText().length() > 0 && txtProductoComprar.getText().length() >0){
-                    Globales.isExtra = true;
-                    //Toast.makeText(PideloActivity.this, "En Desarrollo...", Toast.LENGTH_SHORT).show();
-                    Globales.LugarComprarPidelo = txtLugarComprar.getText().toString();
-                    Globales.DetallePidelo = txtProductoComprar.getText().toString();
-                    Globales.NumeroContactoPidelo = txtNumberContactoPidelo.getText().toString();
+                    String LugarRecogerEncargo =  txtLugarComprar.getText().toString();
+                    String DetalleEncargo =  txtProductoComprar.getText().toString();
+                    String NumeroContactoEncargo = txtNumberContactoPidelo.getText().toString();
+                    myEditor.putString("LugarRecogerEncargo", LugarRecogerEncargo);
+                    myEditor.putString("DetalleEncargo", DetalleEncargo);
+                    myEditor.putString("NumeroContactoEncargo", NumeroContactoEncargo);
+                    myEditor.commit();
+
                     Intent intent = new Intent(PideloActivity.this, PagoEncargoActivity.class);
                     startActivity(intent);
                 }else{
-                    Globales.isExtra = false;
                     Toast toast = Toast.makeText(PideloActivity.this, "Por favor, Complete todos los datos.", Toast.LENGTH_SHORT);
                     View vistaToast = toast.getView();
                     vistaToast.setBackgroundResource(R.drawable.toast_yellow);

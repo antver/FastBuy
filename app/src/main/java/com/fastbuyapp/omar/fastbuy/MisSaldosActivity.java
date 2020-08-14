@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -21,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.MisDireccionesAdapter;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.Cupon;
@@ -44,11 +46,13 @@ public class MisSaldosActivity extends AppCompatActivity {
     SharedPreferences myPreferences;
     ImageButton btnCarrito;
     String tokencito, celular;
+    LinearLayout layoutNoHay;
 
     @Override
     protected void onResume() {
         super.onResume();
-        Globales.valida.validarCarritoVacio(btnCarrito);
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
         listarCupones();
     }
 
@@ -57,25 +61,17 @@ public class MisSaldosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_saldos);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
-
         //Inicializando Componentes
         gridView = (GridView) findViewById(R.id.gridMisSaldos);
-        TextView txtNombreUser = (TextView) findViewById(R.id.txtNameUserSaldos);
-        TextView txtNumberUser = (TextView) findViewById(R.id.txtNumberUserSaldos);
+        //TextView txtNombreUser = (TextView) findViewById(R.id.txtNameUserSaldos);
+        //TextView txtNumberUser = (TextView) findViewById(R.id.txtNumberUserSaldos);
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         celular = myPreferences.getString("Number_Cliente", "unknown");
         String nombre = myPreferences.getString("Name_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
-        txtNombreUser.setText(nombre);
-        txtNumberUser.setText(celular);
-
+        //txtNombreUser.setText(nombre);
+        //txtNumberUser.setText(celular);
+        layoutNoHay = (LinearLayout) findViewById(R.id.layoutNoHay);
         //Menu
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
         ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
@@ -135,6 +131,10 @@ public class MisSaldosActivity extends AppCompatActivity {
                     try {
                         JSONArray ja = new JSONArray(response);
                         list = new ArrayList<>();
+                        layoutNoHay.setVisibility(View.GONE);
+                        if(ja.length() == 0){
+                            layoutNoHay.setVisibility(View.VISIBLE);
+                        }
                         for (int i = 0; i < ja.length(); i++) {
                             JSONObject objeto = ja.getJSONObject(i);
                             Cupon cupon = new Cupon();

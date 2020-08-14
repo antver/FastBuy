@@ -21,10 +21,11 @@ android {
         applicationId 'com.fastbuyapp.omar.fastbuy'
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 32
-        versionName "3.2.5"
+        versionCode 35
+        versionName "3.3.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resConfigs "es", "en"
     }
     buildTypes {
         release {

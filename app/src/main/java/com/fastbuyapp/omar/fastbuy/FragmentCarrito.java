@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 
 public class FragmentCarrito extends Fragment {
-    private Typeface fuente1;
+    /********private Typeface fuente1;
     public ArrayList<PedidoDetalle> listaPedidos;
     public ArrayList<DistanciaPedidoDetalle> listaDistancias;
     GridView gridView;
@@ -149,5 +149,5 @@ public class FragmentCarrito extends Fragment {
         });
 
 
-    }
+    }*******/
 }

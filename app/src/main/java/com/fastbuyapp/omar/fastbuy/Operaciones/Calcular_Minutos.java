@@ -3,6 +3,9 @@ package com.fastbuyapp.omar.fastbuy.Operaciones;
 import android.util.Log;
 
 import com.fastbuyapp.omar.fastbuy.config.Globales;
+import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
+
+import java.util.ArrayList;
 
 public class Calcular_Minutos {
     public int ObtenMinutos(String Hora){
@@ -22,17 +25,17 @@ public class Calcular_Minutos {
             miHora = "0"+String.valueOf(Hora)+":"+String.valueOf(min)+":00";
         else
             miHora = String.valueOf(Hora)+":"+String.valueOf(min)+":00";
-        Log.v("horita",miHora.toString());
         return miHora;
     }
 
     public int ObtenMayor(){
+        Globales globales = new Globales();
+        ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
         int mayor = 0;
-        for (int i=0; i<Globales.listaPedidos.size(); i++){
-            if (Globales.listaPedidos.get(i).getTiempo()> mayor)
-                mayor = Globales.listaPedidos.get(i).getTiempo();
+        for (int i=0; i<listapedidos.size(); i++){
+            if (listapedidos.get(i).getTiempo()> mayor)
+                mayor = listapedidos.get(i).getTiempo();
         }
-
         return mayor;
     }
 }

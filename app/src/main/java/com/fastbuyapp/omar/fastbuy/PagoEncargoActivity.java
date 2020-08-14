@@ -19,12 +19,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 
 import org.json.JSONException;
@@ -40,31 +42,24 @@ public class PagoEncargoActivity extends AppCompatActivity {
     ProgressDialog progDailog = null;
     SharedPreferences.Editor myEditor;
     ImageButton btnCarrito;
-    String tokencito, DireccionSeleccionada_Encargo, DireccionSeleccionada_Extra, CiudadDireccionSeleccionada_Extra;
-    String number, LatitudSeleccionada_Extra, LongitudSeleccionada_Extra, ciudad;
+    String tokencito, direccion_seleccionada;
+    String number, latitud_seleccionada, longitud_seleccionada, ciudad, categoria, name;
+    String LugarRecogerEncargo, DetalleEncargo, NumeroContactoEncargo;
+    SharedPreferences myPreferences;
+    TextView txtDeliveryTotal;
     @Override
     public void onResume() {
         super.onResume();
 
-        Globales.valida.validarCarritoVacio(btnCarrito);
-
+        ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);
+        PreferenceManager.getDefaultSharedPreferences(this);
+        categoria  = myPreferences.getString("categoria", "0");
+        float costoEnvio = myPreferences.getFloat("monto_delivery", 0);
         //Start Logica para el pago
-        double costoEnvio;
-        if(Globales.isEncargo){
-            costoEnvio = Globales.montoDeliveryEncargo;
-        }
-        else if(Globales.isExtra){
-            costoEnvio = Globales.montoDeliveryPidelo;
-        }
-        else {
-            costoEnvio = 0.0;
-        }
-        Log.v("costoEnvio_extra", String.format("%.1f",costoEnvio));
-
         // Iniciando variables para Mostrar datos calculados
-        TextView txtDeliveryTotal = (TextView) findViewById(R.id.txtDeliveryGeneralEncargo);
-
-        txtDeliveryTotal.setText("S/"+ String.format("%.2f",costoEnvio).toString().replace(",","."));
+        txtDeliveryTotal = (TextView) findViewById(R.id.txtDeliveryGeneralEncargo);
+        txtDeliveryTotal.setText(String.format("%.2f",costoEnvio).toString().replace(",","."));
         //End Logica para el pago
     }
 
@@ -85,27 +80,30 @@ public class PagoEncargoActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
 
 
-        SharedPreferences myPreferences;
+
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
 
-        final String name = myPreferences.getString("Name_Cliente", "");
+        name = myPreferences.getString("Name_Cliente", "");
         number = myPreferences.getString("Number_Cliente", "");
         ciudad = myPreferences.getString("City_Cliente", "");
         final String e_mail = myPreferences.getString("Email_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
-        DireccionSeleccionada_Encargo = myPreferences.getString("DireccionSeleccionada_Encargo", "0");
-        DireccionSeleccionada_Extra = myPreferences.getString("DireccionSeleccionada_Extra", "0");
-        CiudadDireccionSeleccionada_Extra = myPreferences.getString("CiudadDireccionSeleccionada_Extra", "0");
-        LatitudSeleccionada_Extra  = myPreferences.getString("LatitudSeleccionada_Extra", "0");
-        LongitudSeleccionada_Extra  = myPreferences.getString("LongitudSeleccionada_Extra", "0");
+        direccion_seleccionada = myPreferences.getString("direccion_seleccionada", "0");
+        latitud_seleccionada  = myPreferences.getString("latitud_seleccionada", "0");
+        longitud_seleccionada  = myPreferences.getString("longitud_seleccionada", "0");
+        categoria  = myPreferences.getString("categoria", "0");
+        LugarRecogerEncargo  = myPreferences.getString("LugarRecogerEncargo", "0");
+        DetalleEncargo  = myPreferences.getString("DetalleEncargo", "0");
+        NumeroContactoEncargo  = myPreferences.getString("NumeroContactoEncargo", "0");
+        final float subtotal = myPreferences.getFloat("monto_delivery", 0);
         //Start Boton Comprar
         final Button btnGenerarEncargo = (Button) findViewById(R.id.btnGeneraEncargo);
         btnGenerarEncargo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Globales.isEncargo){
-                    if (Globales.montoDeliveryEncargo == 0.0)
+                if(categoria.equals("3")){
+                    if (subtotal == 0.0)
                         abrirPopUp();
                     else{
                         //Toast.makeText(PagoEncargoActivity.this,"Encargo Registrado...",Toast.LENGTH_SHORT).show();
@@ -123,10 +121,7 @@ public class PagoEncargoActivity extends AppCompatActivity {
                                     progDailog.setIndeterminate(true);
                                     progDailog.setCancelable(false);
                                     progDailog.show();
-                                    //myEditor.putString("DireccionSeleccionada_Encargo", nuevonombre);
-
-                                    registrarEncargo(name, DireccionSeleccionada_Encargo+ ", " + Globales.CiudadDireccionSeleccionada_Encargo, number, Globales.NumeroContactoEncargo, Globales.LugarRecogerEncargo, Globales.DetalleEncargo, "0.0", ciudad, Globales.LatitudSeleccionada_Encargo, Globales.LongitudSeleccionada_Encargo, "0.0", "0.0", String.valueOf(Globales.montoDeliveryEncargo));
-                                    Globales.isEncargo = false;
+                                    registrarEncargo(name, direccion_seleccionada+ ", " + ciudad, number, NumeroContactoEncargo, LugarRecogerEncargo, DetalleEncargo, "0.0", ciudad, latitud_seleccionada, longitud_seleccionada, "0.0", "0.0", txtDeliveryTotal.getText().toString());
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
@@ -144,14 +139,14 @@ public class PagoEncargoActivity extends AppCompatActivity {
                         dialog.show();
                     }
                 }
-                else if (Globales.isExtra){
-                    if (Globales.montoDeliveryPidelo == 0.0)
+                if (categoria.equals("4")){
+                    if (subtotal == 0.0)
                         abrirPopUp();
                     else{
                         //Toast.makeText(PagoEncargoActivity.this,"Pedido Extra Registrado...",Toast.LENGTH_SHORT).show();
                         AlertDialog.Builder builder = new AlertDialog.Builder(PagoEncargoActivity.this);
-                        builder.setMessage("Se registrará un nuevo Pedido. ¿Desea continuar?");
-                        builder.setTitle("Nuevo Pedido Extra");
+                        builder.setMessage("Se registrará un nuevo encargo. ¿Desea continuar?");
+                        builder.setTitle("Nuevo Encargo");
                         builder.setPositiveButton("Si", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -159,12 +154,12 @@ public class PagoEncargoActivity extends AppCompatActivity {
                                     btnGenerarEncargo.setEnabled(false);
                                     btnGenerarEncargo.setBackgroundResource(R.drawable.botongris);
                                     progDailog = new ProgressDialog(PagoEncargoActivity.this);
-                                    progDailog.setMessage("Registrando Pedido Extra...");
+                                    progDailog.setMessage("Registrando Encargo...");
                                     progDailog.setIndeterminate(true);
                                     progDailog.setCancelable(false);
                                     progDailog.show();
-                                    registrarEncargo(number, DireccionSeleccionada_Extra+ ", " + CiudadDireccionSeleccionada_Extra, number, Globales.NumeroContactoPidelo, Globales.LugarComprarPidelo.toString(), Globales.DetallePidelo.toString(), "0.0", ciudad, LatitudSeleccionada_Extra, LongitudSeleccionada_Extra, "0.0", "0.0", String.valueOf(Globales.montoDeliveryPidelo));
-                                    Globales.isExtra = false;
+                                    registrarEncargo(name , direccion_seleccionada + ", " + ciudad, number, NumeroContactoEncargo, LugarRecogerEncargo, DetalleEncargo, "0.0", ciudad, latitud_seleccionada, longitud_seleccionada, "0.0", "0.0", txtDeliveryTotal.getText().toString());
+
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
@@ -181,9 +176,6 @@ public class PagoEncargoActivity extends AppCompatActivity {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     }
-                }
-                else {
-                    Toast.makeText(PagoEncargoActivity.this,"NO PUEDES GENERAR NI ENCARGO NI PEDIDO EXTRA...",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -279,21 +271,29 @@ public class PagoEncargoActivity extends AppCompatActivity {
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                     .setAnimationEnable(true)
                                     .setTitleText("EXITO")
-                                    .setContentText("Su pedido extra fue Registrado con éxito.")
+                                    .setContentText("Su encargo fue Registrado con éxito.")
                                     .setPositiveListener("OK", new PromptDialog.OnPositiveListener() {
                                         @Override
                                         public void onClick(PromptDialog dialog) {
                                             dialog.dismiss();
+                                            myEditor.putString("LugarRecogerEncargo", "");
+                                            myEditor.putString("DetalleEncargo", "");
+                                            myEditor.putString("NumeroContactoEncargo", "");
                                             Intent intent = new Intent(PagoEncargoActivity.this, PrincipalActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
+
                                         }
                                     }).show();
                         }else{
                             Toast.makeText(PagoEncargoActivity.this,"ERROR AL GENERAR PEDIDO EXTRA, INTENTELO NUEVAMENTE...",Toast.LENGTH_SHORT).show();
+                            progDailog.dismiss();
                         }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(PagoEncargoActivity.this,"ERROR AL GENERAR PEDIDO EXTRA, INTENTELO NUEVAMENTE...",Toast.LENGTH_SHORT).show();
+                        progDailog.dismiss();
                     }
 
                     //si no funciona el intent acá se debería de reiniciar los globales de Encargo
@@ -302,9 +302,14 @@ public class PagoEncargoActivity extends AppCompatActivity {
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(PagoEncargoActivity.this,"ERROR AL GENERAR PEDIDO EXTRA, INTENTELO NUEVAMENTE...",Toast.LENGTH_SHORT).show();
+                progDailog.dismiss();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 }
