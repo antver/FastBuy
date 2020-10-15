@@ -132,7 +132,6 @@
                         android:layout_alignTop="@+id/map"
                         android:layout_marginTop="7dp"
                         android:background="@drawable/boton_blanco_verde_circulo"
-                        android:src="@drawable/ic_my_location"
                         android:onClick="ubicacionOriginal"/>
                 </RelativeLayout>
                 <ScrollView

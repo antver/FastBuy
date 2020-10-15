@@ -1,22 +1,16 @@
 package com.fastbuyapp.omar.fastbuy;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -29,10 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.detallePedidoListAdapter;
 import com.fastbuyapp.omar.fastbuy.config.GlideApp;
-import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 import com.fastbuyapp.omar.fastbuy.entidades.Producto;
 import com.fastbuyapp.omar.fastbuy.entidades.Promocion;
@@ -52,26 +44,19 @@ public class DetallesPedidoActivity extends AppCompatActivity {
     GridView gridView;
     detallePedidoListAdapter adapter = null;
     String tokencito;
-    ImageButton btnCarrito;
     String fotoRepartidor = "";
     String logoEmpresa = "";
+    int estadoPedidoReal = -1;
+    int codigoEmpresa = 0;
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_pedido);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
 
         SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
@@ -106,6 +91,7 @@ public class DetallesPedidoActivity extends AppCompatActivity {
         final TextView txtDescuentoPedido = (TextView) findViewById(R.id.txtDescuentoPedido);
         final TextView txtTotalPedido = (TextView) findViewById(R.id.txtTotalPedido);
         final TextView txtDireccion = (TextView) findViewById(R.id.txtDireccion);
+        final TextView mensajerepartidor = (TextView) findViewById(R.id.mensajerepartidor);
         final LinearLayout layoutRepartidor = (LinearLayout) findViewById(R.id.layoutRepartidor);
         gridView = (GridView) findViewById(R.id.dtgvItemsPedido);
 
@@ -128,11 +114,28 @@ public class DetallesPedidoActivity extends AppCompatActivity {
                             JSONObject objeto = ja.getJSONObject(i);
                             txtNroPedido.setText("Orden Nº " + objeto.getString("PED_Codigo"));
                             txtFecha.setText(objeto.getString("PED_FechaPedido"));
-                            txtNombreRepartidor.setText(objeto.getString("PR_Nombres") + " " + objeto.getString("PR_Apellidos"));
+
                             fotoRepartidor = objeto.getString("PR_Foto");
                             logoEmpresa = objeto.getString("Logo");
+                            if(objeto.getString("PR_Nombres") != null){
+                                txtNombreRepartidor.setText(objeto.getString("PR_Nombres") + " " + objeto.getString("PR_Apellidos"));
+                                if(objeto.getString("PED_Atendido").equals("1")){
+                                    mensajerepartidor.setText("Entregó tu pedido.");
+                                }
+                                else {
+                                    mensajerepartidor.setText("Tu driver asignado.");
+                                }
+                                if(objeto.getString("PED_Atendido").equals("2")){
+                                    txtNombreRepartidor.setText("No tiene un repartidor asignado.");
+                                    mensajerepartidor.setText("");
+                                }
+                            }
+                            else{
+                                txtNombreRepartidor.setText("No tiene un repartidor asignado.");
+                                mensajerepartidor.setText("");
+                            }
 
-                            if(objeto.getString("PED_Atendido").equals("1") || objeto.getString("PED_Atendido").equals("3") || objeto.getString("PED_Atendido").equals("10")){
+                            /*if(objeto.getString("PED_Atendido").equals("1") || objeto.getString("PED_Atendido").equals("3") || objeto.getString("PED_Atendido").equals("10")){
                                 layoutRepartidor.setVisibility(View.VISIBLE);
                                 if(objeto.getString("PR_Nombres") == null){
                                     txtNombreRepartidor.setText("No tiene un repartidor asignado.");
@@ -140,8 +143,9 @@ public class DetallesPedidoActivity extends AppCompatActivity {
                             }
                             else{
                                 layoutRepartidor.setVisibility(View.GONE);
-                            }
+                            }*/
                             int numestado = objeto.getInt("PED_Atendido");
+                            estadoPedidoReal = objeto.getInt("PED_Atendido");
                             String estado = "";
                             if(numestado == 1) {
                                 estado = "Se entregó";
@@ -154,6 +158,7 @@ public class DetallesPedidoActivity extends AppCompatActivity {
                             }
                             txtEstado.setText(estado);
                             txtEstablecimiento.setText(objeto.getString("Establecimiento"));
+                            codigoEmpresa = objeto.getInt("CodigoEmpresa");
                             txtTotal.setText(objeto.getString("Total"));
                             txtDireccion.setText(objeto.getString("PED_Direccion"));
                             txtSubTotalPedido.setText("s/" + objeto.getString("Total"));
@@ -200,7 +205,7 @@ public class DetallesPedidoActivity extends AppCompatActivity {
                         GlideApp.with(DetallesPedidoActivity.this)
                                 .load(urlRepartidor)
                                 .centerCrop()
-                                .placeholder(R.drawable.user_image)
+                                .placeholder(R.drawable.ic_usuario)
                                 .into(imgRepartidor);
                         gridView.setNumColumns(1);
                         adapter = new detallePedidoListAdapter(DetallesPedidoActivity.this, R.layout.item_detalle_pedido, list);
@@ -243,44 +248,20 @@ public class DetallesPedidoActivity extends AppCompatActivity {
 
         });
 
-
+        layoutRepartidor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(txtEstado.getText().equals("En curso"))
+                {
+                    Intent intentSeguimiento = new Intent(DetallesPedidoActivity.this, SiguiendoPedidoActivity.class);
+                    intentSeguimiento.putExtra("state", estadoPedidoReal);
+                    intentSeguimiento.putExtra("empresa", codigoEmpresa);
+                    intentSeguimiento.putExtra("pedido", Integer.parseInt(codigoPedido));
+                    startActivity(intentSeguimiento);
+                }
+            }
+        });
         //Menu
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
-        ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetallesPedidoActivity.this, PrincipalActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetallesPedidoActivity.this, FavoritosActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetallesPedidoActivity.this, CarritoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
     }
 
@@ -345,13 +326,6 @@ public class DetallesPedidoActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_detalle_pedido, menu);
-        return true;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

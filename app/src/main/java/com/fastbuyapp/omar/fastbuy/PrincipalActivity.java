@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Minutos;
@@ -53,13 +54,16 @@ import com.fastbuyapp.omar.fastbuy.entidades.Empresa;
 import com.fastbuyapp.omar.fastbuy.entidades.EmpresaCategoria;
 import com.fastbuyapp.omar.fastbuy.entidades.Promocion;
 import com.fastbuyapp.omar.fastbuy.entidades.Ubicacion;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,32 +72,39 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 public class PrincipalActivity extends AppCompatActivity {
 
     RecyclerView rvPromociones;
-    Spinner ciudades;
+    //Spinner ciudades;
     public String codigo;
     public String categoria;
     ArrayList<Promocion> list;
     ArrayList<EmpresaCategoria> listCategorias;
     PromocionListAdapter adapter = null;
     ProgressDialog progDailog = null;
-    TextView txtPromociones;
-    String elOrigen;
-    ImageView imvRestaurants;
-    ImageView imvMarkets;
+    TextView txtPromociones, txtNombreUsuario;
+    String nombre;
+    //ImageView imvRestaurants;
+    ImageView img_usuario;
     //Intent myService;
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
     ImageButton btnCarrito;
-    String ciudad; //nombre de la ciudad
+    //String ciudad; //nombre de la ciudad
     String ubicacion; // codigo de la ciudad
-    String tokencito;
+    String tokencito, codigoZona_usuario;
     List<Ubicacion> listCiudades;
-    FrameLayout fondopromociones;
-
+    TextView txtDireccion;
+    //FrameLayout fondopromociones;
+    private LinearLayout bottomSheet;
     @Override
     protected void onResume() {
         super.onResume();
         ValidacionDatos valida = new ValidacionDatos();
         valida.validarCarritoVacio(btnCarrito);
+        myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        String direccion = myPreferences.getString("direccion_seleccionada", "");
+        if(direccion.length() >= 12){
+            direccion = direccion.substring(0, 10) + "...";
+        }
+        txtDireccion.setText(direccion);
     }
 
     @Override
@@ -102,11 +113,18 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
-        ciudad = myPreferences.getString("City_Cliente", "");
+        //ciudad = myPreferences.getString("City_Cliente", "");
         ubicacion = myPreferences.getString("ubicacion", "");
+        nombre = myPreferences.getString("Name_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
-        fondopromociones = (FrameLayout) findViewById(R.id.fondopromociones);
-
+        codigoZona_usuario = myPreferences.getString("codigoZona_usuario", "");
+        String nombreImagen = myPreferences.getString("Photo_Cliente", "");
+        LinearLayout btnUbicacion = (LinearLayout) findViewById(R.id.btnUbicacion);
+        //fondopromociones = (FrameLayout) findViewById(R.id.fondopromociones);
+        if(codigoZona_usuario.equals("")){
+            Intent intentDireccion = new Intent(PrincipalActivity.this, DireccionMapsFragment.class);
+            startActivity(intentDireccion);
+        }
         //elOrigen = getIntent().getStringExtra("origen");//para evitar que el servicio se inicie
 
         //inicio 2º plano
@@ -125,10 +143,34 @@ public class PrincipalActivity extends AppCompatActivity {
 
         /*Asignación de controles a variables*/
         txtPromociones = (TextView) findViewById(R.id.txtPromociones);
-        imvRestaurants = (ImageView)findViewById(R.id.imageView5);
+        txtDireccion = (TextView) findViewById(R.id.txtDireccion);
+        img_usuario = (ImageView)findViewById(R.id.img_usuario);
+        txtNombreUsuario = (TextView)findViewById(R.id.txtNombreUsuario);
+        txtNombreUsuario.setText(nombre);
+
+        if(nombreImagen != ""){
+            GlideApp.with(PrincipalActivity.this)
+                    .load(nombreImagen)
+                    .centerCrop()
+                    .placeholder(R.drawable.perfil)
+                    .transform(new CircleCrop())
+                    .into(img_usuario);
+        }
+        else{
+            GlideApp.with(PrincipalActivity.this)
+                    .load(R.drawable.perfil)
+                    .centerCrop()
+                    .placeholder(R.drawable.perfil)
+                    .transform(new CircleCrop())
+                    .into(img_usuario);
+        }
+
+
+
+        /*imvRestaurants = (ImageView)findViewById(R.id.imageView5);
         imvMarkets = (ImageView)findViewById(R.id.imageView8);
         ciudades = (Spinner) findViewById(R.id.spinnerCiudad);
-
+*/
         //estableciendo en true el inicio de sesion
         rvPromociones = (RecyclerView) findViewById(R.id.rvPromociones);
 
@@ -144,7 +186,7 @@ public class PrincipalActivity extends AppCompatActivity {
         //e.printStackTrace();
         //}
 
-        ciudades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+       /* ciudades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String ciudadOrigen = ciudades.getSelectedItem().toString();
@@ -159,8 +201,21 @@ public class PrincipalActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
         //End Spinner de ciudades
+        bottomSheet = (LinearLayout)findViewById(R.id.bottomSheet);
+        //final BottomSheetBehavior bsb = BottomSheetBehavior.from(bottomSheet);
+        btnUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDireccion = new Intent(PrincipalActivity.this, DireccionMapsFragment.class);
+                startActivity(intentDireccion);
+               // BottomSheetDialogFragment bsdFragment =DireccionMapsFragment.newInstance();
+
+                //bsdFragment.show(PrincipalActivity.this.getSupportFragmentManager(), "BSDialog");
+                //bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
 
         LinearLayout llRestaurantes = (LinearLayout) findViewById(R.id.llRestaurantes);
         llRestaurantes.setOnClickListener(new View.OnClickListener() {
@@ -296,7 +351,8 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     public void listarPromociones(int codUbi){
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/PromocionesXUbicacion?auth="+tokencito+"&ubica="+String.valueOf(codUbi);
+        //String consulta = "https://apifbdelivery.fastbuych.com/Delivery/PromocionesXUbicacion?auth="+tokencito+"&ubica="+String.valueOf(codUbi);
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/PromocionesPorZona?auth=Xid20200825e34CorpFastBuySAC2020comappledroidefastbuyfastbuy&zona=1";
         EnviarRecibirDatosPromociones(consulta);
     }
 
@@ -310,9 +366,9 @@ public class PrincipalActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> adap = new ArrayAdapter<String>(PrincipalActivity.this,R.layout.spinner_vera, nameCiudades);
         adap.setDropDownViewResource(R.layout.spinner_vera);
-        ciudades.setAdapter(adap);
+        //ciudades.setAdapter(adap);
         //mostrar la ciudad seleccionada en el Mapa
-        ciudades.setSelection(obtenerPosicionItem(ciudades, ciudad));
+        //ciudades.setSelection(obtenerPosicionItem(ciudades, ciudad));
         progDailog.dismiss();
     }
 
@@ -405,7 +461,7 @@ public class PrincipalActivity extends AppCompatActivity {
                     txtPromociones.setVisibility(View.INVISIBLE);
                     rvPromociones.setVisibility(View.GONE);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50);
-                    fondopromociones.setLayoutParams(lp);
+                    //fondopromociones.setLayoutParams(lp);
                 }
             }
         }, new Response.ErrorListener(){
@@ -421,9 +477,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed (){
-        PrincipalActivity.this.finishAffinity();
+        /*PrincipalActivity.this.finishAffinity();
         startActivity(new Intent(getBaseContext(), CiudadActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));*/
         finish();
     }
 
@@ -449,11 +505,11 @@ public class PrincipalActivity extends AppCompatActivity {
                                 listCategorias.add(ec);
                                 if(ec.getDescripcion().equals("Restaurantes")){
                                     String urlRestaurantes = "https://fastbuych.com/empresas/categorias/imagenes/" + listCategorias.get(0).getImagen();
-                                    CargarImagenCategoria(urlRestaurantes, imvRestaurants);
+                                    //CargarImagenCategoria(urlRestaurantes, imvRestaurants);
                                 }
                                 if(ec.getDescripcion().equals("Tiendas")){
                                     String urlMarket = "https://fastbuych.com/empresas/categorias/imagenes/" + ec.getImagen();
-                                    CargarImagenCategoria(urlMarket, imvMarkets);
+                                    //CargarImagenCategoria(urlMarket, imvMarkets);
                                 }
                             }
                         }

@@ -4,15 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,7 +17,6 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,7 +27,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.fastbuyapp.omar.fastbuy.adaptadores.MensajesChatAdapter;
 import com.fastbuyapp.omar.fastbuy.config.GlideApp;
-import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.FireBaseChat;
 import com.fastbuyapp.omar.fastbuy.entidades.MensajeChat;
@@ -51,7 +42,6 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -151,7 +141,7 @@ public class ChatFastBuyActivity extends AppCompatActivity {
 
         GlideApp.with(ChatFastBuyActivity.this)
                 .load(photoUser)
-                .error(R.drawable.user_image)
+                .error(R.drawable.ic_usuario)
                 .fitCenter()
                 .transform(new CircleCrop())
                 .into(imgRepartidor);

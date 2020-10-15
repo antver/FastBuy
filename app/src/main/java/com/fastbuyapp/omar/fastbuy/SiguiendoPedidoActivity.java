@@ -94,7 +94,7 @@ public class SiguiendoPedidoActivity extends AppCompatActivity {
     DatabaseReference cambioChat = mDatabaseReferenceChat.child("chat/"); //hacemos referencia a la tabla
     String empresaPedido;
     String codRepartidor;
-    int cantidadRespuestas;
+    //int cantidadRespuestas;
     //SiguiendoPedidoActivity.AsyncTask_load ast;
 
     //Intent myService;
@@ -280,7 +280,7 @@ public class SiguiendoPedidoActivity extends AppCompatActivity {
         empresaPedido = getIntent().getStringExtra("empresa");
         numPedido = getIntent().getStringExtra("pedido");
         //este me ayuda a saber si es la primera vez que pide o no
-        cantidadRespuestas = Integer.valueOf(getIntent().getStringExtra("cantidadRespuestas"));
+        //cantidadRespuestas = Integer.valueOf(getIntent().getStringExtra("cantidadRespuestas"));
         TextView txtNroPedido = (TextView) findViewById(R.id.txtNroPedido);
 
         Formatter fmt = new Formatter();

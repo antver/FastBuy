@@ -252,7 +252,7 @@ public class PagoEncargoActivity extends AppCompatActivity {
         String l = URLEncoder.encode(vuelto, "UTF-8");
         String m = URLEncoder.encode(delivery, "UTF-8");
         String consulta = "https://apifbdelivery.fastbuych.com/Delivery/GuardarPedidoExtra?auth="+tokencito+"&nombre="+a+"&direccion="+b+"&telefonoLocal=" + c +"&telefonoContacto=" + d +"&telefonoCliente=" + number +"&tienda=" + e +"&pedido=" + f +"&monto=" + g+"&origen=" + h + "&latitud=" + i + "&longitud=" + j +"&pago=" + k + "&vuelto=" + l+ "&delivery=" + m ;
-        Log.v("URL_ENCARGO",consulta);
+        //Log.v("URL_ENCARGO",consulta);
         RegistrarEncargoBD(consulta);
     }
 

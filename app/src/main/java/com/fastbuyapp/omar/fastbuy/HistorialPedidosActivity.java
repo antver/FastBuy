@@ -58,15 +58,12 @@ public class HistorialPedidosActivity extends AppCompatActivity {
     String type;
     //Button btnCargarMas;
 
-    ImageButton btnCarrito;
     SharedPreferences myPreferences;
     String nombre, numero, tokencito;
 
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
         //listaHistorialPedidos(String.valueOf(numerito));
     }
 
@@ -105,43 +102,7 @@ public class HistorialPedidosActivity extends AppCompatActivity {
 
         listaHistorialPedidos(String.valueOf(numerito));
 
-        //Menu
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
-        ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HistorialPedidosActivity.this, PrincipalActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
 
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HistorialPedidosActivity.this, FavoritosActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HistorialPedidosActivity.this, CarritoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
         final TextView txtEnCurso = (TextView) findViewById(R.id.txtEnCurso);
         final TextView txtFinalizados = (TextView) findViewById(R.id.txtFinalizados);
         final TextView txtCancelados = (TextView) findViewById(R.id.txtCancelados);
@@ -405,22 +366,6 @@ public class HistorialPedidosActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
     }*/
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if (type.equals("pedido"))
-            inflater.inflate(R.menu.menu_historial_pedidos, menu);
-        else
-            inflater.inflate(R.menu.menu_historial_extras, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return false;
-    }
 
     @Override
     public void onBackPressed() {

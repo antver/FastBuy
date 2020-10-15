@@ -108,7 +108,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                         progDailog = new ProgressDialog(PagoTarjetaActivity.this);
                         progDailog.setMessage("Generando pedido...");
                         progDailog.setIndeterminate(true);
-                        progDailog.setCancelable(true);
+                        progDailog.setCancelable(false);
                         progDailog.show();
                         //registrarPedido(Globales.nombreCliente, Globales.direccion2 + ", " + Globales.ciudadOrigen, Globales.numeroTelefono, String.valueOf(Globales.montoDelivery), String.valueOf(Globales.montoCargo), Globales.formaPago, "00:30:00", Globales.getInstance().getListaPedidos());
                         timePedido = calcula.ObtenHora().toString();
@@ -848,6 +848,8 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                                             if (tipoCupon == 1){
                                                 //monto en soles
                                                 Double descuento = Double.valueOf(montoCupon.toString());
+                                                myEditor.putString("monto_descuento", String.valueOf(descuento));
+                                                myEditor.commit();
                                                 Toast toast1 = Toast.makeText(PagoTarjetaActivity.this, "Obtendras un descuento de S/"+ String.format("%.2f",descuento).toString().replace(",","."), Toast.LENGTH_SHORT);
                                                 View vistaToast = toast1.getView();
                                                 vistaToast.setBackgroundResource(R.drawable.toast_success);
@@ -987,6 +989,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         String o = URLEncoder.encode(listaDetallada,"UTF-8");
         String recoger = recoger_entienda == true ? "1" : "0";
         String consulta = "https://apifbdelivery.fastbuych.com/Delivery/GuardarPedido2?auth="+tokencito+"&nombre="+a+"&direccion="+b+"&telefono=" + c +"&delivery=" + d +"&cargo=" + e +"&forma=" + f +"&tiempo=" + g+"&origen=" + h + "&latitud=" + i + "&longitud=" + j + "&pago=" + k + "&vuelto=" + l+ "&descuento=" + m +"&montoPedido=" + n+"&empresa=" + String.valueOf(empresa) +"&recoger=" + recoger +"&ubicacion=" + ubicacion+"&detalle="+o;
+        Log.v("CONSULTA_REGISTRO", consulta);
         Globales globales = new Globales();
         listaPedidos = globales.getListaPedidosCache("lista_pedidos");
         RegistrarPedidoBD(consulta,lista, String.valueOf(listaPedidos.get(0).getEmpresa()), progreso);
@@ -994,7 +997,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
     //Registrando el pedido en la Base de Datos _añadido 27_02_2020
     public void RegistrarPedidoBD(String URL, final ArrayList<PedidoDetalle> lista, final String empresa, final ProgressDialog progreso){
-        Log.v("urlDetalle",URL);
+        //Log.v("urlDetalle",URL);
         RequestQueue queue = Volley.newRequestQueue(PagoTarjetaActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
             @Override
@@ -1003,7 +1006,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                     try {
                         JSONObject jo = new JSONObject(response);
                         codigoRegistro = jo.getInt("Codigo_Pedido");
-                        final String cantidadRespuestas = jo.getString("Respuestas_Cantidad");
+                        //final String cantidadRespuestas = jo.getString("Respuestas_Cantidad");
                         String formapagopedidotemp = formaPago;
                         //start añadido el 27-02-2020
                         laempresa = empresa;
@@ -1027,16 +1030,18 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                             intent.putExtra("state", String.valueOf(0));
                             intent.putExtra("empresa", laempresa);
                             intent.putExtra("pedido", String.valueOf(codigoRegistro));
-                            intent.putExtra("cantidadRespuestas", cantidadRespuestas);
+                            //intent.putExtra("cantidadRespuestas", cantidadRespuestas);
                             startActivity(intent);
                         }
                         else {
-                            new PromptDialog(PagoTarjetaActivity.this)
-                                    .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                                    .setAnimationEnable(true)
-                                    .setTitleText("PEDIDO N°" +  codigoRegistro)
-                                    .setContentText("Su pedido fue generado con éxito.")
-                                    .setPositiveListener("OK", new PromptDialog.OnPositiveListener() {
+                            PromptDialog promptDialog = new PromptDialog(PagoTarjetaActivity.this);
+                            promptDialog.setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS);
+                            promptDialog.setCanceledOnTouchOutside(false);
+                            promptDialog.setCancelable(false);
+                            promptDialog.setAnimationEnable(true);
+                            promptDialog.setTitleText("PEDIDO N°" +  codigoRegistro);
+                            promptDialog.setContentText("Su pedido fue generado con éxito.");
+                            promptDialog.setPositiveListener("OK", new PromptDialog.OnPositiveListener() {
                                         @Override
                                         public void onClick(PromptDialog dialog) {
                                             dialog.dismiss();
@@ -1044,10 +1049,11 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                                             intent.putExtra("state", String.valueOf(0));
                                             intent.putExtra("empresa", laempresa);
                                             intent.putExtra("pedido", String.valueOf(codigoRegistro));
-                                            intent.putExtra("cantidadRespuestas", cantidadRespuestas);
+                                            //intent.putExtra("cantidadRespuestas", cantidadRespuestas);
                                             startActivity(intent);
                                         }
-                                    }).show();
+                                    });
+                            promptDialog.show();
                         }
                         //End añadido el 27-02-2020
                     } catch (JSONException e) {

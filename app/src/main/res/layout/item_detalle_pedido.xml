@@ -12,8 +12,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:weightSum="2"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
@@ -44,7 +44,7 @@
                 android:paddingRight="10dp"
                 android:text="Producto 1"
                 android:textColor="@color/humo6"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <TextView

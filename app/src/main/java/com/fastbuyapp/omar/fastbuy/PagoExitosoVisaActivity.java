@@ -31,7 +31,7 @@ public class PagoExitosoVisaActivity extends AppCompatActivity {
     Button btnreturnback;
     LottieAnimationView animacion1, animacion2;
     String statePedido, empresaPedido, numPedido;
-    int cantidadRespuestas;
+    //int cantidadRespuestas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -43,7 +43,7 @@ public class PagoExitosoVisaActivity extends AppCompatActivity {
         empresaPedido = getIntent().getStringExtra("empresa");
         numPedido = getIntent().getStringExtra("pedido");
         //este me ayuda a saber si es la primera vez que pide o no
-        cantidadRespuestas = Integer.valueOf(getIntent().getStringExtra("cantidadRespuestas"));
+        //cantidadRespuestas = Integer.valueOf(getIntent().getStringExtra("cantidadRespuestas"));
         SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         String name = myPreferences.getString("Name_Cliente", "");
@@ -180,7 +180,7 @@ public class PagoExitosoVisaActivity extends AppCompatActivity {
         intent.putExtra("state",statePedido);
         intent.putExtra("empresa",empresaPedido);
         intent.putExtra("pedido",String.valueOf(numPedido));
-        intent.putExtra("cantidadRespuestas",String.valueOf(cantidadRespuestas));
+        //intent.putExtra("cantidadRespuestas",String.valueOf(cantidadRespuestas));
         startActivity(intent);
         //Intent intent = new Intent(PagoExitosoVisaActivity.this,PrincipalActivity.class);
         //startActivity(intent);

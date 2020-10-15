@@ -105,7 +105,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
     String sLongitud, categoria;
     boolean recoger_entienda;
     public ArrayList<Double> listaDistancias = new ArrayList<Double>();
-    String latitudCiudadMapa, longitudCiudadMapa;
+    String latitudCiudadMapa, longitudCiudadMapa, ciudad_seleccionada;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,12 +124,14 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
         number = myPreferences.getString("Number_Cliente", "");
+        number = myPreferences.getString("Number_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
         latitudCiudadMapa = myPreferences.getString("latitudCiudadMapa", "");
         longitudCiudadMapa = myPreferences.getString("longitudCiudadMapa", "");
         radioCiudadMapa = myPreferences.getString("radioCiudadMapa", "");
         recoger_entienda  = myPreferences.getBoolean("recoger_entienda", false);
         categoria = myPreferences.getString("categoria", "");
+        ciudad_seleccionada = myPreferences.getString("City_Cliente", "");
         //ubicacion de la ciudad seleccionada
         ubiCiudadMapa = new LatLng(Double.parseDouble(latitudCiudadMapa), Double.parseDouble(longitudCiudadMapa));
 
@@ -299,7 +301,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                                 Piso = txtNumPiso.getText().toString();
                                 Refer = txtReferencia.getText().toString();
 
-                                registrarDireccion(Etiqueta,DireccionSel,LatitudSel,LongitudSel,Piso, Refer);
+                                registrarDireccion(Etiqueta,DireccionSel,LatitudSel,LongitudSel,Piso, Refer, ciudad_seleccionada);
                             }else {
                                 btnContinuar.setEnabled(true);
                                 Toast.makeText(SeleccionaDireccionActivity.this, "Por Favor, rellene todos los campos", Toast.LENGTH_SHORT).show();
@@ -393,15 +395,16 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
             //End logica para calcular el costo de envio
     }
 
-    public void registrarDireccion(String a, String b, String c, String d, String e, String f) throws UnsupportedEncodingException {
+    public void registrarDireccion(final String a, final String b, final String c, final String d, String e, String f, String g) throws UnsupportedEncodingException {
         try {
             final String etiqueta = URLEncoder.encode(a, "UTF-8");
             final String direccion = URLEncoder.encode(b, "UTF-8");
             final String latitud = URLEncoder.encode(c, "UTF-8");
             final String longitud = URLEncoder.encode(d, "UTF-8");
+            final String ciudad = URLEncoder.encode(g, "UTF-8");
             String numPiso = URLEncoder.encode(e, "UTF-8");
             String referen = URLEncoder.encode(f, "UTF-8");
-            String URL = "https://apifbdelivery.fastbuych.com/Delivery/GuardarDireccion2?auth="+tokencito+"&numTelefono="+number+"&etiqueta="+etiqueta+"&direccion="+direccion+"&latitud="+latitud+"&longitud="+longitud+"&piso="+numPiso+"&referencia="+referen;
+            String URL = "https://apifbdelivery.fastbuych.com/Delivery/GuardarDireccion3?auth="+tokencito+"&numTelefono="+number+"&etiqueta="+etiqueta+"&direccion="+direccion+"&latitud="+latitud+"&longitud="+longitud+"&piso="+numPiso+"&referencia="+referen+"&ciudad=" + ciudad;
             Log.v("newDirec",URL);
             RequestQueue queue = Volley.newRequestQueue(SeleccionaDireccionActivity.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
@@ -412,7 +415,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                         Toast.makeText(SeleccionaDireccionActivity.this, "Error al registrar dirección", Toast.LENGTH_SHORT).show();
                         myEditor.putString("etiqueta_direccion", "");
                         myEditor.putString("direccion_seleccionada", "");
-                        myEditor.putString("ciudad_seleccionada", "");
+                        //myEditor.putString("ciudad_seleccionada", "");
                         myEditor.putString("latitud_seleccionada", "0");
                         myEditor.putString("longitud_seleccionada", "0");
                         myEditor.commit();
@@ -422,11 +425,11 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                             try {
                                 JSONObject objeto = new JSONObject(response);
                                 //myEditor.putString("ciudad_seleccionada", objeto.getString("Codigo_Direc"));
-                                myEditor.putString("ciudad_seleccionada", objeto.getString("Ciudad_Direc"));
-                                myEditor.putString("etiqueta_direccion", etiqueta);
-                                myEditor.putString("direccion_seleccionada", direccion);
-                                myEditor.putString("latitud_seleccionada", latitud);
-                                myEditor.putString("longitud_seleccionada", longitud);
+                                //myEditor.putString("ciudad_seleccionada", objeto.getString("Ciudad_Direc"));
+                                myEditor.putString("etiqueta_direccion", a);
+                                myEditor.putString("direccion_seleccionada", b);
+                                myEditor.putString("latitud_seleccionada", c);
+                                myEditor.putString("longitud_seleccionada", d);
                                 myEditor.commit();
                                 myEditor.commit();
                                 calculaDelivery();
@@ -436,7 +439,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                             }
                         }else{
                             //myEditor.putString("ciudad_seleccionada", "");
-                            myEditor.putString("ciudad_seleccionada", "");
+                            //myEditor.putString("ciudad_seleccionada", "");
                             myEditor.commit();
                         }
                     }
@@ -698,7 +701,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                 mMap.setMyLocationEnabled(false);
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -714,7 +717,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
     @Override public void onMapClick(LatLng puntoPulsado) {
@@ -724,6 +727,7 @@ public class SeleccionaDireccionActivity extends FragmentActivity implements OnM
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         LatitudSel = String.valueOf(puntoPulsado.latitude);
         LongitudSel = String.valueOf(puntoPulsado.longitude);
+
         //txtNewDirec.setText(LatitudSel+"-"+LongitudSel);
     }
 

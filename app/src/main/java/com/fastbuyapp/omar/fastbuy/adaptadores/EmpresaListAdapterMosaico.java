@@ -126,7 +126,7 @@ public class EmpresaListAdapterMosaico extends BaseAdapter {
         GlideApp.with(context)
                 .load(url)
                 .centerCrop()
-                .override(100, 100)
+                .override(150, 150)
                 .placeholder(R.drawable.loader_img)
                 .transform(new CircleCrop())
                 .into(holder.imageView);

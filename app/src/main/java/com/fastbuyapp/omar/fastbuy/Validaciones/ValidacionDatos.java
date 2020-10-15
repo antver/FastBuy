@@ -88,7 +88,7 @@ public class ValidacionDatos {
         Globales globales = new Globales();
         ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
         if (listapedidos.isEmpty())
-            carrito.setImageResource(R.drawable.ic_cart_shop);
+            carrito.setImageResource(R.drawable.ic_canasta);
         else
             carrito.setImageResource(R.drawable.ic_cart_shop_activo);
     }

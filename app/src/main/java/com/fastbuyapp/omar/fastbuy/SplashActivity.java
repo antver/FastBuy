@@ -116,7 +116,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    Intent intent = new Intent(SplashActivity.this,CiudadActivity.class);
+                    Intent intent = new Intent(SplashActivity.this,PrincipalActivity.class);
                     startActivity(intent);
                 }
                 finish();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_principal"
@@ -11,8 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
+        android:background="@color/c_humo"
         android:orientation="vertical">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -26,53 +27,547 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-                    <FrameLayout
-                        android:id="@+id/fondopromociones"
-                        android:layout_width="match_parent"
-                        android:background="@color/fastbuy"
-                        android:layout_height="140dp"
-                        android:layout_marginBottom="-160dp">
+                    android:orientation="vertical"
+                    android:paddingVertical="30dp">
 
-                    </FrameLayout>
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="20dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/img_usuario"
+                            android:layout_marginTop="4dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:srcCompat="@drawable/perfil">
+                        </ImageView>
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:weightSum="2"
                             android:layout_height="wrap_content"
-                            android:padding="6dp"
-                            android:background="@drawable/shadow"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="10dp"
-                            android:elevation="1dp">
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:paddingHorizontal="10dp">
 
-                            <TextView
-                                android:text="@string/activity_principal_promociones"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:id="@+id/txtPromociones"
-                                android:textStyle="normal|bold"
-                                android:textSize="16sp"
-                                android:textColor="@color/fastbuy"
-                                android:drawableLeft="@drawable/ic_local_offer_black_24dp"
-                                android:layout_weight="1.5" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/hola"
+                                    android:textColor="@color/negro"
+                                    android:textSize="16sp" />
 
-                            <Spinner
-                                android:layout_width="wrap_content"
-                                android:layout_height="25dp"
-                                android:id="@+id/spinnerCiudad"
-                                android:layout_weight="0.5"
-                                android:backgroundTint="@color/fastbuy"/>
+                                <TextView
+                                    android:id="@+id/txtNombreUsuario"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ant Ver"
+                                    android:textColor="@color/negro"
+                                    android:lines="1"
+                                    android:textStyle="bold"
+                                    android:textSize="22sp" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/btnUbicacion"
+                                android:layout_width="280dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/n_shadow"
+                                android:padding="10dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    app:srcCompat="@drawable/ic_location" />
+                                <TextView
+                                    android:id="@+id/txtDireccion"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:lines="1"
+                                    android:textColor="@color/negro"
+                                    android:textStyle="bold"
+                                    android:text="Av. Larco #223"/>
+                            </LinearLayout>
+
 
                         </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal"
+                        android:orientation="vertical">
+
+
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:scrollbarThumbHorizontal="@null"
+                            android:layout_height="450dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="450dp"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:weightSum="2"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="30dp"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="200dp"
+                                        android:weightSum="2"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:layout_marginRight="10dp"
+                                            android:paddingVertical="10dp"
+                                            android:id="@+id/llMarket"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_gravity="center"
+                                                android:layout_marginLeft="-5dp"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/ic_mercado"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="-15dp"
+                                                android:text="Mercado"
+                                                android:textSize="16sp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:id="@+id/llRestaurantes"
+                                            android:paddingVertical="10dp"
+                                            android:layout_marginRight="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_marginLeft="-10dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/restaurantes" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="Restaurantes"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:weightSum="2"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:id="@+id/llPidelo"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:layout_marginRight="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                android:layout_marginLeft="-10dp"
+                                                app:srcCompat="@drawable/ic_loquequieras"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="¡Pide lo que quieras!"
+                                                android:textColor="@color/negro"
+                                                android:layout_marginTop="-4dp"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:paddingHorizontal="35dp"
+                                                android:paddingBottom="6dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:id="@+id/llEncargos"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:layout_marginRight="10dp"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_marginLeft="-10dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/encargos" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="Encargos"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:weightSum="2"
+                                    android:layout_marginTop="30dp"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:weightSum="2"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:id="@+id/llFastLive"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitemfastlive"
+                                            android:orientation="vertical">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_marginLeft="-10dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="FastLive"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:textColor="@color/humo_gris"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:id="@+id/llCuidadoPersonal"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_gravity="center"
+                                                android:layout_marginLeft="-10dp"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/cuidado"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="-15dp"
+                                                android:text="Cuidado personal"
+                                                android:paddingHorizontal="25dp"
+                                                android:textSize="16sp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:weightSum="2"
+                                        android:layout_marginTop="20dp"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:id="@+id/llTecnologia"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_marginLeft="-10dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/tecnologia" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="Tecnología"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/llPrevencion"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                android:layout_marginLeft="-10dp"
+                                                app:srcCompat="@drawable/prevencion"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="-15dp"
+                                                android:text="Prevención"
+                                                android:textSize="16sp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:weightSum="2"
+                                    android:layout_marginTop="30dp"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:weightSum="2"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:id="@+id/llModa"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_gravity="center"
+                                                android:layout_marginLeft="-10dp"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/moda"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="-15dp"
+                                                android:text="Moda"
+                                                android:textSize="16sp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:id="@+id/llLicores"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_marginLeft="-10dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="fitCenter"
+                                                app:srcCompat="@drawable/licores" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="Licores"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:weightSum="2"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:id="@+id/llMascotas"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="200dp"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                android:layout_marginLeft="-10dp"
+                                                app:srcCompat="@drawable/mascotas"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="Mascotas"
+                                                android:textColor="@color/negro"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:visibility="invisible"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:paddingVertical="10dp"
+                                            android:background="@drawable/rectanguloitem"
+                                            android:orientation="vertical">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="110dp"
+                                                android:layout_marginLeft="-10dp"
+                                                android:layout_gravity="center"
+                                                android:scaleType="center"
+                                                app:srcCompat="@drawable/encargos" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:text="Encargos"
+                                                android:textSize="16sp"
+                                                android:layout_marginLeft="-15dp"
+                                                android:textColor="@color/negro"
+                                                android:paddingVertical="5dp"
+                                                android:gravity="center"/>
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+
+
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/button5"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/botonverdecircular"
+                            android:text="" />
+
+                        <Button
+                            android:id="@+id/button6"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/botonverdecircular"
+                            android:text="" />
+
+                        <Button
+                            android:id="@+id/button7"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/botonverdecircular"
+                            android:text="" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="20dp"
+                        >
+                        <TextView
+                            android:text="@string/activity_principal_promociones"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/txtPromociones"
+                            android:textStyle="normal|bold"
+                            android:textColor="@color/negro"
+                            android:textSize="22sp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_weight="1.5" />
+
 
                         <LinearLayout
                             android:orientation="horizontal"
@@ -84,195 +579,17 @@
                                 android:id="@+id/rvPromociones"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+
                                 android:orientation="horizontal"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="0dp"
                                 android:scrollbars="vertical" />
 
                         </LinearLayout>
-
                     </LinearLayout>
 
-                    <TextView
-                        android:text="@string/activity_principal_descripcion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView18"
-                        android:textSize="13sp"
-                        android:textAlignment="center"
-                        android:paddingBottom="8dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="@color/fastbuy"
-                        android:background="@drawable/shadow"
-                        android:paddingTop="8dp" />
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="2"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="20dp">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_weight="1"
-                            android:background="@drawable/shadow"
-                            android:layout_width="match_parent"
-                            android:layout_marginRight="10dp"
-                            app:cardCornerRadius="15dp"
-                            android:layout_height="wrap_content">
 
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_width="match_parent"
-                                android:id="@+id/llRestaurantes"
-                                android:layout_height="wrap_content">
 
-                                <ImageView
-                                    android:id="@+id/imageView5"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="100dp"
-                                    android:scaleType="centerCrop"
-                                    app:srcCompat="@drawable/restaurante" />
-
-                                <TextView
-                                    android:text="@string/acticity_principal_restaurantes"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/textView19"
-                                    android:textAlignment="center"
-                                    android:paddingTop="8dp"
-                                    android:paddingBottom="8dp"
-                                    android:textColor="@color/gris2"
-                                    android:textAllCaps="false"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_weight="1"
-                            android:background="@drawable/shadow"
-                            android:layout_width="match_parent"
-                            android:layout_marginLeft="10dp"
-                            app:cardCornerRadius="15dp"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/llMarket">
-
-                                <ImageView
-                                    android:id="@+id/imageView8"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="100dp"
-                                    android:scaleType="centerCrop"
-                                    app:srcCompat="@drawable/tienda" />
-
-                                <TextView
-                                    android:text="@string/acticity_principal_tiendas"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/textView9"
-                                    android:paddingTop="8dp"
-                                    android:paddingBottom="8dp"
-                                    android:textColor="@color/gris2"
-                                    android:textAlignment="center"
-                                    android:textAllCaps="false"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="2"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="20dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_weight="1"
-                            android:background="@drawable/shadow"
-                            android:layout_width="match_parent"
-                            android:layout_marginRight="10dp"
-                            app:cardCornerRadius="15dp"
-                            android:layout_height="wrap_content">
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/shadow"
-                                android:id="@+id/llEncargos">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    app:srcCompat="@drawable/encargo"
-                                    android:id="@+id/imageView6"
-                                    android:layout_height="100dp"
-                                    android:scaleType="centerCrop" />
-
-                                <TextView
-                                    android:text="@string/acticity_principal_encargos"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/textView10"
-                                    android:textAlignment="center"
-                                    android:paddingTop="8dp"
-                                    android:paddingBottom="8dp"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/gris2"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                        <androidx.cardview.widget.CardView
-                            android:layout_weight="1"
-                            android:background="@drawable/shadow"
-                            android:layout_width="match_parent"
-                            android:layout_marginLeft="10dp"
-                            app:cardCornerRadius="15dp"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/shadow"
-                                android:id="@+id/llPidelo">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="100dp"
-                                    app:srcCompat="@drawable/celular"
-                                    android:id="@+id/imageView10"
-                                    android:scaleType="centerCrop" />
-
-                                <TextView
-                                    android:text="@string/acticity_principal_loquequieras"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/textView12"
-                                    android:paddingTop="8dp"
-                                    android:paddingBottom="8dp"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/gris2"
-                                    android:textAlignment="center"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -348,45 +665,133 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:background="#999"
-            android:layout_height="50dp">
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnHome"
-                android:background="#e9e9e9"
+            android:background="@drawable/shadow"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:weightSum="5"
+            android:layout_height="60dp">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:padding="12dp"
-                android:tint="@color/fastbuy"
-                app:srcCompat="@drawable/ic_shop_n" />
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:id="@+id/btnHome"
+                    android:layout_weight="1"
+                    android:background="@color/blanco"
+                    android:layout_gravity="center"
+                    android:tint="@color/active"
+                    app:srcCompat="@drawable/ic_home2" />
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:layout_height="wrap_content"
+                    android:text="Inicio"/>
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnFavoritos"
-                android:background="#e9e9e9"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:padding="12dp"
-                app:srcCompat="@drawable/ic_heart"/>
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                android:layout_height="wrap_content">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnCarrito"
-                android:background="#e9e9e9"
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:id="@+id/btnFavoritos"
+                    android:background="@color/blanco"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_favoritos2"/>
+                <TextView
+                    android:layout_weight="1"
+                    android:textSize="11dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Favoritos"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:padding="12dp"
-                app:srcCompat="@drawable/ic_cart_shop"/>
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_circuloverde"
+                    android:layout_height="45dp">
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:id="@+id/btnBuscar"
+                        android:background="@color/toolbarTransparent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_buscar2"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                android:layout_height="wrap_content">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnUsuario"
-                android:background="#e9e9e9"
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:id="@+id/btnCarrito"
+                    android:background="@color/blanco"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_canasta"/>
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:text="Canasta"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:padding="12dp"
-                app:srcCompat="@drawable/ic_user_circle_o"/>
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:id="@+id/btnUsuario"
+                    android:background="@color/blanco"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_cupones2"/>
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:text="Cupones"/>
+            </LinearLayout>
         </LinearLayout>
+
+
+
     </LinearLayout>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

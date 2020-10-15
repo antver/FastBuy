@@ -52,4 +52,7 @@
     <color name="verde_fosforescente">#00C4A3</color>
     <color name="verde_fosforescente2">#00C42A</color>
     <color name="morado">#5533BB</color>
+    <!--Colores IOS -->
+    <color name="c_humo">#F2F2F2</color>
+    <color name="active">#00C3A4</color>
 </resources>

@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="104dp"
-            app:srcCompat="@drawable/shopping_cart_button"
+            app:srcCompat="@drawable/tienda"
             android:id="@+id/ivimagencategoria"
             android:scaleType="centerInside" />
 

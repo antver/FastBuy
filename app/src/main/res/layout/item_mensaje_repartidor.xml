@@ -34,7 +34,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/user_image"/>
+            app:srcCompat="@drawable/ic_usuario"/>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"

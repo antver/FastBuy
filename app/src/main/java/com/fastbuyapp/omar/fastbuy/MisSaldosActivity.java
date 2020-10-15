@@ -44,16 +44,12 @@ public class MisSaldosActivity extends AppCompatActivity {
     ArrayList<Cupon> list;
     CuponListAdapter adapter = null;
     SharedPreferences myPreferences;
-    ImageButton btnCarrito;
     String tokencito, celular;
     LinearLayout layoutNoHay;
 
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
-        listarCupones();
     }
 
     @Override
@@ -72,43 +68,6 @@ public class MisSaldosActivity extends AppCompatActivity {
         //txtNombreUser.setText(nombre);
         //txtNumberUser.setText(celular);
         layoutNoHay = (LinearLayout) findViewById(R.id.layoutNoHay);
-        //Menu
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
-        ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MisSaldosActivity.this, PrincipalActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MisSaldosActivity.this, FavoritosActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MisSaldosActivity.this, CarritoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
     }
 
     public void listarCupones()
@@ -174,16 +133,4 @@ public class MisSaldosActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_mis_saldos, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return false;
-    }
 }

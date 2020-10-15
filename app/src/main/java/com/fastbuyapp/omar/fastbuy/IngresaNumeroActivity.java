@@ -120,10 +120,12 @@ public class IngresaNumeroActivity extends AppCompatActivity {
                 }else{
                     celular = txtCelularIngresar.getText().toString();
                     //myEditor.putString("Number_Cliente", celular);
-                    requestCode(v); //descomentar
+                    myEditor.putString("Number_Cliente", celular);
+                    myEditor.commit();
+                    //requestCode(v); //descomentar
                     //myEditor.commit();
-                    //Intent intent = new Intent(IngresaNumeroActivity.this, TutorialActivity.class); //eliminarlas
-                    //startActivity(intent);
+                    Intent intent = new Intent(IngresaNumeroActivity.this, TutorialActivity.class); //eliminarlas
+                    startActivity(intent);
                 }
             }
         });
@@ -193,6 +195,7 @@ public class IngresaNumeroActivity extends AppCompatActivity {
                 else{
                     btnRecibir.setEnabled(true);
                     Toast.makeText(IngresaNumeroActivity.this, "Ocurrió un error, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
+                    progDailog.dismiss();
                 }
             }
         });

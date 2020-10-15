@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.fastbuyapp.omar.fastbuy.R;
@@ -94,7 +93,7 @@ public class MensajesChatAdapter extends BaseAdapter {
         String photoUser;
         if (mensajesList.get(position).getOrigen().equals("USUARIO")){
             SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            photoUser = myPreferences.getString("Photo_Cliente", "R.drawable.user_image");
+            photoUser = myPreferences.getString("Photo_Cliente", "R.drawable.ic_usuario");
         }else{
             Servidor s = new Servidor();
             photoUser = "https://"+s.getServidor()+"/imagenes/agentesreparto/r" + idRepartidor+".jpg";
@@ -103,7 +102,7 @@ public class MensajesChatAdapter extends BaseAdapter {
 
         GlideApp.with(context)
                 .load(photoUser)
-                .error(R.drawable.user_image)
+                .error(R.drawable.ic_usuario)
                 .fitCenter()
                 .transform(new CircleCrop())
                 .into(holder.foto);

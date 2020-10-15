@@ -15,14 +15,14 @@ android {
             keyPassword 'fastbuy'
         }
     }
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId 'com.fastbuyapp.omar.fastbuy'
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 35
-        versionName "3.3.2"
+        targetSdkVersion defaultTargetSdkVersion
+        versionCode 36
+        versionName "3.3.3"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "es", "en"
@@ -93,5 +93,8 @@ dependencies {
     // If you want to use the GPU Filters
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     implementation 'com.github.danielemaddaluno.androidupdatechecker:library:1.0.2'
+
+    //libreria para el booton sheet curvo
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 }
 apply plugin: 'com.google.gms.google-services'
