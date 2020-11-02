@@ -172,13 +172,27 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio1/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_favorite_black_24dp.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
                             <entry key="autoMirrored" value="true" />
-                            <entry key="color" value="aca7ab" />
-                            <entry key="outputName" value="ic_buscar2" />
-                            <entry key="sourceFile" value="C:\Users\OMAR\Downloads\ic_buscar.svg" />
+                            <entry key="color" value="333333" />
+                            <entry key="outputName" value="ic_favorite_black_24dp" />
+                            <entry key="sourceFile" value="C:\Users\OMAR\Downloads\resumenpedido.svg" />
                           </map>
                         </option>
                       </PersistentState>

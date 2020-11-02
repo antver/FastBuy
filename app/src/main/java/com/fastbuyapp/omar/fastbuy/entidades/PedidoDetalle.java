@@ -1,5 +1,7 @@
 package com.fastbuyapp.omar.fastbuy.entidades;
 
+import java.util.ArrayList;
+
 /**
  * Created by OMAR on 05/09/2018.
  */
@@ -20,6 +22,7 @@ public class PedidoDetalle {
     private int tiempo;
     private int estado;
     private String presentacion;
+    private ArrayList<ProductoAgregados> agregados;
 
 
     public int getNumero() {
@@ -141,5 +144,13 @@ public class PedidoDetalle {
 
     public void setPresentacion(String presentacion) {
         this.presentacion = presentacion;
+    }
+
+    public ArrayList<ProductoAgregados> getAgregados() {
+        return agregados;
+    }
+
+    public void setAgregados(ArrayList<ProductoAgregados> agregados) {
+        this.agregados = agregados;
     }
 }

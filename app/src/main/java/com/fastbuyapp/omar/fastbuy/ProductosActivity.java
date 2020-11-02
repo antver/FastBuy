@@ -211,8 +211,8 @@ public class ProductosActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        /*ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);*/
         producto_recarga = myPreferences.getBoolean("producto_recarga", false);
         if(producto_recarga){
             listar();

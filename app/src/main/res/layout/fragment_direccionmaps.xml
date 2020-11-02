@@ -17,7 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="400dp">
+            android:layout_height="300dp">
 
             <fragment
                 android:id="@+id/map"
@@ -25,6 +25,18 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/btnAtras"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="right"
+                android:layout_alignTop="@+id/map"
+                android:layout_alignEnd="@+id/map"
+                android:layout_marginTop="15dp"
+                android:tint="@color/negro"
+                app:srcCompat="@drawable/ic_check_cancelado" />
 
             <ImageButton
                 android:id="@+id/button1"
@@ -159,8 +171,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
-
-
 </LinearLayout>

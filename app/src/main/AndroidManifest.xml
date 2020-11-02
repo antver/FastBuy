@@ -22,7 +22,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".FastPuntosActivity"></activity>
+        <activity android:name=".IngresarEmailActivity" />
+        <activity android:name=".IngresaNombreActivity" />
+        <activity android:name=".BuscadorActivity" />
+        <activity android:name=".ProductoCategoriaActivity" />
+        <activity android:name=".RestauranteActivity" />
+        <activity android:name=".FastPuntosActivity" />
         <activity android:name=".SoporteActivity" />
         <activity android:name=".ActualizaActivity" />
 
@@ -85,6 +90,10 @@
             android:theme="@style/AppTheme.TemaPopUp2"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".DondeLoCompramosFragment"
+            android:theme="@style/AppTheme.TemaPopUp2"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".PagoEncargoActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -118,15 +127,17 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Confirmado" />
-        <!-- <activity android:name=".PortadaActivity" /> -->
+        <activity android:name=".Confirmado" /> <!-- <activity android:name=".PortadaActivity" /> -->
         <activity android:name=".FacebookActivity" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
         -->
         <activity android:name=".MensajeActivity" />
-        <activity android:name=".OpcionLoginActivity" />
+        <activity
+            android:name=".OpcionLoginActivity"
+            android:configChanges="screenSize|orientation"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".PrincipalActivity" />
         <activity android:name=".IngresaNumeroActivity" />
         <activity android:name=".VerificacionLoginActivity" />

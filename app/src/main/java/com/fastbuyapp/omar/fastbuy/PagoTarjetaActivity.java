@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -41,8 +42,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Minutos;
 import com.fastbuyapp.omar.fastbuy.Operaciones.DecimalDigitsInputFilter;
+import com.fastbuyapp.omar.fastbuy.Operaciones.Pago_Delivery;
 import com.fastbuyapp.omar.fastbuy.Operaciones.Pago_Visa;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
+import com.fastbuyapp.omar.fastbuy.entidades.Operaciones;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 
 import org.json.JSONArray;
@@ -50,6 +53,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -65,16 +70,17 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
     public static Intent intentDireccion ;
     public ArrayList<PedidoDetalle> listaPedidos;
+    public ArrayList<Double> listaDistancias = new ArrayList<Double>();
     //double costoEnvio = Globales.montoDelivery;
     //double sumaTotal = Globales.montoCompra;
     Calcular_Minutos calcula = new Calcular_Minutos();
-    String timePedido;
+    String timePedido, categoria;
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
     int numero_empresas_encarrito;
     int codigoVisa = 0;
     String codigoCupon;
-
+    ArrayList<PedidoDetalle> list;
     EditText txtCodCupon;
     Button btnValidarCupon;
     String codigo;
@@ -84,14 +90,21 @@ public class PagoTarjetaActivity extends AppCompatActivity {
     String montoCupon;
     //double descuento = Globales.montoDescuento;
     String DireccionSeleccionada;
-    Button btnGenerarCompra;
+    TextView btnGenerarCompra;
     String laempresa = "";
     CheckBox ckRecogerEnTienda;
     boolean recoger_entienda;
     String name, number, tokencito, formaPago, ubicacion, ciudad;
-    TextView txtSubTotal, txtDeliveryTotal, txtCargoTotal, txtTotal, txtDescuentoTotal;
+    TextView txtSubTotal, txtDeliveryTotal, txtCargoTotal, txtTotal, txtTotalGeneral, txtDescuentoTotal;
     TextView txtDireccion;
     TextView btnCambiarDireccion;
+    TextView txtCantidadItems;
+    LinearLayout LinearCargo;
+    LinearLayout llCuadroVisa;
+    LinearLayout llCuadroYape;
+    LinearLayout llCuadroPlin;
+    LinearLayout llCuadroEfectivo;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //esto sucedera luego de ejecutar el activity de visa
@@ -146,7 +159,15 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         super.onResume();
         inicializaVariablesCupon();
         btnCambiarDireccion.setEnabled(true);
+        calculaDelivery();
         CalcularMontos();
+        Globales globales = new Globales();
+        list = globales.getListaPedidosCache("lista_pedidos");
+        double total = 0;
+        for (int i = 0; i < list.size(); i++){
+            total += list.get(i).getTotal();
+        }
+        txtCantidadItems.setText(String.valueOf(list.size()));
 
     }
 
@@ -188,6 +209,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         txtCargoTotal.setText(String.format("%.2f",montocargo).toString().replace(",","."));
         txtDescuentoTotal.setText(String.format("%.2f",montodescuento).toString().replace(",","."));
         txtTotal.setText(String.format("%.2f",total).toString().replace(",","."));
+        txtTotalGeneral.setText(String.format("%.2f", total).replace(",","."));
     }
 
 
@@ -205,8 +227,6 @@ public class PagoTarjetaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pago_tarjeta);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
@@ -215,6 +235,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         formaPago = myPreferences.getString("formaPago", "");
         number = myPreferences.getString("Number_Cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
+        categoria = myPreferences.getString("categoria", "");
         //Toast.makeText(PagoTarjetaActivity.this,formaPago, Toast.LENGTH_SHORT).show();
         DireccionSeleccionada = myPreferences.getString("direccion_seleccionada", "");
         ciudad = myPreferences.getString("City_Cliente", "");
@@ -224,13 +245,14 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         txtDeliveryTotal = (TextView) findViewById(R.id.txtDeliveryGeneral);
         txtCargoTotal = (TextView) findViewById(R.id.txtCargoGeneral);
         txtDescuentoTotal = (TextView) findViewById(R.id.txtDescuentoGeneral);
-        txtTotal = (TextView) findViewById(R.id.txtTotalGeneral);
+        txtTotalGeneral = (TextView) findViewById(R.id.txtTotalGeneral);
         etMontoPagoEfectivo = (EditText) findViewById(R.id.etMontoPagoEfectivo);
         txtMensajePagoEfectivo  = (TextView) findViewById(R.id.txtMensajePagoEfectivo);
         //Start Valida Cupon
         txtCodCupon = (EditText) findViewById(R.id.txtCodigoCupon);
         btnValidarCupon = (Button) findViewById(R.id.btnValidaCupon);
-
+        txtTotal = (TextView) findViewById(R.id.txtTotalPedido);
+        txtCantidadItems = (TextView) findViewById(R.id.txtCantidadItems);
         etMontoPagoEfectivo.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3,2)});
 
         txtCodCupon.addTextChangedListener(new TextWatcher() {
@@ -292,55 +314,71 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             }
         });
         //Start Validar Tipo de pago
-        LinearLayout LinearCargo = (LinearLayout) findViewById(R.id.linearCargo);
-        ImageView imgPago = (ImageView) findViewById(R.id.imagenPago);
-        if(formaPago.equals("Tarjeta")){ // Pago con tarjeta
-            LinearCargo.setVisibility(View.VISIBLE);
-            etMontoPagoEfectivo.setVisibility(View.GONE);
-            txtMensajePagoEfectivo.setVisibility(View.GONE);
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.creditcard);
-            imgPago.setImageBitmap(bmp);
-        }else if(formaPago.equals("Yape")){ // Pago con Yape
-            LinearCargo.setVisibility(View.GONE);
-            etMontoPagoEfectivo.setVisibility(View.GONE);
-            txtMensajePagoEfectivo.setVisibility(View.GONE);
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.yape);
-            imgPago.setImageBitmap(bmp);
-        }else if(formaPago.equals("Plin")){ // Pago con plin
-            LinearCargo.setVisibility(View.GONE);
-            etMontoPagoEfectivo.setVisibility(View.GONE);
-            txtMensajePagoEfectivo.setVisibility(View.GONE);
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.plin);
-            imgPago.setImageBitmap(bmp);
-        }else{
-            LinearCargo.setVisibility(View.GONE);
-            etMontoPagoEfectivo.setVisibility(View.VISIBLE);
-            txtMensajePagoEfectivo.setVisibility(View.VISIBLE);
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.cash);
-            imgPago.setImageBitmap(bmp);
-        }
+        LinearCargo = (LinearLayout) findViewById(R.id.linearCargo);
+        llCuadroVisa = (LinearLayout) findViewById(R.id.llCuadroVisa);
+        llCuadroYape = (LinearLayout) findViewById(R.id.llCuadroYape);
+        llCuadroPlin = (LinearLayout) findViewById(R.id.llCuadroPlin);
+        llCuadroEfectivo = (LinearLayout) findViewById(R.id.llCuadroEfectivo);
+
+        //ImageView imgPago = (ImageView) findViewById(R.id.imagenPago);
+        ValidarOpcionPago();
         //End Validar Tipo de pago
+
+        llCuadroVisa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formaPago = "Tarjeta";
+                myEditor.putString("formaPago", formaPago);
+                myEditor.commit();
+                ValidarOpcionPago();
+            }
+        });
+
+        llCuadroPlin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formaPago = "Plin";
+                myEditor.putString("formaPago", formaPago);
+                myEditor.commit();
+                ValidarOpcionPago();
+            }
+        });
+
+        llCuadroYape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formaPago = "Yape";
+                myEditor.putString("formaPago", formaPago);
+                myEditor.commit();
+                ValidarOpcionPago();
+            }
+        });
+
+        llCuadroEfectivo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formaPago = "Efectivo";
+                myEditor.putString("formaPago", formaPago);
+                myEditor.commit();
+                ValidarOpcionPago();
+            }
+        });
 
         //Start pop-up para seleccionar la direccion
         float monto = myPreferences.getFloat("monto_delivery", 0);
         if (monto == 0){
-            abrirPopUp();
+            //abrirPopUp();
         }
         //End pop-up para seleccionar la direccion
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
-
         //Start Boton Comprar
-        btnGenerarCompra = (Button) findViewById(R.id.btnComprar);
+        btnGenerarCompra = (TextView) findViewById(R.id.btnComprar);
         btnGenerarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 float monto = myPreferences.getFloat("monto_delivery", 0);
                 if (monto == 0){
-                    abrirPopUp();
+                    //abrirPopUp();
                 }else{
                     //btnGenerarCompra.setEnabled(false);
                     if(formaPago.equals("Tarjeta")){
@@ -454,12 +492,31 @@ public class PagoTarjetaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 btnCambiarDireccion.setEnabled(false);
-                abrirPopUp();
+                //abrirPopUp();
+            }
+        });
+        final ImageView ivIconoTarjeta = (ImageView) findViewById(R.id.ivIconoTarjeta);
+        final LinearLayout LinearOpcionesPago = (LinearLayout) findViewById(R.id.LinearOpcionesPago);
+        LinearLayout LinearMetodoPago = (LinearLayout) findViewById(R.id.LinearMetodoPago);
+        LinearOpcionesPago.setVisibility(View.GONE);
+        ivIconoTarjeta.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
+        LinearMetodoPago.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(LinearOpcionesPago.getVisibility() == View.VISIBLE){
+                    LinearOpcionesPago.setVisibility(View.GONE);
+                    ivIconoTarjeta.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
+
+                }
+                else{
+                    LinearOpcionesPago.setVisibility(View.VISIBLE);
+                    ivIconoTarjeta.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
+                }
             }
         });
 
         //botones del menu
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
+        /*ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
         ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
         ImageButton btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
         ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
@@ -495,7 +552,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 Intent intent = new Intent(PagoTarjetaActivity.this, UserActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         ckRecogerEnTienda = (CheckBox) findViewById(R.id.ckRecogerEnTienda);
         recoger_entienda = myPreferences.getBoolean("recoger_entienda", false);
@@ -523,11 +580,58 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 CalcularMontos();
             }
         });
+
+
+
     }
 
     public String calculaVuelto(){
         double elVuelto = Double.parseDouble(etMontoPagoEfectivo.getText().toString()) - Double.parseDouble(txtTotal.getText().toString());
         return String.valueOf(elVuelto);
+    }
+
+    public void ValidarOpcionPago(){
+        if(formaPago.equals("Tarjeta")){ // Pago con tarjeta
+            LinearCargo.setVisibility(View.VISIBLE);
+            etMontoPagoEfectivo.setVisibility(View.GONE);
+            txtMensajePagoEfectivo.setVisibility(View.GONE);
+            llCuadroVisa.setBackgroundResource(R.drawable.shadow_selected);
+            llCuadroYape.setBackgroundResource(R.drawable.shadow);
+            llCuadroPlin.setBackgroundResource(R.drawable.shadow);
+            llCuadroEfectivo.setBackgroundResource(R.drawable.shadow);
+            //Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.creditcard);
+            //imgPago.setImageBitmap(bmp);
+        }else if(formaPago.equals("Yape")){ // Pago con Yape
+            LinearCargo.setVisibility(View.GONE);
+            etMontoPagoEfectivo.setVisibility(View.GONE);
+            txtMensajePagoEfectivo.setVisibility(View.GONE);
+            llCuadroVisa.setBackgroundResource(R.drawable.shadow);
+            llCuadroYape.setBackgroundResource(R.drawable.shadow_selected);
+            llCuadroPlin.setBackgroundResource(R.drawable.shadow);
+            llCuadroEfectivo.setBackgroundResource(R.drawable.shadow);
+            //Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.yape);
+            //imgPago.setImageBitmap(bmp);
+        }else if(formaPago.equals("Plin")){ // Pago con plin
+            LinearCargo.setVisibility(View.GONE);
+            etMontoPagoEfectivo.setVisibility(View.GONE);
+            txtMensajePagoEfectivo.setVisibility(View.GONE);
+            llCuadroVisa.setBackgroundResource(R.drawable.shadow);
+            llCuadroYape.setBackgroundResource(R.drawable.shadow);
+            llCuadroPlin.setBackgroundResource(R.drawable.shadow_selected);
+            llCuadroEfectivo.setBackgroundResource(R.drawable.shadow);
+            //Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.plin);
+            //imgPago.setImageBitmap(bmp);
+        }else{
+            LinearCargo.setVisibility(View.GONE);
+            etMontoPagoEfectivo.setVisibility(View.VISIBLE);
+            txtMensajePagoEfectivo.setVisibility(View.VISIBLE);
+            llCuadroVisa.setBackgroundResource(R.drawable.shadow);
+            llCuadroYape.setBackgroundResource(R.drawable.shadow);
+            llCuadroPlin.setBackgroundResource(R.drawable.shadow);
+            llCuadroEfectivo.setBackgroundResource(R.drawable.shadow_selected);
+            //Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.cash);
+            //imgPago.setImageBitmap(bmp);
+        }
     }
 
     public  void abrirPopUp(){
@@ -977,8 +1081,19 @@ public class PagoTarjetaActivity extends AppCompatActivity {
                 codigoProducto = String.valueOf(pd.getProducto().getCodigo());
                 presentacion = pd.getProducto().getPresentacion();
             }
+            String listaagregados = "";
+            for (int ai = 0; ai < pd.getAgregados().size(); ai++){
+                String codigoagregado, precioagregado;
+                codigoagregado = String.valueOf(pd.getAgregados().get(ai).getCodigo());
+                precioagregado = pd.getAgregados().get(ai).getNombre();
+                String agregados =  codigoagregado + "##F_A##" + precioagregado;
+                if(ai == pd.getAgregados().size() - 1)
+                    listaagregados = listaagregados + agregados;
+                else
+                    listaagregados = listaagregados + agregados+"##F_A_N##";
+            }
 
-            String itemLista = item+"##F_B##"+codigoProducto+"##F_B##"+cantidad+"##F_B##"+precio+"##F_B##" + total+"##F_B##" + ubicacion +"##F_B##" + personalizado + "##F_B##" + String.valueOf(promo)+ "##F_B##"+presentacion;
+            String itemLista = item+"##F_B##"+codigoProducto+"##F_B##"+cantidad+"##F_B##"+precio+"##F_B##" + total+"##F_B##" + ubicacion +"##F_B##" + personalizado + "##F_B##" + String.valueOf(promo)+ "##F_B##"+presentacion + "##F_B##" + listaagregados;
             if(z == lista.size() - 1)
                 listaDetallada = listaDetallada + itemLista;
             else
@@ -988,7 +1103,7 @@ public class PagoTarjetaActivity extends AppCompatActivity {
 
         String o = URLEncoder.encode(listaDetallada,"UTF-8");
         String recoger = recoger_entienda == true ? "1" : "0";
-        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/GuardarPedido2?auth="+tokencito+"&nombre="+a+"&direccion="+b+"&telefono=" + c +"&delivery=" + d +"&cargo=" + e +"&forma=" + f +"&tiempo=" + g+"&origen=" + h + "&latitud=" + i + "&longitud=" + j + "&pago=" + k + "&vuelto=" + l+ "&descuento=" + m +"&montoPedido=" + n+"&empresa=" + String.valueOf(empresa) +"&recoger=" + recoger +"&ubicacion=" + ubicacion+"&detalle="+o;
+        String consulta = "https://apifbdelivery.fastbuych.com/Delivery/GuardarPedido3?auth="+tokencito+"&nombre="+a+"&direccion="+b+"&telefono=" + c +"&delivery=" + d +"&cargo=" + e +"&forma=" + f +"&tiempo=" + g+"&origen=" + h + "&latitud=" + i + "&longitud=" + j + "&pago=" + k + "&vuelto=" + l+ "&descuento=" + m +"&montoPedido=" + n+"&empresa=" + String.valueOf(empresa) +"&recoger=" + recoger +"&ubicacion=" + ubicacion+"&detalle="+o;
         Log.v("CONSULTA_REGISTRO", consulta);
         Globales globales = new Globales();
         listaPedidos = globales.getListaPedidosCache("lista_pedidos");
@@ -1299,5 +1414,44 @@ public class PagoTarjetaActivity extends AppCompatActivity {
         inicializaVariablesCupon();
         Intent intent = new Intent(PagoTarjetaActivity.this,CarritoActivity.class);
         startActivity(intent);
+    }
+
+    public void calculaDelivery(){
+
+        //Start logica para calcular el costo de envio
+        Operaciones operaciones = new Operaciones();
+        listaDistancias.clear();
+        Globales globales = new Globales();
+        ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
+        for (int i = 0; i < listapedidos.size(); i++) {
+            double latitud = listapedidos.get(i).getLatitud();
+            double longitud = listapedidos.get(i).getLongitud();
+            String latitud_seleccionada = myPreferences.getString("latitud_seleccionada", "0");
+            String longitud_seleccionada = myPreferences.getString("longitud_seleccionada", "0");
+            double distancia = operaciones.calcularDistancia(Double.valueOf(latitud_seleccionada), Double.valueOf(longitud_seleccionada), latitud, longitud);
+            listaDistancias.add(distancia);
+        }
+        double numeromayor = 0;
+        for (double distancia: listaDistancias){
+            if(distancia > numeromayor){
+                numeromayor = distancia;
+            }
+        }
+        Pago_Delivery delivery = new Pago_Delivery();
+        //double costoEnvio = Math.round(delivery.calcularCostoEnvio(numeromayor)*Math.pow(10,2))/Math.pow(10,2);
+        String distanciaBase = myPreferences.getString("distanciabase", "2.7");
+        String tarifabase = myPreferences.getString("precioBaseCiudadMapa", "3");
+        String tarifabaseencargo = myPreferences.getString("precioExtraCiudadMapa", "4");
+        double tarifa = 0;
+        if(categoria.equals("1") || categoria.equals("2") || categoria.equals("5") || categoria.equals("6") || categoria.equals("7") || categoria.equals("10") || categoria.equals("12") || categoria.equals("13")){
+            tarifa = Double.parseDouble(tarifabase);
+        }
+        if(categoria.equals("3") || categoria.equals("4")){
+            tarifa = Double.parseDouble(tarifabaseencargo);
+        }
+        double costoEnvio = new BigDecimal(delivery.calcularCostoEnvio(numeromayor, tarifa, Double.parseDouble(distanciaBase))).setScale(1, RoundingMode.HALF_UP).doubleValue();
+        myEditor.putFloat( "monto_delivery", Float.parseFloat(String.valueOf(costoEnvio)));
+        myEditor.commit();
+        //End logica para calcular el costo de envio
     }
 }

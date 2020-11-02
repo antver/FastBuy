@@ -15,6 +15,7 @@ public class Producto {
     private int estado;
     private String presentacion;
     private int tiempo;
+    private String favorito;
 
     public int getCodigo() {
         return codigo;
@@ -87,4 +88,12 @@ public class Producto {
     public int getTiempo() {return tiempo;}
 
     public void setTiempo(int tiempo) {this.tiempo = tiempo;}
+
+    public String getFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(String favorito) {
+        this.favorito = favorito;
+    }
 }

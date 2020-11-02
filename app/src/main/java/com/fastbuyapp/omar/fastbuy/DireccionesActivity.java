@@ -52,9 +52,9 @@ public class DireccionesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
+        /*ValidacionDatos valida = new ValidacionDatos();
         valida.validarCarritoVacio(btnCarrito);
-        listarDirecciones();
+        listarDirecciones();*/
     }
 
     @Override

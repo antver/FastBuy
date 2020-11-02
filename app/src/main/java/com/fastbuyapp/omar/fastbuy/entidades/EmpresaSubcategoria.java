@@ -1,5 +1,8 @@
 package com.fastbuyapp.omar.fastbuy.entidades;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by OMAR on 22/03/2019.
  */
@@ -9,6 +12,9 @@ public class EmpresaSubcategoria {
     private String descripcion;
     private String imagen;
     private String estado;
+    private ArrayList<Empresa> listEmpresas;
+
+    private int posicion;
 
     public int getCodigo() {
         return codigo;
@@ -42,4 +48,19 @@ public class EmpresaSubcategoria {
         this.estado = estado;
     }
 
+    public ArrayList<Empresa> getListEmpresas() {
+        return listEmpresas;
+    }
+
+    public void setListEmpresas(ArrayList<Empresa> listEmpresas) {
+        this.listEmpresas = listEmpresas;
+    }
+
+    public int getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(int posicion) {
+        this.posicion = posicion;
+    }
 }

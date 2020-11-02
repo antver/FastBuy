@@ -8,21 +8,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,10 +37,12 @@ import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Minutos;
 import com.fastbuyapp.omar.fastbuy.Validaciones.ValidacionDatos;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaListAdapter;
 import com.fastbuyapp.omar.fastbuy.adaptadores.EmpresaListAdapterMosaico;
+import com.fastbuyapp.omar.fastbuy.adaptadores.ProductoListAdapter;
 import com.fastbuyapp.omar.fastbuy.adaptadores.RecyclerAdapterPromociones;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.Categoria;
 import com.fastbuyapp.omar.fastbuy.entidades.Empresa;
+import com.fastbuyapp.omar.fastbuy.entidades.Producto;
 import com.fastbuyapp.omar.fastbuy.entidades.Promocion;
 
 import org.json.JSONArray;
@@ -48,9 +52,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class FavoritosActivity extends AppCompatActivity {
-
+    ArrayList<Categoria> listaCategorias;
     RecyclerView rvPromociones;
-    GridView gridView;
+    //GridView gridView;
     ArrayList<Empresa> list;
     ArrayList<Promocion> listProm;
     EmpresaListAdapterMosaico adapterMosaico = null;
@@ -58,12 +62,21 @@ public class FavoritosActivity extends AppCompatActivity {
     ImageButton btnCarrito;
     LinearLayout LinearSinFav, LinearConFav, LinearPromFav;
     SharedPreferences.Editor myEditor;
-    String tokencito, ubicacion, numero;
+    String tokencito, ubicacion, numero, codigoZona_usuario;
+    String name, portada, logo, costotaper, cobrataper;
+    TextView txtCantidadItemsMenu;
+    ImageButton btnFavoritos;
+    ViewGroup panelCategorias;
+    LinearLayoutManager layoutManager;
+    SharedPreferences myPreferences;
+
     @Override
     protected void onResume() {
         super.onResume();
+        //btnFavoritos.setImageTintBlendMode(Color.);
         ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        valida.validarCarritoVacio(btnCarrito,txtCantidadItemsMenu);
+
     }
 
     @Override
@@ -76,29 +89,24 @@ public class FavoritosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritos);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
-        SharedPreferences myPreferences;
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
         tokencito = myPreferences.getString("tokencito", "");
         ubicacion = myPreferences.getString("ubicacion", "");
+        codigoZona_usuario = myPreferences.getString("codigoZona_usuario", "");
         numero  = myPreferences.getString("Number_Cliente", "");
         //inicializar componentes
-        gridView = (GridView) findViewById(R.id.gvListaFav);
+        //gridView = (GridView) findViewById(R.id.gvListaFav);
         LinearConFav = (LinearLayout) findViewById(R.id.linearContenidoFavoritos);
         LinearSinFav = (LinearLayout) findViewById(R.id.linearFavoritoVacio);
-        LinearPromFav = findViewById(R.id.linearPromocionesFav);
-        rvPromociones = findViewById(R.id.rvPromocionesFav);
-
+        txtCantidadItemsMenu = (TextView) findViewById(R.id.txtCantidadItemsMenu);
+        //LinearPromFav = findViewById(R.id.linearPromocionesFav);
+        //rvPromociones = findViewById(R.id.rvPromocionesFav);
+        panelCategorias = (ViewGroup) findViewById(R.id.panelCategorias);
         listarPromocionesFav();
         EnviarRecibirDatosFav();
-
+/*
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,7 +122,7 @@ public class FavoritosActivity extends AppCompatActivity {
                 String categoria = String.valueOf(list.get(position).getCategoria());
                 myEditor.putString("categoria", categoria);
                 if(list.get(position).getEstadoAbierto().equals("Abierto")){
-                    myEditor.putBoolean("tiendaCerrada", false);
+                    myEditor.putBoolean("tiendaCerrada", false);tr
                 }
                 else{
                     myEditor.putBoolean("tiendaCerrada", true);
@@ -123,18 +131,29 @@ public class FavoritosActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(FavoritosActivity.this, ProductosActivity.class);
                 startActivity(intent);
+
+
             }
-        });
+        });*/
 
         //MENU PRINCIPAL
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
+        btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
         btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
+        ImageButton btnBuscador = (ImageButton) findViewById(R.id.btnBuscador);
         ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FavoritosActivity.this, PrincipalActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnBuscador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FavoritosActivity.this, BuscadorActivity.class);
                 startActivity(intent);
             }
         });
@@ -180,8 +199,9 @@ public class FavoritosActivity extends AppCompatActivity {
         progDailog.setIndeterminate(true);
         progDailog.setCancelable(false);
         progDailog.show();
-        String miURL = "https://apifbdelivery.fastbuych.com/Delivery/ListarFavoritosXCliente?auth="+tokencito+"&ubicacion="+ubicacion+"&telefono="+ numero;
-        Log.v("miURlFavorito",miURL);
+        //https://apifbdelivery.fastbuych.com/Delivery/ListarProductoFavoritos?auth=Xid20200110e34CorpFastBuySAC2020comfastbuyusuario&telefono=987970898&zona=17
+        String miURL = "https://apifbdelivery.fastbuych.com/Delivery/ListarProductoFavoritos?auth="+tokencito+"&zona="+codigoZona_usuario+"&telefono="+ numero;
+        //Log.v("miURlFavorito",miURL);
         RequestQueue queue = Volley.newRequestQueue(FavoritosActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, miURL, new Response.Listener<String>() {
             @Override
@@ -191,7 +211,7 @@ public class FavoritosActivity extends AppCompatActivity {
                     if (response.length()>0){
                         activaLinear();
                         try {
-                            JSONArray ja = new JSONArray(response);
+                            /*JSONArray ja = new JSONArray(response);
                             list = new ArrayList<>();
                             for (int i = 0; i < ja.length(); i++) {
                                 JSONObject objeto = ja.getJSONObject(i);
@@ -216,6 +236,65 @@ public class FavoritosActivity extends AppCompatActivity {
                             gridView.setNumColumns(2);
                             adapterMosaico = new EmpresaListAdapterMosaico(FavoritosActivity.this, R.layout.item_list_mosaico, list);
                             gridView.setAdapter(adapterMosaico);
+                            progDailog.dismiss();*/
+                            JSONArray ja = new JSONArray(response);
+                            listaCategorias = new ArrayList<>();
+                            for (int i = 0; i < ja.length(); i++) {
+                                JSONObject objeto = ja.getJSONObject(i);
+                                Categoria es = new Categoria();
+                                es.setCodigo(objeto.getInt("codigo"));
+                                LayoutInflater inflater = LayoutInflater.from(FavoritosActivity.this);
+                                int id = R.layout.item_producto_rv;
+                                LinearLayout linear = (LinearLayout) inflater.inflate(id, null, false);
+                                TextView txtNombreCategoria = (TextView) linear.findViewById(R.id.txtNombreCategoria);
+                                String nombrecat =objeto.getString("servicio");
+                                txtNombreCategoria.setText(nombrecat.substring(0,1).toUpperCase() + nombrecat.substring(1).toLowerCase());
+
+                                ArrayList<Producto> listaProductos = new ArrayList<>();
+                                JSONArray jaProductos = ja.getJSONObject(i).getJSONArray("productos");
+                                for (int j = 0; j < jaProductos.length(); j++){
+                                    JSONObject objectProducto = jaProductos.getJSONObject(j);
+                                    Producto producto = new Producto();
+                                    producto.setCodigo(objectProducto.getInt("Codigo"));
+                                    producto.setDescripcion(objectProducto.getString("Descripcion"));
+                                    producto.setDescripcion2(objectProducto.getString("Descripcion2"));
+                                    //esto es en caso la empresa seleccionada cobre el taper
+                                    double Precio;
+                                    //if (cobrataper.equals("SI"))
+                                    //Precio = (double) objectProducto.getDouble("Precio") + Double.parseDouble(costotaper);
+                                    //else
+                                        Precio = objectProducto.getDouble("Precio");
+
+                                    producto.setPrecio(String.format("%.2f",Precio).toString().replace(",","."));
+                                    producto.setImagen(objectProducto.getString("Imagen"));
+                                    producto.setEstado(objectProducto.getInt("Estado"));
+                                    producto.setFavorito("si");
+                                    Categoria categoria = new Categoria();
+                                    categoria.setDescripcion(objectProducto.getString("Categoria"));
+                                    producto.setCategoria(categoria);
+                                    Empresa empresa = new Empresa();
+                                    empresa.setCodigo(objectProducto.getInt("CodEmpresa"));
+                                    empresa.setNombreComercial(objectProducto.getString("NombreComercial"));
+                                    empresa.setLongitud(objectProducto.getDouble("Longitud"));
+                                    empresa.setLatitud(objectProducto.getDouble("Latitud"));
+                                    producto.setEmpresa(empresa);
+                                    Calcular_Minutos calcula = new Calcular_Minutos();
+                                    producto.setTiempo(calcula.ObtenMinutos(objectProducto.getString("TimePreparacion")));
+                                    listaProductos.add(producto);
+                                }
+
+                                es.setListaproductos(listaProductos);
+                                listaCategorias.add(es);
+                                layoutManager = new LinearLayoutManager(FavoritosActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                                RecyclerView rvProductos = linear.findViewById(R.id.rvProductos);
+                                rvProductos.setLayoutManager(layoutManager);
+                                // specify an adapter (see also next example)
+                                ProductoListAdapter mAdapterProducto = new ProductoListAdapter(listaCategorias.get(i).getListaproductos(), FavoritosActivity.this);
+                                rvProductos.setAdapter(mAdapterProducto);
+
+                                panelCategorias.addView(linear);
+                            }
+
                             progDailog.dismiss();
 
                         } catch (JSONException e) {
@@ -332,7 +411,7 @@ public class FavoritosActivity extends AppCompatActivity {
                 }
                 else {
                     progDailog1.dismiss();
-                    LinearPromFav.setVisibility(View.GONE);
+                    //LinearPromFav.setVisibility(View.GONE);
                 }
             }
         }, new Response.ErrorListener(){

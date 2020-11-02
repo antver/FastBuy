@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fastbuyapp.omar.fastbuy.Operaciones.OnSwipeTouchListener;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
 import com.fastbuyapp.omar.fastbuy.entidades.Tutorial_Item;
 
@@ -46,6 +48,7 @@ public class TutorialActivity extends AppCompatActivity {
     SharedPreferences.Editor myEditor;
     ProgressDialog progDailog = null;
     String codigo, tokencito;
+    int indicador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,20 +63,24 @@ public class TutorialActivity extends AppCompatActivity {
         String e_mail = myPreferences.getString("Email_Cliente", "");
         String city = myPreferences.getString("City_Cliente", "");
         String photo = myPreferences.getString("Photo_Cliente", "");
+        String existe = myPreferences.getString("existe_cliente", "");
         tokencito = myPreferences.getString("tokencito", "");
-        GuardarUsuario(name, number, e_mail, photo);
+        if(!existe.equals("existe")){
+            GuardarUsuario(name, number, e_mail, photo);
+        }
+
         layoutTutorialIndicador = (LinearLayout) findViewById(R.id.indicadorTutorial);
         btnNextTuto = (Button) findViewById(R.id.btnNextTutorial);
         btnComenzar = (Button) findViewById(R.id.btnComenzar);
-        setupTutorialItems();
-        final ViewPager2 viewPager2Tutorial = (ViewPager2) findViewById(R.id.tutorialViewPager2);
-        viewPager2Tutorial.setAdapter(tutorialAdapter);
-        setupTutorialIndicadores();
-        setEstadoIndicadorTutorial(0);
+        //setupTutorialItems();
+        //final ViewPager2 viewPager2Tutorial = (ViewPager2) findViewById(R.id.tutorialViewPager2);
+        //viewPager2Tutorial.setAdapter(tutorialAdapter);
+        //setupTutorialIndicadores();
+        //setEstadoIndicadorTutorial(0);
 
         final int cuenta;
-
-        viewPager2Tutorial.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        indicador = 0;
+        /*viewPager2Tutorial.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -87,39 +94,88 @@ public class TutorialActivity extends AppCompatActivity {
                     btnNextTuto.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        });*/
+        final LinearLayout llTutorial1 = (LinearLayout) findViewById(R.id.lltutorial1);
+        final LinearLayout llTutorial2 = (LinearLayout) findViewById(R.id.lltutorial2);
+        final LinearLayout llTutorial3 = (LinearLayout) findViewById(R.id.lltutorial3);
 
         btnNextTuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewPager2Tutorial.getCurrentItem()+1 < tutorialAdapter.getItemCount()){
-                    viewPager2Tutorial.setCurrentItem(viewPager2Tutorial.getCurrentItem()+1);
+                if(indicador == 0){
+                    llTutorial1.setVisibility(View.GONE);
+                    llTutorial2.setVisibility(View.VISIBLE);
+                    llTutorial3.setVisibility(View.GONE);
                 }
+                if(indicador == 1){
+                    llTutorial1.setVisibility(View.GONE);
+                    llTutorial2.setVisibility(View.GONE);
+                    llTutorial3.setVisibility(View.VISIBLE);
+                }
+                if(indicador == 2){
+                    finish();
+                    Intent intent = new Intent(TutorialActivity.this, PrincipalActivity.class);
+                    startActivity(intent);
+                }
+                indicador++;
+                /*if (viewPager2Tutorial.getCurrentItem()+1 < tutorialAdapter.getItemCount()){
+                    viewPager2Tutorial.setCurrentItem(viewPager2Tutorial.getCurrentItem()+1);
+                }*/
             }
         });
 
         btnComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Toast toast = Toast.makeText(v.getContext(), "Bienvenido...", Toast.LENGTH_SHORT);
-                View vistaToast = toast.getView();
-                vistaToast.setBackgroundResource(R.drawable.toast_bienvenido);
-                toast.show();*/
                 finish();
-                Intent intent = new Intent(TutorialActivity.this, CiudadActivity.class);
+                Intent intent = new Intent(TutorialActivity.this, PrincipalActivity.class);
                 startActivity(intent);
             }
         });
+
+        /*llTutorial2.setOnTouchListener(new OnSwipeTouchListener(this) {
+            public void onSwipeTop() {
+                //Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeRight() {
+                //Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
+                btnComenzar.callOnClick();
+            }
+
+            public void onSwipeLeft() {
+                //Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
+                if(indicador == 0){
+                    llTutorial1.setVisibility(View.GONE);
+                    llTutorial2.setVisibility(View.VISIBLE);
+                    llTutorial3.setVisibility(View.GONE);
+                }
+                if(indicador == 1){
+                    llTutorial1.setVisibility(View.GONE);
+                    llTutorial2.setVisibility(View.GONE);
+                    llTutorial3.setVisibility(View.VISIBLE);
+                }
+                indicador--;
+                if(indicador < 0){
+                    indicador = 0;
+                }
+            }
+
+            public void onSwipeBottom() {
+                //Toast.makeText(MainActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+            }
+
+        });*/
     }
 
     private void setupTutorialItems(){
         List<Tutorial_Item> tutorialItems = new ArrayList<>();
         Tutorial_Item item1 = new Tutorial_Item();
-        item1.setImagen(R.drawable.paso_01);
+        item1.setImagen(R.id.lltutorial1);
         Tutorial_Item item2 = new Tutorial_Item();
-        item2.setImagen(R.drawable.paso_02);
+        item2.setImagen(R.id.lltutorial2);
         Tutorial_Item item3 = new Tutorial_Item();
-        item3.setImagen(R.drawable.paso_03);
+        item3.setImagen(R.id.lltutorial3);
         tutorialItems.add(item1);
         tutorialItems.add(item2);
         tutorialItems.add(item3);

@@ -1,5 +1,7 @@
 package com.fastbuyapp.omar.fastbuy.entidades;
 
+import java.util.ArrayList;
+
 /**
  * Created by OMAR on 22/08/2018.
  */
@@ -20,6 +22,12 @@ public class Empresa {
     private String taper;
     private double costoTaper;
     private int categoria;
+    private String valoracion;
+    private String tiempo;
+
+    private int ubicacion;
+
+    private ArrayList<Producto> productos;
 
     public int getCategoria() {
         return categoria;
@@ -136,4 +144,36 @@ public class Empresa {
     public String getImagenFondo() {return imagenFondo;}
 
     public void setImagenFondo(String imagenFondo) { this.imagenFondo = imagenFondo; }
+
+    public String getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(String valoracion) {
+        this.valoracion = valoracion;
+    }
+
+    public String getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
+    }
+
+    public int getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(int ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public ArrayList<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<Producto> productos) {
+        this.productos = productos;
+    }
 }

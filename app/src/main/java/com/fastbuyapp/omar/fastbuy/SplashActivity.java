@@ -57,7 +57,8 @@ public class SplashActivity extends AppCompatActivity {
         myEditor.commit();
         celular = myPreferences.getString("Number_Cliente", "");
         nombre = myPreferences.getString("Name_Cliente", "");
-
+        String tokencito = myPreferences.getString("tokencito", "");
+        Log.v("celular", celular);
         if(celular.equals("") && nombre.equals("")) {
             hayUsuario = false;
             cargarSplash();
@@ -73,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intentdes = new Intent(SplashActivity.this, ActivityDesconectado.class);
                 startActivity(intentdes);
             }
-            String URL = "https://apifbdelivery.fastbuych.com/Delivery/VerificarRegistroUsuario?auth=Xid20200110e34CorpFastBuySAC2020comfastbuyusuario&nombre=" + URLEncoder.encode(name) + "&telefono="+URLEncoder.encode(number) +"&email=" + URLEncoder.encode(e_mail);
+            String URL = "https://apifbdelivery.fastbuych.com/Delivery/ValidarUsuario?auth="+ tokencito +"&telefono="+URLEncoder.encode(number);
             RequestQueue queue = Volley.newRequestQueue(SplashActivity.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                 @Override
@@ -81,12 +82,18 @@ public class SplashActivity extends AppCompatActivity {
                     if (response.length()>0){
                         try {
                             JSONObject objeto = new JSONObject(response);
-                            String nuevocodigo = objeto.getString("codigo");
-                            String nuevonombre = objeto.getString("nombre");
-                            myEditor.putString("Id_Cliente",  nuevocodigo);
-                            myEditor.putString("Name_Cliente", nuevonombre);
-                            myEditor.commit();
-                            hayUsuario = true;
+                            String repuesta = objeto.getString("respuesta");
+                            if(repuesta.equals("existe")){
+                                String nuevocodigo = objeto.getString("codigo");
+                                String nuevonombre = objeto.getString("nombre");
+                                myEditor.putString("Id_Cliente",  nuevocodigo);
+                                myEditor.putString("Name_Cliente", nuevonombre);
+                                myEditor.commit();
+                                hayUsuario = true;
+                            }
+                            else{
+                                hayUsuario = false;
+                            }
                             cargarSplash();
                         } catch (JSONException e) {
                             e.printStackTrace();

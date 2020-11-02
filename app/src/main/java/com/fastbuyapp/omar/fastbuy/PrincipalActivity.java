@@ -1,6 +1,7 @@
 package com.fastbuyapp.omar.fastbuy;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -91,20 +93,24 @@ public class PrincipalActivity extends AppCompatActivity {
     String ubicacion; // codigo de la ciudad
     String tokencito, codigoZona_usuario;
     List<Ubicacion> listCiudades;
-    TextView txtDireccion;
+    TextView txtDireccion, txtCantidadItemsMenu;
     //FrameLayout fondopromociones;
     private LinearLayout bottomSheet;
     @Override
     protected void onResume() {
         super.onResume();
         ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        valida.validarCarritoVacio(btnCarrito,txtCantidadItemsMenu);
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         String direccion = myPreferences.getString("direccion_seleccionada", "");
-        if(direccion.length() >= 12){
-            direccion = direccion.substring(0, 10) + "...";
+        codigoZona_usuario = myPreferences.getString("codigoZona_usuario", "");
+        if(direccion.length() >= 15){
+            direccion = direccion.substring(0, 15) + "...";
         }
         txtDireccion.setText(direccion);
+        if(!codigoZona_usuario.equals("")){
+            listarPromociones(codigoZona_usuario);
+        }
     }
 
     @Override
@@ -119,7 +125,15 @@ public class PrincipalActivity extends AppCompatActivity {
         tokencito = myPreferences.getString("tokencito", "");
         codigoZona_usuario = myPreferences.getString("codigoZona_usuario", "");
         String nombreImagen = myPreferences.getString("Photo_Cliente", "");
+
+        /*Asignación de controles a variables*/
         LinearLayout btnUbicacion = (LinearLayout) findViewById(R.id.btnUbicacion);
+        txtPromociones = (TextView) findViewById(R.id.txtPromociones);
+        txtDireccion = (TextView) findViewById(R.id.txtDireccion);
+        img_usuario = (ImageView)findViewById(R.id.img_usuario);
+        txtNombreUsuario = (TextView)findViewById(R.id.txtNombreUsuario);
+        rvPromociones = (RecyclerView) findViewById(R.id.rvPromociones);
+        txtCantidadItemsMenu = (TextView) findViewById(R.id.txtCantidadItemsMenu);
         //fondopromociones = (FrameLayout) findViewById(R.id.fondopromociones);
         if(codigoZona_usuario.equals("")){
             Intent intentDireccion = new Intent(PrincipalActivity.this, DireccionMapsFragment.class);
@@ -128,10 +142,10 @@ public class PrincipalActivity extends AppCompatActivity {
         //elOrigen = getIntent().getStringExtra("origen");//para evitar que el servicio se inicie
 
         //inicio 2º plano
-        if (Globales.myService == null){
-            Globales.myService = new Intent(getApplicationContext(), BackgroundChat.class);
-            startService(Globales.myService);
-        }
+        //if (Globales.myService == null){
+        //    Globales.myService = new Intent(getApplicationContext(), BackgroundChat.class);
+        //    startService(Globales.myService);
+        //}
 
         /*if (!elOrigen.equals("Notificacion")){
             if (myService == null){
@@ -141,11 +155,7 @@ public class PrincipalActivity extends AppCompatActivity {
         }*/
         //fin 2º plano
 
-        /*Asignación de controles a variables*/
-        txtPromociones = (TextView) findViewById(R.id.txtPromociones);
-        txtDireccion = (TextView) findViewById(R.id.txtDireccion);
-        img_usuario = (ImageView)findViewById(R.id.img_usuario);
-        txtNombreUsuario = (TextView)findViewById(R.id.txtNombreUsuario);
+
         txtNombreUsuario.setText(nombre);
 
         if(nombreImagen != ""){
@@ -164,23 +174,37 @@ public class PrincipalActivity extends AppCompatActivity {
                     .transform(new CircleCrop())
                     .into(img_usuario);
         }
+        WindowManager wm;
+        wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        int ancho = wm.getDefaultDisplay().getWidth();
+        LinearLayout llpanelCategorias1 = (LinearLayout) findViewById(R.id.llpanelCategorias1);
+        LinearLayout llpanelCategorias2 = (LinearLayout) findViewById(R.id.llpanelCategorias2);
+        LinearLayout llpanelCategorias3 = (LinearLayout) findViewById(R.id.llpanelCategorias3);
 
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ancho  , LinearLayout.LayoutParams.WRAP_CONTENT);
 
-
+        //layoutParams.setMargins(20, 0, 20, 0);
+        llpanelCategorias1.setLayoutParams(layoutParams);
+        llpanelCategorias2.setLayoutParams(layoutParams);
+        llpanelCategorias3.setLayoutParams(layoutParams);
+        llpanelCategorias1.setPadding(50, 0, 0, 0);
+        llpanelCategorias2.setPadding(50, 0, 0, 0);
+        llpanelCategorias3.setPadding(50, 0, 20, 0);
         /*imvRestaurants = (ImageView)findViewById(R.id.imageView5);
         imvMarkets = (ImageView)findViewById(R.id.imageView8);
         ciudades = (Spinner) findViewById(R.id.spinnerCiudad);
 */
         //estableciendo en true el inicio de sesion
-        rvPromociones = (RecyclerView) findViewById(R.id.rvPromociones);
+
 
         //Asignando valores a las variables globales ciudadEncargo y codigo
        // Globales.CiudadEncargoSeleccionada = Globales.ciudadOrigen;
         //Globales.CodigoCiudadEncargoSeleccionada = Globales.ubicacion;
 
         //try {
-            listarPromociones(Integer.parseInt(ubicacion));
-            listaCiudades();
+
+        //listaCiudades();
             //listarCategorias();
         //} catch (UnsupportedEncodingException e) {
         //e.printStackTrace();
@@ -222,8 +246,9 @@ public class PrincipalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 myEditor.putString("categoria", "1");
+                myEditor.putString("categoria_nombre", "Restaurantes");
                 myEditor.commit();
-                Intent intent = new Intent(PrincipalActivity.this, DeliveryActivity.class);
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
                 startActivity(intent);
             }
         });
@@ -233,8 +258,9 @@ public class PrincipalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 myEditor.putString("categoria", "2");
+                myEditor.putString("categoria_nombre", "Mercados");
                 myEditor.commit();
-                Intent intent = new Intent(PrincipalActivity.this, DeliveryActivity.class);
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
                 startActivity(intent);
             }
         });
@@ -244,13 +270,14 @@ public class PrincipalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 myEditor.putString("categoria", "3");
+                myEditor.putString("categoria_nombre", "Encargos");
                 myEditor.commit();
                 Intent intent = new Intent(PrincipalActivity.this, EncargoActivity.class);
                 startActivity(intent);
             }
         });
 
-        LinearLayout llTransporte = (LinearLayout) findViewById(R.id.llTransporte);
+        /*LinearLayout llTransporte = (LinearLayout) findViewById(R.id.llTransporte);
         llTransporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,27 +293,121 @@ public class PrincipalActivity extends AppCompatActivity {
                 Intent intent = new Intent(PrincipalActivity.this, HoteleriaActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         LinearLayout llPidelo = (LinearLayout) findViewById(R.id.llPidelo);
         llPidelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myEditor.putString("categoria", "4");
+                myEditor.putString("categoria_nombre", "¡Pide lo que quieras!");
                 myEditor.commit();
                 Intent intent = new Intent(PrincipalActivity.this, PideloActivity.class);
                 startActivity(intent);
             }
         });
 
+        LinearLayout llFastLive = (LinearLayout) findViewById(R.id.llFastLive);
+        llFastLive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        LinearLayout llCuidadoPersonal = (LinearLayout) findViewById(R.id.llCuidadoPersonal);
+        llCuidadoPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myEditor.putString("categoria", "5");
+                myEditor.putString("categoria_nombre", "Cuidado personal");
+                myEditor.commit();
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout llTecnologia = (LinearLayout) findViewById(R.id.llTecnologia);
+        llTecnologia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myEditor.putString("categoria", "6");
+                myEditor.putString("categoria_nombre", "Tecnología");
+                myEditor.commit();
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout llPrevencion = (LinearLayout) findViewById(R.id.llPrevencion);
+        llPrevencion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myEditor.putString("categoria", "10");
+                myEditor.putString("categoria_nombre", "Prevención");
+                myEditor.commit();
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout llModa = (LinearLayout) findViewById(R.id.llModa);
+        llModa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myEditor.putString("categoria", "7");
+                myEditor.putString("categoria_nombre", "Moda");
+                myEditor.commit();
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout llLicores = (LinearLayout) findViewById(R.id.llLicores);
+        llLicores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myEditor.putString("categoria", "12");
+                myEditor.putString("categoria_nombre", "Licores");
+                myEditor.commit();
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout llMascotas = (LinearLayout) findViewById(R.id.llMascotas);
+        llMascotas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myEditor.putString("categoria", "13");
+                myEditor.putString("categoria_nombre", "Mascotas");
+                myEditor.commit();
+                Intent intent = new Intent(PrincipalActivity.this, RestauranteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        /*OPCIONES MENU*/
         ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
         ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
+        ImageButton btnBuscador = (ImageButton) findViewById(R.id.btnBuscador);
         btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
+
         ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        btnBuscador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PrincipalActivity.this, BuscadorActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -350,7 +471,7 @@ public class PrincipalActivity extends AppCompatActivity {
         return posicion;
     }
 
-    public void listarPromociones(int codUbi){
+    public void listarPromociones(String codUbi){
         //String consulta = "https://apifbdelivery.fastbuych.com/Delivery/PromocionesXUbicacion?auth="+tokencito+"&ubica="+String.valueOf(codUbi);
         String consulta = "https://apifbdelivery.fastbuych.com/Delivery/PromocionesPorZona?auth=Xid20200825e34CorpFastBuySAC2020comappledroidefastbuyfastbuy&zona=1";
         EnviarRecibirDatosPromociones(consulta);

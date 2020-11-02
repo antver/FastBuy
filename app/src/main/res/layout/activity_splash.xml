@@ -21,20 +21,22 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true">
 
-            <!--<com.airbnb.lottie.LottieAnimationView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
-                android:layout_height="250dp"
+                android:layout_height="350dp"
                 android:layout_width="match_parent"
-                app:lottie_fileName="carr2.json"
+                app:lottie_fileName="LOGO5.json"
+                android:scaleType="centerCrop"
                 app:lottie_loop="false"
-                app:lottie_autoPlay="true"/>-->
+                app:lottie_speed="0.4"
+                app:lottie_autoPlay="true"/>
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/isotipo"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/isotipo_fastbuy" />
+                app:srcCompat="@drawable/isotipo_fastbuy" />-->
 
             <!--<ImageView
                 android:id="@+id/logotipo"

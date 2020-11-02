@@ -3,6 +3,7 @@ package com.fastbuyapp.omar.fastbuy;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -36,20 +38,22 @@ public class PideloActivity extends AppCompatActivity {
 
     ArrayList<Ubicacion> listCiu;
     //String Ciud;
-    LinearLayout animacionPidelo, generaPidelo;
+    LinearLayout generaPidelo;
     boolean state = true;
     boolean openCmb = true;
-    GridView listaCiudadesPidelo;
-    CiudadListAdapter adapter = null;
+    //GridView listaCiudadesPidelo;
+    //CiudadListAdapter adapter = null;
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
-    ImageButton btnCarrito;
+
+    ImageView btnAtras, btnDondeCompramos;
     String ciudad, ubicacion;
+    TextView txtDireccionPidelo;
     @Override
     protected void onResume(){
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        String direccionpidelo = myPreferences.getString("LugarRecogerEncargo",  "Dirección del establecimiento");
+        txtDireccionPidelo.setText(direccionpidelo);
     }
 
     @Override
@@ -59,42 +63,42 @@ public class PideloActivity extends AppCompatActivity {
 
         Globales globales = new Globales();
         listCiu = globales.getDataFromSharedPreferences("lista_ciudades");
-        LottieAnimationView btnBoxPidelo = (LottieAnimationView) findViewById(R.id.btnAddAnimation);
-        animacionPidelo = (LinearLayout) findViewById(R.id.linerAnimacionPidelo);
-        generaPidelo = (LinearLayout) findViewById(R.id.linearGeneraPidelo);
+        /*LottieAnimationView btnBoxPidelo = (LottieAnimationView) findViewById(R.id.btnAddAnimation);
+        animacionPidelo = (LinearLayout) findViewById(R.id.linerAnimacionPidelo);*/
+        //generaPidelo = (LinearLayout) findViewById(R.id.linearGeneraPidelo);
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
         ciudad = myPreferences.getString("City_Cliente", "");
         ubicacion = myPreferences.getString("ubicacion", "");
         //visualizacion
-        animacionPidelo.setVisibility(View.VISIBLE);
-        generaPidelo.setVisibility(View.GONE);
-
-        //Start Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPidelo);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_navigate_before));
-        //End Toolbar
+        //animacionPidelo.setVisibility(View.VISIBLE);
+        //generaPidelo.setVisibility(View.GONE);
+        btnDondeCompramos = (ImageView) findViewById(R.id.btnDondeCompramos);
+        txtDireccionPidelo = (TextView) findViewById(R.id.txtDireccionPidelo);
+        btnAtras = (ImageView) findViewById(R.id.btnAtras);
+        btnDondeCompramos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentMapa = new Intent(PideloActivity.this, DondeLoCompramosFragment.class);
+                startActivity(intentMapa);
+            }
+        });
 
         //inicializando variables
-        final TextView cmbCiudadPidelo = (TextView) findViewById(R.id.cmbCiudadPidelo);
-        listaCiudadesPidelo = (GridView) findViewById(R.id.listaDeCiudadesPidelo);
+        //final TextView cmbCiudadPidelo = (TextView) findViewById(R.id.cmbCiudadPidelo);
+        //listaCiudadesPidelo = (GridView) findViewById(R.id.listaDeCiudadesPidelo);
 
-        ScrollView myScroll = findViewById(R.id.scrollPidelo);
-        final ScrollView myScrollGeneral = findViewById(R.id.scrollGeneralPidelo);
+        //ScrollView myScroll = findViewById(R.id.scrollPidelo);
+        //final ScrollView myScrollGeneral = findViewById(R.id.scrollGeneralPidelo);
 
         //Start boton flotante
-        final LinearLayout flotante = (LinearLayout) findViewById(R.id.linearFlotantePidelo);
-        final LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //final LinearLayout flotante = (LinearLayout) findViewById(R.id.linearFlotantePidelo);
+        //final LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+               // LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //param.setMargins(left,top,right,bottom);
         //flotante.setPadding(left,top,right,bottom);
 
-        btnBoxPidelo.setOnClickListener(new View.OnClickListener() {
+        /*btnBoxPidelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (state){
@@ -115,16 +119,16 @@ public class PideloActivity extends AppCompatActivity {
                 }
                 flotante.setLayoutParams(param);
             }
-        });
+        });*/
         //End boton flotante
 
         //Inicializamos boton Confirmar Encargo
         final Button btnConfirmaPidelo = (Button) findViewById(R.id.btnConfirmarPidelo);
 
         //Start Lista de Ciudades
-        listarCiudades();
+        //listarCiudades();
 
-        cmbCiudadPidelo.setOnClickListener(new View.OnClickListener() {
+        /*cmbCiudadPidelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (openCmb){
@@ -135,12 +139,12 @@ public class PideloActivity extends AppCompatActivity {
                     openCmb=true;
                 }
             }
-        });
+        });*/
 
         //Ciud = Globales.CiudadPideloSeleccionada;
-        cmbCiudadPidelo.setText(ciudad);
+        //cmbCiudadPidelo.setText(ciudad);
 
-        listaCiudadesPidelo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listaCiudadesPidelo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int codigo =(listCiu.get(position).getCodigo());
@@ -153,11 +157,11 @@ public class PideloActivity extends AppCompatActivity {
                 cmbCiudadPidelo.setText(ciudad);
                 listaCiudadesPidelo.setVisibility(View.GONE);
             }
-        });
+        });*/
         //End Lista de Ciudades
 
         //Start controlando Scroll
-        myScrollGeneral.setOnTouchListener(new View.OnTouchListener() {
+        /*myScrollGeneral.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 findViewById(R.id.scrollPidelo).getParent()
@@ -176,14 +180,14 @@ public class PideloActivity extends AppCompatActivity {
                         .requestDisallowInterceptTouchEvent(false);
                 return false;
             }
-        });
-        listaCiudadesPidelo.setOnTouchListener(new View.OnTouchListener() {
+        });*/
+        /*listaCiudadesPidelo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
-        });
+        });*/
         //End controlando Scroll
 
         //Start número de contacto
@@ -198,10 +202,10 @@ public class PideloActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (txtNumberContactoPidelo.getText().length() == 9) {
                     btnConfirmaPidelo.setEnabled(validaNumero(txtNumberContactoPidelo));
-                    btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_rojo);
+                    //btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_rojo);
                 } else {
                     btnConfirmaPidelo.setEnabled(false);
-                    btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_disabled);
+                    //btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_disabled);
                 }
             }
 
@@ -209,10 +213,10 @@ public class PideloActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtNumberContactoPidelo.getText().length() == 9) {
                     btnConfirmaPidelo.setEnabled(validaNumero(txtNumberContactoPidelo));
-                    btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_rojo);
+                    //btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_rojo);
                 } else {
                     btnConfirmaPidelo.setEnabled(false);
-                    btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_disabled);
+                    //btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_disabled);
                 }
             }
 
@@ -220,28 +224,28 @@ public class PideloActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (txtNumberContactoPidelo.getText().length() == 9) {
                     btnConfirmaPidelo.setEnabled(validaNumero(txtNumberContactoPidelo));
-                    btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_rojo);
+                    //btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_rojo);
                 } else {
                     btnConfirmaPidelo.setEnabled(false);
-                    btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_disabled);
+                    //btnConfirmaPidelo.setBackgroundResource(R.drawable.boton_disabled);
                 }
             }
         });
         //End Número de contacto
 
         //Inicializando cajas de texto luagr y encargo
-        final EditText txtLugarComprar = (EditText) findViewById(R.id.txtLugarComprarPidelo);
+        //final EditText txtLugarComprar = (EditText) findViewById(R.id.txtLugarComprarPidelo);
         final EditText txtProductoComprar = (EditText) findViewById(R.id.txtProductoPidelo);
 
         //Ejecutando Boton
         btnConfirmaPidelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txtLugarComprar.getText().length() > 0 && txtProductoComprar.getText().length() >0){
-                    String LugarRecogerEncargo =  txtLugarComprar.getText().toString();
+                if (txtProductoComprar.getText().length() >0){
+                    //String LugarRecogerEncargo =  txtLugarComprar.getText().toString();
                     String DetalleEncargo =  txtProductoComprar.getText().toString();
                     String NumeroContactoEncargo = txtNumberContactoPidelo.getText().toString();
-                    myEditor.putString("LugarRecogerEncargo", LugarRecogerEncargo);
+                    //myEditor.putString("LugarRecogerEncargo", LugarRecogerEncargo);
                     myEditor.putString("DetalleEncargo", DetalleEncargo);
                     myEditor.putString("NumeroContactoEncargo", NumeroContactoEncargo);
                     myEditor.commit();
@@ -257,45 +261,13 @@ public class PideloActivity extends AppCompatActivity {
             }
         });
 
-        //Start Menú
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
-        ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
-        btnHome.setOnClickListener(new View.OnClickListener() {
+        btnAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onBackPressed();
             }
         });
 
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PideloActivity.this, FavoritosActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PideloActivity.this, CarritoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PideloActivity.this, UserActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        //End Menú
     }
 
     @Override
@@ -324,9 +296,4 @@ public class PideloActivity extends AppCompatActivity {
             return true;
     }
 
-    public void listarCiudades(){
-        listaCiudadesPidelo.setNumColumns(1);
-        adapter = new CiudadListAdapter(PideloActivity.this, R.layout.list_ciudades_item, listCiu);
-        listaCiudadesPidelo.setAdapter(adapter);
-    }
 }

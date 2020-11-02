@@ -30,7 +30,6 @@ public class TerminosYCondicionesActivity extends AppCompatActivity {
 
         int ancho = medidasVentana.widthPixels;
         final int alto = medidasVentana.heightPixels;
-
         getWindow().setLayout((int)(ancho*0.85), (int)(alto*0.9));
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //End Diseño de popup
@@ -43,7 +42,7 @@ public class TerminosYCondicionesActivity extends AppCompatActivity {
         btnPoliticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://fastbuych.com/es/legal/politicas");
+                Uri uri = Uri.parse("http://fastbuy.pe/app/legal/politicas");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
@@ -52,7 +51,7 @@ public class TerminosYCondicionesActivity extends AppCompatActivity {
         btnTerminos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://fastbuych.com/es/legal/terminos");
+                Uri uri = Uri.parse("http://fastbuych.pe/app/legal/terminos");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }

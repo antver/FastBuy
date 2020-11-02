@@ -33,7 +33,7 @@ public class CarritoActivity extends AppCompatActivity {
     ArrayList<PedidoDetalle> list;
 
     GridView dtgvPedidos;
-    TextView txtTotal;
+    TextView txtTotal,txtCantidadItems;
 
     Calcular_Total calculaTotal = new Calcular_Total();
 
@@ -47,7 +47,7 @@ public class CarritoActivity extends AppCompatActivity {
         double total = 0;
         for (int i = 0; i < list.size(); i++){
             total += list.get(i).getTotal();
-        }
+        } txtCantidadItems.setText(String.valueOf(list.size()));
          txtTotal.setText(String.format("%.2f", total).replace(",","."));
     }
 
@@ -56,28 +56,21 @@ public class CarritoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrito);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_navigate_before));
 
         txtTotal = (TextView) findViewById(R.id.txtTotalPedido);
-
+        txtCantidadItems = (TextView) findViewById(R.id.txtCantidadItems);
         //Lista de pedidos
         dtgvPedidos = (GridView) findViewById(R.id.dtgvListaPedido);
 
         //Boton comprar
-        Button btnCompra = (Button) findViewById(R.id.btnComprar);
+        TextView btnCompra = (TextView) findViewById(R.id.btnComprar);
         btnCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Globales globales = new Globales();
                 list = globales.getListaPedidosCache("lista_pedidos");
                 if (list.size() > 0){
-                    Intent intent = new Intent(CarritoActivity.this, MetodoDePagoActivity.class);
+                    Intent intent = new Intent(CarritoActivity.this, PagoTarjetaActivity.class);
                     startActivity(intent);
                 }else{
                     Toast toast = Toast.makeText(CarritoActivity.this,"¡Carrito Vacio!, añada productos a comprar",Toast.LENGTH_SHORT);
@@ -88,42 +81,6 @@ public class CarritoActivity extends AppCompatActivity {
             }
         });
 
-        //botones del menu
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
-        ImageButton btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CarritoActivity.this, PrincipalActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CarritoActivity.this, FavoritosActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Intent intent = new Intent(CarritoActivity.this, CarritoActivity.class);
-                startActivity(intent);*/
-            }
-        });
-
-        btnUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CarritoActivity.this, UserActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     public void listaDetallePedido(GridView gridViewX, TextView txtMiTotal){

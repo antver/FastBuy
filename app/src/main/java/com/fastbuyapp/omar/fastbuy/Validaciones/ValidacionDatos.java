@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -84,12 +85,18 @@ public class ValidacionDatos {
         return (actNetInfo != null && actNetInfo.isConnected());
     }
 
-    public void validarCarritoVacio(ImageButton carrito){
+    public void validarCarritoVacio(ImageButton carrito, TextView cantidad){
         Globales globales = new Globales();
         ArrayList<PedidoDetalle> listapedidos = globales.getListaPedidosCache("lista_pedidos");
-        if (listapedidos.isEmpty())
+        if (listapedidos.isEmpty()) {
             carrito.setImageResource(R.drawable.ic_canasta);
-        else
-            carrito.setImageResource(R.drawable.ic_cart_shop_activo);
+            cantidad.setVisibility(View.GONE);
+            cantidad.setText("");
+        }
+        else {
+            carrito.setImageResource(R.drawable.ic_canasta);
+            cantidad.setVisibility(View.VISIBLE);
+            cantidad.setText(String.valueOf(listapedidos.size()));
+        }
     }
 }

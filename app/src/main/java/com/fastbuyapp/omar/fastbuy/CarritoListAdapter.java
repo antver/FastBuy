@@ -21,11 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fastbuyapp.omar.fastbuy.Operaciones.Calcular_Total;
+import com.fastbuyapp.omar.fastbuy.config.GlideApp;
 import com.fastbuyapp.omar.fastbuy.config.Globales;
+import com.fastbuyapp.omar.fastbuy.config.Servidor;
 import com.fastbuyapp.omar.fastbuy.entidades.PedidoDetalle;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by OMAR on 23/08/2018.
@@ -66,6 +70,7 @@ public class CarritoListAdapter extends ArrayAdapter<PedidoDetalle> {
         TextView txtNombreProdPedido;
         TextView txtSubtotalProdPedido;
         ImageView btnQuitar;
+        ImageView imgproducto;
     }
 
     @Override
@@ -80,6 +85,7 @@ public class CarritoListAdapter extends ArrayAdapter<PedidoDetalle> {
             holder.txtSubtotalProdPedido = (TextView) row.findViewById(R.id.txtSubtotalProdPedido);
             holder.txtNombreProdPedido = (TextView) row.findViewById(R.id.txtNombreProdPedido);
             holder.btnQuitar = (ImageView) row.findViewById(R.id.btnQuitarProdPedido);
+            holder.imgproducto = (ImageView) row.findViewById(R.id.imgproducto);
             row.setTag(holder);
         }
         else{
@@ -99,8 +105,21 @@ public class CarritoListAdapter extends ArrayAdapter<PedidoDetalle> {
         else{
             nameProdOrProm = pedidoDetalle.getProducto().getDescripcion();
         }
+        String agregados = "";
+        if(pedidoDetalle.getAgregados() != null){
+            if(pedidoDetalle.getAgregados().size() > 0){
+                String item = "";
+                for (int i = 0; i < pedidoDetalle.getAgregados().size(); i++){
+                    item = item + pedidoDetalle.getAgregados().get(i).getNombre();
+                    if(i < pedidoDetalle.getAgregados().size()){
+                        item = item + ", ";
+                    }
+                }
+                agregados = "Agregados: " + item;
+            }
+        }
         holder.txtNombreProdPedido.setText(nameProdOrProm);
-        holder.txtSubtotalProdPedido.setText("S/ " + String.format("%.2f",pedidoDetalle.getTotal()).toString().replace(",","."));
+        holder.txtSubtotalProdPedido.setText("S/ " + String.format("%.2f",pedidoDetalle.getTotal()).toString().replace(",",".") + " " + agregados);
 
         final Calcular_Total calcula = new Calcular_Total();
         /*if(pedidoList.size()== (pos+1)){
@@ -141,6 +160,17 @@ public class CarritoListAdapter extends ArrayAdapter<PedidoDetalle> {
                 dialog.show();
             }
         });
+
+        Servidor s = new Servidor();
+        String url = "https://"+s.getServidor()+"/productos/fotos/" + pedidoDetalle.getProducto().getImagen();
+        Log.v("imagn",url);
+        GlideApp.with(context)
+                .load(url)
+                .override(100, 100)
+                .placeholder(R.drawable.loader_img)
+                .transform(new RoundedCornersTransformation(20,0))
+                .into(holder.imgproducto);
+
         /*
         if(pedidoDetalle.isEsPromocion()){
             holder.txtCantidadPedido.setText(String.valueOf(pedidoDetalle.getCantidad()));

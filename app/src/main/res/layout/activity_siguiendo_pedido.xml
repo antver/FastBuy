@@ -5,27 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blanco"
+    android:id="@+id/bottomSheet"
+    android:background="@drawable/modal_background"
     tools:context=".SiguiendoPedidoActivity">
-    <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blanco"
-        android:theme="?attr/actionBarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar" />
+        app:cardCornerRadius="20dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="300dp">
+
+            <fragment
+                android:id="@+id/map"
+                android:background="@drawable/modal_background"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/btnAtras"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="right"
+                android:layout_alignTop="@+id/map"
+                android:layout_alignEnd="@+id/map"
+                android:layout_marginTop="15dp"
+                android:tint="@color/negro"
+                app:srcCompat="@drawable/ic_check_cancelado" />
+
+            <ImageButton
+                android:id="@+id/button1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignEnd="@+id/map"
+                android:layout_alignBottom="@+id/map"
+                android:background="@drawable/ic_gps"
+                android:onClick="ubicacionOriginal" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/blanco">
+
+            <com.google.android.material.tabs.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado del pedido" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detalle" />
+
+            </com.google.android.material.tabs.TabLayout>
+
 
             <LinearLayout
                 android:id="@+id/linerAnimacionEncargo"
@@ -33,6 +79,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible">
+
+
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/animationPendiente"
                     app:lottie_imageAssetsFolder="assets"
@@ -300,50 +348,4 @@
 
         </LinearLayout>
     </ScrollView>
-    <!--Star Menu General-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#999"
-        android:gravity="bottom"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/btnHome"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#e9e9e9"
-            android:padding="12dp"
-            app:srcCompat="@drawable/ic_shop_n" />
-
-        <ImageButton
-            android:id="@+id/btnFavoritos"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#e9e9e9"
-            android:padding="12dp"
-            app:srcCompat="@drawable/ic_heart" />
-
-        <ImageButton
-            android:id="@+id/btnCarrito"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#e9e9e9"
-            android:padding="12dp"
-            app:srcCompat="@drawable/ic_cart_shop" />
-
-        <ImageButton
-            android:id="@+id/btnUsuario"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#e9e9e9"
-            android:padding="12dp"
-            android:tint="@color/fastbuy"
-            app:srcCompat="@drawable/ic_user_circle_o" />
-    </LinearLayout>
-    <!--End Menu General-->
 </LinearLayout>

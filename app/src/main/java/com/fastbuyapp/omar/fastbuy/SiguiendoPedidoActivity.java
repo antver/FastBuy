@@ -244,8 +244,8 @@ public class SiguiendoPedidoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        /*ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);*/
         /*if (Integer.valueOf(statePedido)!=2 && Integer.valueOf(statePedido)!=1){
             //refrescando activity
             mHandler = new Handler();

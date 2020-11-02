@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -67,7 +68,13 @@ public class DireccionMapsFragment extends FragmentActivity implements OnMapRead
     SharedPreferences myPreferences;
     LocationManager mLocManager;
     private GoogleMap mMap;
-    String Etiqueta,LatitudSel,LongitudSel,CiudadDirecSel,DireccionSel,Piso,Refer;
+    String Etiqueta;
+    String LatitudSel;
+    String LongitudSel;
+    String CiudadDirecSel;
+    String DireccionSel;
+    String Piso;
+    String Refer;
     SharedPreferences.Editor myEditor;
     ProgressDialog progDailog = null;
     String sLongitud;
@@ -75,6 +82,7 @@ public class DireccionMapsFragment extends FragmentActivity implements OnMapRead
     String latitudCiudadMapa, longitudCiudadMapa, ciudad_seleccionada, tokencito, number;
     EditText txtNewDirec, txtNumPiso, txtReferencia;
     String codigoZona;
+    ImageView btnAtras;
     public DireccionMapsFragment() {
         // Required empty public constructor
     }
@@ -115,48 +123,56 @@ public class DireccionMapsFragment extends FragmentActivity implements OnMapRead
         txtNewDirec = (EditText) findViewById(R.id.txtNameDireccion);
         txtNumPiso = (EditText) findViewById(R.id.txtNumPiso);
         txtReferencia = (EditText) findViewById(R.id.txtReferencia);
+        btnAtras = (ImageView) findViewById(R.id.btnAtras);
         obtenerCoordenadas();
         //ubiCiudadMapa = new LatLng(Double.parseDouble(latitudCiudadMapa), Double.parseDouble(longitudCiudadMapa));
         Button btnContinuar = (Button) findViewById(R.id.btnContinuar);
         btnContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
+        public void onClick(View v) {
+                try {
+                    if (txtNewDirec.getText().toString().trim().length()>0
+                            && txtNumPiso.getText().toString().trim().length()>0
+                            && txtReferencia.getText().toString().trim().length()>0){
+                        DireccionSel = txtNewDirec.getText().toString();
+                        Piso = txtNumPiso.getText().toString();
+                        Refer = txtReferencia.getText().toString();
+
+                        registrarDireccion("",DireccionSel,LatitudSel,LongitudSel,Piso, Refer);
+                    }else {
+                        Toast.makeText(DireccionMapsFragment.this, "Por Favor, rellene todos los campos", Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+            }
+
+        });
+
+        btnAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
 
-
-                        try {
-                            if (txtNewDirec.getText().toString().trim().length()>0
-                                    && txtNumPiso.getText().toString().trim().length()>0
-                                    && txtReferencia.getText().toString().trim().length()>0){
-                                DireccionSel = txtNewDirec.getText().toString();
-                                Piso = txtNumPiso.getText().toString();
-                                Refer = txtReferencia.getText().toString();
-
-                                registrarDireccion(Etiqueta,DireccionSel,LatitudSel,LongitudSel,Piso, Refer, ciudad_seleccionada);
-                            }else {
-                                Toast.makeText(DireccionMapsFragment.this, "Por Favor, rellene todos los campos", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }catch (UnsupportedEncodingException e){
-                            e.printStackTrace();
-                        }
-
-
-                }
-
-            });
-
+                String direccion = myPreferences.getString("direccion_seleccionada", "");
+                if(!direccion.equals("codigoZona_usuario"))
+                    onBackPressed();
+                else
+                    Toast.makeText(DireccionMapsFragment.this, "Seleccione una ubicación donde FastBuy brinde cobertura", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public void registrarDireccion(final String a, final String b, final String c, final String d, String e, String f, String g) throws UnsupportedEncodingException {
+    public void registrarDireccion(final String a, final String b, final String c, final String d, String e, String f) throws UnsupportedEncodingException {
         try {
             final String etiqueta = URLEncoder.encode(a, "UTF-8");
             final String direccion = URLEncoder.encode(b, "UTF-8");
             final String latitud = URLEncoder.encode(c, "UTF-8");
             final String longitud = URLEncoder.encode(d, "UTF-8");
-            final String ciudad = URLEncoder.encode(g, "UTF-8");
+            //final String ciudad = URLEncoder.encode(g, "UTF-8");
             String numPiso = URLEncoder.encode(e, "UTF-8");
             String referen = URLEncoder.encode(f, "UTF-8");
-            String URL = "https://apifbdelivery.fastbuych.com/Delivery/GuardarDireccion3?auth="+tokencito+"&numTelefono="+number+"&etiqueta=&direccion="+direccion+"&latitud="+latitud+"&longitud="+longitud+"&piso="+numPiso+"&referencia="+referen+"&ciudad=" + ciudad;
+            String URL = "https://apifbdelivery.fastbuych.com/Delivery/GuardarDireccion3?auth="+tokencito+"&numTelefono="+number+"&etiqueta=a&direccion="+direccion+"&latitud="+latitud+"&longitud="+longitud+"&piso="+numPiso+"&referencia="+referen+"&ciudad=1";
             Log.v("newDirec",URL);
             RequestQueue queue = Volley.newRequestQueue(DireccionMapsFragment.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
@@ -165,7 +181,7 @@ public class DireccionMapsFragment extends FragmentActivity implements OnMapRead
                     if(response.equals("ERROR")){
                         Toast.makeText(DireccionMapsFragment.this, "Error al registrar dirección", Toast.LENGTH_SHORT).show();
                         myEditor.putString("etiqueta_direccion", "");
-                        myEditor.putString("direccion_seleccionada", "");
+
                         //myEditor.putString("ciudad_seleccionada", "");
                         myEditor.putString("latitud_seleccionada", "0");
                         myEditor.putString("longitud_seleccionada", "0");
@@ -215,6 +231,7 @@ public class DireccionMapsFragment extends FragmentActivity implements OnMapRead
         mMap.addMarker(new MarkerOptions().position(puntoPulsado).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         LatitudSel = String.valueOf(puntoPulsado.latitude);
         LongitudSel = String.valueOf(puntoPulsado.longitude);
+        miUbicacion(Double.parseDouble(LatitudSel), Double.parseDouble(LongitudSel));
     }
 
     @Override

@@ -48,8 +48,8 @@ public class EstablecimientoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        /*ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);*/
     }
 
     @Override
@@ -72,7 +72,6 @@ public class EstablecimientoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
-
         final String consulta = "https://apifbdelivery.fastbuych.com/Delivery/ListarEmpresasXUbiXCatXSubCatXDescrip?auth="+tokencito+"&catego="+categoria+"&subcatego="+subcategoria+"&ubica="+ubicacion+"&descrip=";
 
         final ImageButton btnLista = (ImageButton) findViewById(R.id.btnLista);

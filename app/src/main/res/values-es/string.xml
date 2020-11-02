@@ -24,9 +24,9 @@
     <string name="text_politicas"> - Políticas de privacidad</string>
     <string name="text_aceptar_politicas">Al presionar Continuar usted acepta los Términos de uso y la política de privacidad de FastBuy S.A.C</string>
     <string name="siguiente">Continuar</string>
-    <string name="login_facebook">INGRESA CON FACEBOOK</string>
-    <string name="login_google">INGRESA CON GOOGLE</string>
-    <string name="login">INICIAR SESIÓN</string>
+    <string name="login_facebook">Facebook</string>
+    <string name="login_google">Google</string>
+    <string name="login">Regitrarse</string>
     <string name="agradecimiento">gracias por usar FastBuy</string>
     <string name="ingresa_numero">Ingresa tu móvil</string>
     <string name="ingresa_numero_descripcion">Lo usamos para asegurarnos de que las entregas lleguen a usted y los servicios funcionen sin problemas</string>

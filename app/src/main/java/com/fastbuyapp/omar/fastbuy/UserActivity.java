@@ -51,8 +51,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+        /*ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);*/
     }
 
     @Override

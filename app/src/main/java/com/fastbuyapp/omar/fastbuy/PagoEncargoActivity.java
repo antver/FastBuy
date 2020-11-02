@@ -51,8 +51,8 @@ public class PagoEncargoActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+       /*ValidacionDatos valida = new ValidacionDatos();
+        valida.validarCarritoVacio(btnCarrito);*/
         PreferenceManager.getDefaultSharedPreferences(this);
         categoria  = myPreferences.getString("categoria", "0");
         float costoEnvio = myPreferences.getFloat("monto_delivery", 0);

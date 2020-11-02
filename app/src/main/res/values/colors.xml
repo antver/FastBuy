@@ -54,5 +54,6 @@
     <color name="morado">#5533BB</color>
     <!--Colores IOS -->
     <color name="c_humo">#F2F2F2</color>
+    <color name="fondo">#f7f7f7</color>
     <color name="active">#00C3A4</color>
 </resources>

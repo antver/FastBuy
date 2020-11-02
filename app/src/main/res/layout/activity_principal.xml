@@ -28,18 +28,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingVertical="30dp">
+                    android:paddingBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="20dp"
+                        android:paddingVertical="10dp"
+                        android:background="@color/blanco"
+                        android:layout_marginBottom="40dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/img_usuario"
-                            android:layout_marginTop="4dp"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="45dp"
                             app:srcCompat="@drawable/perfil">
                         </ImageView>
 
@@ -48,6 +51,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="2"
+                            android:gravity="center_vertical"
                             android:paddingHorizontal="10dp">
 
                             <LinearLayout
@@ -60,7 +64,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/hola"
                                     android:textColor="@color/negro"
-                                    android:textSize="16sp" />
+                                    android:textSize="15sp" />
 
                                 <TextView
                                     android:id="@+id/txtNombreUsuario"
@@ -70,7 +74,7 @@
                                     android:textColor="@color/negro"
                                     android:lines="1"
                                     android:textStyle="bold"
-                                    android:textSize="22sp" />
+                                    android:textSize="18sp" />
                             </LinearLayout>
                             <LinearLayout
                                 android:id="@+id/btnUbicacion"
@@ -78,8 +82,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/n_shadow"
-                                android:padding="10dp"
-                                android:layout_marginTop="10dp"
+                                android:padding="7dp"
+                                android:layout_gravity="center_vertical"
                                 android:orientation="horizontal">
 
                                 <ImageView
@@ -91,8 +95,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:lines="1"
+                                    android:textSize="12sp"
+                                    android:layout_gravity="center_vertical"
                                     android:textColor="@color/negro"
-                                    android:textStyle="bold"
+
                                     android:text="Av. Larco #223"/>
                             </LinearLayout>
 
@@ -111,23 +117,21 @@
                         <HorizontalScrollView
                             android:layout_width="match_parent"
                             android:scrollbarThumbHorizontal="@null"
-                            android:layout_height="450dp">
+                            android:layout_height="wrap_content">
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="450dp"
+                                android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
+                                    android:id="@+id/llpanelCategorias1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:weightSum="2"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginTop="30dp"
                                     android:orientation="vertical">
                                     <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="200dp"
+                                        android:layout_height="wrap_content"
                                         android:weightSum="2"
                                         android:orientation="horizontal">
                                         <LinearLayout
@@ -254,6 +258,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/llpanelCategorias2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:weightSum="2"
@@ -357,7 +362,7 @@
                                         <LinearLayout
                                             android:id="@+id/llPrevencion"
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
+                                            android:layout_height="200dp"
                                             android:layout_weight="1"
                                             android:paddingVertical="10dp"
                                             android:background="@drawable/rectanguloitem"
@@ -387,6 +392,7 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/llpanelCategorias3"
                                     android:weightSum="2"
                                     android:layout_marginTop="30dp"
                                     android:orientation="vertical">
@@ -588,9 +594,6 @@
 
 
 
-
-
-
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
@@ -662,136 +665,10 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:background="@drawable/shadow"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
-            android:weightSum="5"
-            android:layout_height="60dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:paddingVertical="10dp"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:id="@+id/btnHome"
-                    android:layout_weight="1"
-                    android:background="@color/blanco"
-                    android:layout_gravity="center"
-                    android:tint="@color/active"
-                    app:srcCompat="@drawable/ic_home2" />
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:textSize="11dp"
-                    android:layout_height="wrap_content"
-                    android:text="Inicio"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:paddingVertical="10dp"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:id="@+id/btnFavoritos"
-                    android:background="@color/blanco"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_favoritos2"/>
-                <TextView
-                    android:layout_weight="1"
-                    android:textSize="11dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Favoritos"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="45dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_circuloverde"
-                    android:layout_height="45dp">
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:id="@+id/btnBuscar"
-                        android:background="@color/toolbarTransparent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_buscar2"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:paddingVertical="10dp"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:id="@+id/btnCarrito"
-                    android:background="@color/blanco"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_canasta"/>
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="11dp"
-                    android:text="Canasta"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:paddingVertical="10dp"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:id="@+id/btnUsuario"
-                    android:background="@color/blanco"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_cupones2"/>
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="11dp"
-                    android:text="Cupones"/>
-            </LinearLayout>
-        </LinearLayout>
 
 
+<include layout="@layout/menu_principal"/>
 
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

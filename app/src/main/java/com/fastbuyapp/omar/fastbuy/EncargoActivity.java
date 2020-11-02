@@ -39,7 +39,7 @@ import java.util.ArrayList;
 public class EncargoActivity extends AppCompatActivity {
     ArrayList<Ubicacion> listCiu;
     String ciudad, ubicacion;
-    LinearLayout animacionEncargo, generaEncargo;
+    //LinearLayout animacionEncargo, generaEncargo;
     boolean state = true;
     boolean openCmb = true;
     GridView listaCiudadesEncargo;
@@ -51,8 +51,7 @@ public class EncargoActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        ValidacionDatos valida = new ValidacionDatos();
-        valida.validarCarritoVacio(btnCarrito);
+
     }
 
     @Override
@@ -62,42 +61,33 @@ public class EncargoActivity extends AppCompatActivity {
 
         Globales globales = new Globales();
         listCiu = globales.getDataFromSharedPreferences("lista_ciudades");
-        LottieAnimationView btnBoxEncargo = (LottieAnimationView) findViewById(R.id.btnCajaAnimation);
-        animacionEncargo = (LinearLayout) findViewById(R.id.linerAnimacionEncargo);
-        generaEncargo = (LinearLayout) findViewById(R.id.linearGeneraEncargo);
+        //LottieAnimationView btnBoxEncargo = (LottieAnimationView) findViewById(R.id.btnCajaAnimation);
+        //animacionEncargo = (LinearLayout) findViewById(R.id.linerAnimacionEncargo);
+        //generaEncargo = (LinearLayout) findViewById(R.id.linearGeneraEncargo);
         myPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
         myEditor = myPreferences.edit();
         ciudad = myPreferences.getString("City_Cliente", "");
         ubicacion = myPreferences.getString("ubicacion", "");
         //visualizacion
-        animacionEncargo.setVisibility(View.VISIBLE);
-        generaEncargo.setVisibility(View.GONE);
+        //animacionEncargo.setVisibility(View.VISIBLE);
+       // generaEncargo.setVisibility(View.GONE);
 
-        //Start Toolbar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_navigate_before));
-        //End Toolbar
 
         //inicializando variables
-        final TextView cmbCiudadEncargo = (TextView) findViewById(R.id.cmbCiudadEncargo);
-        listaCiudadesEncargo = (GridView) findViewById(R.id.listaDeCiudadesEncargo);
-        ScrollView myScroll = findViewById(R.id.scrollEncargo);
-        final ScrollView myScrollGeneral = findViewById(R.id.scrollGeneralEncargo);
+        //final TextView cmbCiudadEncargo = (TextView) findViewById(R.id.cmbCiudadEncargo);
+        //listaCiudadesEncargo = (GridView) findViewById(R.id.listaDeCiudadesEncargo);
+        //ScrollView myScroll = findViewById(R.id.scrollEncargo);
+        //final ScrollView myScrollGeneral = findViewById(R.id.scrollGeneralEncargo);
 
         //Start boton flotante
 
-        final LinearLayout flotante = (LinearLayout) findViewById(R.id.linearFlotanteEncargo);
-        final LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //final LinearLayout flotante = (LinearLayout) findViewById(R.id.linearFlotanteEncargo);
+        //final LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+        //        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //param.setMargins(left,top,right,bottom);
         //flotante.setPadding(left,top,right,bottom);
 
-        btnBoxEncargo.setOnClickListener(new View.OnClickListener() {
+        /*btnBoxEncargo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (state){
@@ -118,16 +108,16 @@ public class EncargoActivity extends AppCompatActivity {
                 }
                 flotante.setLayoutParams(param);
             }
-        });
+        });*/
         //End boton flotante
 
         //Inicializamos boton Confirmar Encargo
         final Button btnConfirmaEncargo = (Button) findViewById(R.id.btnConfirmarEncargo);
 
         //Start Lista de Ciudades
-        listarCiudades();
+        //listarCiudades();
 
-        cmbCiudadEncargo.setOnClickListener(new View.OnClickListener() {
+        /*cmbCiudadEncargo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (openCmb){
@@ -138,12 +128,12 @@ public class EncargoActivity extends AppCompatActivity {
                     openCmb=true;
                 }
             }
-        });
+        });*/
 
         //Ciud = Globales.CiudadEncargoSeleccionada;
-        cmbCiudadEncargo.setText(ciudad);
+        //cmbCiudadEncargo.setText(ciudad);
 
-        listaCiudadesEncargo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listaCiudadesEncargo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int codigo =(listCiu.get(position).getCodigo());
@@ -152,11 +142,11 @@ public class EncargoActivity extends AppCompatActivity {
                 cmbCiudadEncargo.setText(ciudad);
                 listaCiudadesEncargo.setVisibility(View.GONE);
             }
-        });
+        });*/
         //End Lista de Ciudades
 
         //Start controlando Scroll
-        myScrollGeneral.setOnTouchListener(new View.OnTouchListener() {
+        /*myScrollGeneral.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 findViewById(R.id.scrollEncargo).getParent()
@@ -182,7 +172,7 @@ public class EncargoActivity extends AppCompatActivity {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
-        });
+        });*/
         //End controlando Scroll
 
         //Start número de contacto
@@ -198,10 +188,8 @@ public class EncargoActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (txtNumberContactoEncargo.getText().length() == 9) {
                     btnConfirmaEncargo.setEnabled(validaNumero(txtNumberContactoEncargo));
-                    btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_rojo);
                 } else {
                     btnConfirmaEncargo.setEnabled(false);
-                    btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_disabled);
                 }
             }
 
@@ -209,10 +197,8 @@ public class EncargoActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtNumberContactoEncargo.getText().length() == 9) {
                     btnConfirmaEncargo.setEnabled(validaNumero(txtNumberContactoEncargo));
-                    btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_rojo);
                 } else {
                     btnConfirmaEncargo.setEnabled(false);
-                    btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_disabled);
                 }
             }
 
@@ -220,28 +206,28 @@ public class EncargoActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (txtNumberContactoEncargo.getText().length() == 9) {
                     btnConfirmaEncargo.setEnabled(validaNumero(txtNumberContactoEncargo));
-                    btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_rojo);
+                    //btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_rojo);
                 } else {
                     btnConfirmaEncargo.setEnabled(false);
-                    btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_disabled);
+                    //btnConfirmaEncargo.setBackgroundResource(R.drawable.boton_disabled);
                 }
             }
         });
         //End Número de contacto
 
         //Inicializando cajas de texto luagr y encargo
-        final EditText txtLugarRecoger = (EditText) findViewById(R.id.txtLugarRecogerEncargo);
+        //final EditText txtLugarRecoger = (EditText) findViewById(R.id.txtLugarRecogerEncargo);
         final EditText txtContenidoEncargo = (EditText) findViewById(R.id.txtDetallesEncargo);
 
         //Ejecutando Boton
         btnConfirmaEncargo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txtLugarRecoger.getText().length() > 0 && txtContenidoEncargo.getText().length() >0){
-                    String LugarRecogerEncargo = txtLugarRecoger.getText().toString();
+                if (txtContenidoEncargo.getText().length() >0){
+                    //String LugarRecogerEncargo = txtLugarRecoger.getText().toString();
                     String DetalleEncargo = txtContenidoEncargo.getText().toString();
                     String NumeroContactoEncargo = txtNumberContactoEncargo.getText().toString();
-                    myEditor.putString("LugarRecogerEncargo", LugarRecogerEncargo);
+                    //myEditor.putString("LugarRecogerEncargo", LugarRecogerEncargo);
                     myEditor.putString("DetalleEncargo", DetalleEncargo);
                     myEditor.putString("NumeroContactoEncargo", NumeroContactoEncargo);
                     myEditor.commit();
@@ -256,45 +242,7 @@ public class EncargoActivity extends AppCompatActivity {
             }
         });
 
-        //Start Menú
-        ImageButton btnHome = (ImageButton) findViewById(R.id.btnHome);
-        ImageButton btnFavoritos = (ImageButton) findViewById(R.id.btnFavoritos);
-        btnCarrito = (ImageButton) findViewById(R.id.btnCarrito);
-        ImageButton btnUsuario = (ImageButton) findViewById(R.id.btnUsuario);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EncargoActivity.this, FavoritosActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EncargoActivity.this, CarritoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EncargoActivity.this, UserActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        //End Menú
     }
 
     @Override

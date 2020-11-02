@@ -68,9 +68,9 @@ public class PresentacionProdListAdapter extends BaseAdapter {
             holder.chbxPresentacionProd.setText(" "+prodPresentacion.getDescripcion());
             //holder.chbxPresentacionProd.setTypeface(fuente1);
             if (prodPresentacion.isCheck())
-                holder.chbxPresentacionProd.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.checkbox_on,0,0,0);
+                holder.chbxPresentacionProd.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_radio_button_checked_black_24dp,0);
             else
-                holder.chbxPresentacionProd.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.checkbox_off,0,0,0);
+                holder.chbxPresentacionProd.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_radio_button_unchecked_black_24dp,0);
         }
 
         return  row;

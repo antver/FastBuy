@@ -20,7 +20,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_personaliza_pedido"></string>
-    <string name="text_cupon">Si tienes un código de cupón de descuento ingresalo antes de pagar tu pedido</string>
+    <string name="text_cupon">Ingresa cupón</string>
     <string name="placeholder_txtcupon">ingrese código de cupón</string>
     <string name="text_saldo_pagar">SALDO A CANCELAR</string>
     <string name="text_gracias">Thank you for using FastBuy</string>
@@ -35,9 +35,9 @@
     <string name="text_politicas"> - Privacy policies</string>
     <string name="siguiente">Next</string>
     <string name="text_aceptar_politicas">By pressing Continue you accept FastBuy S.A.C. Terms of use and privacy policy</string>
-    <string name="login_facebook">LOG IN WITH FACEBOOK</string>
-    <string name="login_google">LOG IN WITH GOOGLE</string>
-    <string name="login">LOG IN</string>
+    <string name="login_facebook">Facebook</string>
+    <string name="login_google">Google</string>
+    <string name="login">Sign In</string>
     <string name="agradecimiento">thanks for using FastBuy</string>
     <string name="ingresa_numero">Enter your mobile</string>
     <string name="ingresa_numero_descripcion">We use it to make sure deliveries reach you and services run smoothly</string>
@@ -72,6 +72,6 @@
 
     <string name="fcm_message">FastBuy Delivery</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
